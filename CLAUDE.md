@@ -25,8 +25,8 @@ npx ngc -p tsconfig.app.json --noEmit   # fast strict template type-check withou
 
 How to run one test:
 
-- **Vitest:** `npx ng test --watch=false --include src/app/core/contact-validators.spec.ts`. Narrow further by test name with `--filter "<regex>"`.
-- **Playwright:** `npx playwright test e2e/contact.spec.ts -g "validates a field"`. Add `--project=desktop` to skip the mobile project, or `--ui` to debug.
+- **Vitest:** `npx ng test --watch=false --include src/app/games/bug-squash/bug-squash-engine.spec.ts`. Narrow further by test name with `--filter "<regex>"`.
+- **Playwright:** `npx playwright test e2e/contact.spec.ts -g "HubSpot is blocked"`. Add `--project=desktop` to skip the mobile project, or `--ui` to debug.
 
 Environment notes:
 
@@ -50,11 +50,11 @@ Environment notes:
   - Missing imagery (certificates, logos, game screenshots) renders `<app-image-placeholder>` until a `src`/`image` is set.
 - **Routing:** `app.routes.ts` lazy-loads each page's default export from `features/<page>/<page>.ts`. Route params arrive as signal `input()`s (`withComponentInputBinding`).
   - Don't use `href="#anchor"` for in-page jumps. `<base href>` turns them into navigations on Pages. Use `ScrollService.toElement()` instead.
-- **Contact:**
-  - `core/contact-validators.ts` holds pure validation with the design's exact messages.
-  - `core/contact.service.ts` posts to HubSpot Forms v3 (the unauthenticated, CORS-enabled endpoint on the free tier). It uses only the default `firstname`/`email`/`message` properties, with the subject prefixed into the message.
-  - The IDs live in `src/environments/environment.ts`. While they're empty, the form falls back to opening a pre-filled `mailto:`.
-  - Spam control is a hidden `company` honeypot. There is no reCAPTCHA.
+- **Contact:** `shared/hubspot-form` embeds HubSpot's own form (new-editor, `na2` region). Its fields, styling and reCAPTCHA are managed in HubSpot, not in this repo.
+  - The script URL and IDs live in `src/environments/environment.ts`, copied from HubSpot's embed code.
+  - HubSpot's v4 embed only scans the page for `.hs-form-frame` on its first run, then sets a `window.__HS__FORMS__EMBED__` guard. In this SPA the component deletes that guard and re-injects the script on every mount; without that, a second visit to a page with the form stays blank. HubSpot sizes its iframe lazily once it scrolls into view, so read height with `getBoundingClientRect`, not `offsetHeight`.
+  - If the script fails or nothing renders within 12 s (often an ad blocker), the component shows a `mailto:` fallback.
+  - The form can't be posted to via HubSpot's submissions API while CAPTCHA is on (`FORM_HAS_RECAPTCHA_ENABLED`), which is why it's embedded.
 - **Games:**
   - Bug Squash: `games/bug-squash/bug-squash-engine.ts` holds the pure rules with an injectable random source and explicit timestamps, and is unit-tested with a fake clock. `BugSquashGame` is a root-scoped service that runs `requestAnimationFrame`, so the best score survives navigation. `BugSquashArena` renders both skins.
   - Spot the defect: `games/spot-the-defect`.
@@ -70,6 +70,7 @@ Environment notes:
 ## Conventions
 
 - Components are standalone and OnPush (the lint rule enforces OnPush), and use `inject()`, signals and `@if`/`@for`. The selector prefix is `app-`.
+- E2E: HubSpot's script is stubbed with an empty response in `e2e/fixtures.ts`, so the suite never calls HubSpot. Opt in per test with `page.route(HUBSPOT_SCRIPT, r => r.continue())`; the live-embed test does this and is skipped in CI.
 - E2E: add every new route to `ROUTES` in `e2e/fixtures.ts`. That gives you render, phone-overflow and axe checks in both modes. The fixture fails any test that logs a console error. Wait out the loader with `visit()` or `waitForLoader()`.
 
 ## Deploying

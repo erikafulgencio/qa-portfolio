@@ -44,13 +44,9 @@ All copy and data lives in typed files under [`src/app/content/`](src/app/conten
 
 ## Contact form (HubSpot, free)
 
-Messages go to HubSpot Forms through its free, browser-friendly submission API. To set it up:
+The Contact page and the Professional home page embed a HubSpot form (free CRM). Submissions land in HubSpot as contacts. Fields, styling, the thank-you message and spam protection (reCAPTCHA) are all edited in HubSpot's form editor, so form changes don't need a code change.
 
-1. Create a free HubSpot account. Then go to **Marketing → Forms** and create a form with the **First name**, **Email** and **Message** fields.
-2. Copy your **portal ID** (Account ID) and the form's **GUID** from the form's embed code.
-3. Put both values in [`src/environments/environment.ts`](src/environments/environment.ts).
-
-Until these values are set, the form validates the input and then opens the visitor's email app with the message filled in.
+To point the site at a different form, copy the values from HubSpot's embed code (**Marketing → Forms → Share → Embed**) into [`src/environments/environment.ts`](src/environments/environment.ts). If a visitor's ad blocker stops HubSpot from loading, the site offers an email link instead.
 
 ## Deploying
 
