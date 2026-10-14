@@ -1,0 +1,263 @@
+// Global building blocks reused by many pages. Component-specific styling stays in component .scss files.
+@use 'mixins' as *;
+
+.container {
+  width: 100%;
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 0 26px;
+
+  &--wide {
+    max-width: 1260px;
+  }
+
+  &--narrow {
+    max-width: 1060px;
+  }
+
+  @include below($bp-sm) {
+    padding: 0 16px;
+  }
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.kicker {
+  @include kicker(10.5px, 0.22em);
+  color: var(--gs-accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gs-hot);
+  animation: g-pulse 2.4s ease-in-out infinite;
+}
+
+// Professional white sheet card.
+.sheet {
+  position: relative;
+  background: var(--surface);
+  border-radius: 28px;
+  box-shadow: var(--shadow-card);
+  padding: 36px 40px 40px;
+
+  @include below($bp-md) {
+    padding: 28px 24px 30px;
+    border-radius: 22px;
+  }
+}
+
+// Alter-mode HUD panel.
+.panel {
+  position: relative;
+  border: 1px solid ac(18%);
+  background: bg(70%);
+  @include chamfer(14px);
+}
+
+// Nocturne-style outline button, used by Alter Ego.
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: var(--gs-text);
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 12px 18px;
+  white-space: nowrap;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+  @include chamfer(8px);
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  &-primary {
+    color: var(--gs-accent);
+    border-color: var(--gs-accent);
+
+    &:hover {
+      background: ac(12%);
+    }
+  }
+
+  &-solid {
+    color: var(--gs-on-accent);
+    background: var(--gs-accent);
+    border-color: var(--gs-accent);
+
+    &:hover {
+      background: var(--gs-accent-hi);
+    }
+  }
+
+  &-hot {
+    color: var(--gs-hot-pale);
+    border-color: var(--gs-hot);
+
+    &:hover {
+      background: hot(16%);
+    }
+  }
+}
+
+// Professional pill buttons.
+.pill {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 26px;
+  border-radius: 999px;
+  @include kicker(11.5px, 0.18em);
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    letter-spacing 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease;
+
+  &--dark {
+    color: #fff;
+    background: tx(86%);
+
+    // In Alter Ego the text token is light, so the 'dark' pill flips to dark text.
+    :root[data-mode='alter'] & {
+      color: var(--gs-bg);
+    }
+
+    &:hover {
+      background: var(--gs-accent);
+      transform: translateY(-3px);
+      letter-spacing: 0.22em;
+      box-shadow: 0 18px 34px -16px ac(80%);
+    }
+  }
+
+  &--outline {
+    color: var(--gs-text);
+    background: transparent;
+    border-color: tx(18%);
+
+    &:hover {
+      border-color: var(--gs-accent);
+      color: var(--gs-accent);
+      transform: translateY(-2px);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    background: tx(30%);
+  }
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  @include mono(10.5px, 0.04em);
+  color: var(--gs-accent-soft);
+  background: ac(10%);
+  border: 1px solid ac(18%);
+  border-radius: 999px;
+  white-space: nowrap;
+
+  :root[data-mode='alter'] & {
+    border-radius: 0;
+    @include chamfer(5px);
+  }
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.section-title {
+  font-size: 34px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  margin: 10px 0 14px;
+
+  @include below($bp-sm) {
+    font-size: 27px;
+  }
+}
+
+.lede {
+  @include mono(12.5px);
+  line-height: 1.85;
+  color: tx(66%);
+  max-width: 62ch;
+}
+
+.icon-tile {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: var(--gs-accent);
+  background: ac(12%);
+  font-size: 19px;
+
+  :root[data-mode='alter'] & {
+    border: 1px solid ac(40%);
+    background: transparent;
+    @include chamfer(6px);
+  }
+}
+
+.page {
+  position: relative;
+  padding: 48px 0 80px;
+
+  @include below($bp-sm) {
+    padding: 32px 0 56px;
+  }
+}
+
+.page-title {
+  font-size: 48px;
+  letter-spacing: -0.02em;
+  margin: 12px 0 14px;
+
+  @include below($bp-md) {
+    font-size: 36px;
+  }
+}

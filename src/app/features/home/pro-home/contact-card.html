@@ -1,0 +1,47 @@
+<div class="sheet">
+  <span class="glow" aria-hidden="true"></span>
+  <div class="split">
+    <div>
+      <div class="kicker-label">Contact</div>
+      <h2>Let's grab coffee.</h2>
+      <p class="copy">
+        A QA lead role, a senior engineer seat, a process that needs rescuing, or a consulting
+        engagement — I'm interested in all of it. Thirty minutes, no agenda.
+      </p>
+      <div class="actions">
+        <app-coffee-link size="lg" />
+        <a class="pill pill--outline resume" routerLink="/resume">Résumé</a>
+      </div>
+      <ul class="links">
+        @for (l of links; track l.label) {
+          <li>
+            <a
+              class="link"
+              [href]="l.href"
+              [attr.target]="isExternal(l.href) ? '_blank' : null"
+              [attr.rel]="isExternal(l.href) ? 'noopener noreferrer' : null"
+            >
+              <span class="link-icon"><i class="ph {{ l.icon }}" aria-hidden="true"></i></span>
+              <span class="link-text">
+                <span class="link-label">{{ l.label }}</span>
+                <span class="link-value">{{ l.value }}</span>
+              </span>
+              <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+              @if (isExternal(l.href)) {
+                <span class="visually-hidden">(opens in a new tab)</span>
+              }
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <div class="form-panel">
+      <div class="panel-head">
+        <span class="pulse" aria-hidden="true"></span>
+        <h3>Send me a message</h3>
+      </div>
+      <app-contact-form />
+    </div>
+  </div>
+</div>

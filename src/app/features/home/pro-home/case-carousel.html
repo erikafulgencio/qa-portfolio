@@ -1,0 +1,109 @@
+<div class="sheet" role="region" aria-roledescription="carousel" aria-label="Case studies">
+  <div class="head">
+    <div class="head-copy">
+      <div class="kicker-label">Case studies</div>
+      <h2>When the Bug Wasn't the Problem</h2>
+      <p class="copy">
+        A closer look at the problems that required more than reproduction, investigation, critical
+        thinking, and a little persistence.
+      </p>
+    </div>
+    <div class="count-pill">
+      <span class="pulse" aria-hidden="true"></span>
+      <span>{{ cases.length }} cases · 4–6 min each</span>
+    </div>
+  </div>
+
+  @let c = active();
+  <article
+    class="slide"
+    aria-roledescription="slide"
+    [attr.aria-label]="c.i + 1 + ' of ' + cases.length + ': ' + c.title"
+    aria-live="polite"
+  >
+    <div class="body">
+      <div class="badges">
+        @if (c.i === 0) {
+          <span class="badge badge--featured">Featured</span>
+        } @else {
+          <span class="badge">Case {{ c.i + 1 }}</span>
+        }
+        <span class="meta">{{ c.kicker }} · {{ c.year }}</span>
+      </div>
+      <h3>{{ c.title }}</h3>
+      <p class="sub">{{ c.sub }}</p>
+      <blockquote class="lesson">
+        <i class="ph ph-quotes" aria-hidden="true"></i>
+        <span>{{ c.lesson }}</span>
+      </blockquote>
+      <dl class="stats">
+        @for (s of c.stats; track s.k) {
+          <div class="stat">
+            <dt>{{ s.v }}</dt>
+            <dd>{{ s.k }}</dd>
+          </div>
+        }
+      </dl>
+      <a class="read" [routerLink]="['/cases', c.id]"
+        >Read the full case<span class="visually-hidden">: {{ c.title }}</span>
+        <i class="ph ph-arrow-right" aria-hidden="true"></i
+      ></a>
+    </div>
+
+    <div class="art" aria-hidden="true">
+      @if (c.hasArt) {
+        <img
+          src="assets/img/zero-hour-art.png"
+          alt=""
+          class="art-img"
+          loading="lazy"
+          decoding="async"
+        />
+      } @else {
+        <div class="art-wash"></div>
+        <div class="art-grid"></div>
+        <div class="art-center">
+          <div class="orbit">
+            <div class="ring ring--1"></div>
+            <div class="ring ring--2"></div>
+            <div class="ring ring--3"></div>
+            <div class="satellite"><span></span></div>
+            <span class="art-icon"><i class="ph {{ c.icon }}"></i></span>
+          </div>
+        </div>
+        <div class="art-docs">
+          @for (d of c.docs; track d) {
+            <span>{{ d }}</span>
+          }
+        </div>
+      }
+      <div class="art-scan"></div>
+      <div class="art-sweep"></div>
+      <div class="art-num">{{ c.n }}</div>
+    </div>
+  </article>
+
+  <div class="controls">
+    <div class="dots">
+      @for (x of cases; track x.id; let i = $index) {
+        <button
+          type="button"
+          class="dot"
+          [class.on]="i === c.i"
+          [attr.aria-label]="'Show case ' + (i + 1) + ': ' + x.title"
+          [attr.aria-current]="i === c.i ? 'true' : null"
+          (click)="go(i)"
+        ></button>
+      }
+    </div>
+    <div class="nav">
+      <span class="label">{{ c.i + 1 }} / {{ cases.length }}</span>
+      <button type="button" class="arrow arrow--prev" aria-label="Previous case" (click)="step(-1)">
+        <i class="ph ph-arrow-left" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="arrow arrow--next" aria-label="Next case" (click)="step(1)">
+        <i class="ph ph-arrow-right" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+</div>

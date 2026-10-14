@@ -1,0 +1,357 @@
+@use 'mixins' as *;
+@use 'about-shared' as *;
+
+// ── Full story ────────────────────────────────────────
+:host {
+  display: grid;
+  gap: 20px;
+}
+
+.story-head {
+  @include purple(82%, 40%);
+  border-radius: 28px;
+  padding: 40px 44px;
+
+  @include below($bp-md) {
+    padding: 28px 22px;
+  }
+}
+
+.story-head-row {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.story-head-copy {
+  min-width: 0;
+}
+
+.story-kicker {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 12px;
+  @include kicker(9.5px, 0.24em);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.story-title {
+  margin: 0 0 12px;
+  font-size: 34px;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  max-width: 22ch;
+  text-wrap: pretty;
+
+  @include below($bp-sm) {
+    font-size: 27px;
+  }
+}
+
+.story-sub {
+  max-width: 52ch;
+  @include mono(11.5px);
+  line-height: 1.9;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.read-time {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  @include kicker(9.5px, 0.16em);
+}
+
+.progress {
+  position: relative;
+  margin-top: 26px;
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  @include kicker(8.5px, 0.2em);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.progress-track {
+  position: relative;
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+}
+
+.progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.75), #fff);
+  transition: width 0.25s ease;
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: 196px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+
+  @include below($bp-md) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.rail {
+  position: sticky;
+  top: 96px;
+  display: grid;
+  gap: 2px;
+  padding: 16px 14px;
+  border-radius: 22px;
+  border: 1px solid tx(9%);
+  background: var(--surface);
+  box-shadow: 0 20px 44px -34px rgba(20, 20, 40, 0.4);
+
+  @include below($bp-md) {
+    position: relative;
+    top: auto;
+    grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+  }
+}
+
+.rail-title {
+  grid-column: 1 / -1;
+  @include kicker(8.5px, 0.2em);
+  color: tx(50%);
+  padding: 2px 8px 10px;
+}
+
+.rail-item {
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 8px;
+  align-items: baseline;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  transition: background 0.25s ease;
+
+  &:hover {
+    background: ac(5%);
+  }
+
+  &.active {
+    background: ac(10%);
+
+    .rail-n {
+      color: var(--gs-accent);
+    }
+
+    .rail-t {
+      color: tx(92%);
+    }
+  }
+}
+
+.rail-n {
+  @include mono(9px);
+  color: tx(45%);
+}
+
+.rail-t {
+  @include mono(10px);
+  line-height: 1.55;
+  color: tx(60%);
+}
+
+.acts {
+  position: relative;
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+  padding-left: 26px;
+
+  @include below($bp-sm) {
+    padding-left: 0;
+  }
+}
+
+.acts-line {
+  position: absolute;
+  left: 5px;
+  top: 16px;
+  bottom: 16px;
+  width: 1px;
+  background: linear-gradient(180deg, ac(45%), hot(35%), transparent);
+  pointer-events: none;
+
+  @include below($bp-sm) {
+    display: none;
+  }
+}
+
+.act {
+  position: relative;
+  scroll-margin-top: 96px;
+  animation: g-rise 0.55s ease both;
+}
+
+.act-pin {
+  position: absolute;
+  left: -26px;
+  top: 42px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--gs-accent);
+  box-shadow: 0 0 0 4px ac(12%);
+
+  @include below($bp-sm) {
+    display: none;
+  }
+}
+
+.act-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  border-radius: 28px;
+  box-shadow: var(--shadow-card);
+  padding: 34px 40px;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.3, 1),
+    box-shadow 0.35s;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 34px 70px -38px ac(60%);
+  }
+
+  @include below($bp-md) {
+    padding: 26px 20px;
+  }
+}
+
+.act-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gs-accent), hot(70%), transparent);
+}
+
+.act-ghost {
+  position: absolute;
+  top: 14px;
+  right: 26px;
+  @include mono(64px);
+  line-height: 1;
+  color: ac(8%);
+  pointer-events: none;
+}
+
+.act-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 16px;
+}
+
+.act-icon {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: ac(10%);
+  color: var(--gs-accent);
+  font-size: 19px;
+  transition: transform 0.35s ease;
+
+  .act-card:hover & {
+    transform: rotate(-8deg) scale(1.06);
+  }
+}
+
+.act-label {
+  @include kicker(9px, 0.2em);
+  color: tx(50%);
+  margin-bottom: 3px;
+}
+
+.act-title {
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+
+  @include below($bp-sm) {
+    font-size: 22px;
+  }
+}
+
+.act-paras {
+  display: grid;
+  gap: 13px;
+}
+
+.act-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 20px;
+
+  @include below($bp-sm) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  li {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    padding: 12px 15px;
+    border-radius: 14px;
+    border: 1px solid tx(9%);
+    background: ac(3%);
+    @include mono(11.5px);
+    line-height: 1.75;
+    color: tx(76%);
+    text-wrap: pretty;
+    transition:
+      transform 0.28s ease,
+      border-color 0.28s ease,
+      background 0.28s ease;
+
+    &:hover {
+      border-color: var(--gs-accent);
+      background: ac(8%);
+      transform: translateY(-2px);
+    }
+
+    .pulse-dot {
+      margin-top: 6px;
+      animation-duration: 2.8s;
+    }
+  }
+}

@@ -1,0 +1,662 @@
+// Keyframes shared across the site, ported from the design. The ice-* set was referenced but never
+// defined in the original, so they are new. Reduced-motion handling lives in _base.scss.
+@keyframes g-grid {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(48px);
+  }
+}
+@keyframes g-scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+@keyframes g-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes g-float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes g-fill {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+@keyframes g-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes cs-inx {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes cs-zoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.93);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes cs-wipe {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes cs-ghost {
+  0% {
+    opacity: 0;
+    transform: translateY(28px) scale(0.9);
+  }
+  100% {
+    opacity: 0.13;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes g-kenburns {
+  0% {
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: scale(1.14) translate3d(-1.5%, -2%, 0);
+  }
+}
+@keyframes g-flicker {
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+  45% {
+    opacity: 0.55;
+  }
+  47% {
+    opacity: 1;
+  }
+  52% {
+    opacity: 0.6;
+  }
+}
+@keyframes g-ember {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.5);
+  }
+  20% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-160px) scale(1.1);
+  }
+}
+@keyframes g-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+@keyframes g-spin {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes g-shake {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-3px, 2px);
+  }
+  40% {
+    transform: translate(3px, -2px);
+  }
+  60% {
+    transform: translate(-2px, -2px);
+  }
+  80% {
+    transform: translate(2px, 2px);
+  }
+}
+@keyframes g-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9) translateY(-24px);
+  }
+}
+@keyframes g-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--gs-accent) 0%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 22px 0 color-mix(in srgb, var(--gs-accent) 35%, transparent);
+  }
+}
+@keyframes pr-cup {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  30% {
+    transform: translateY(-3px) rotate(-9deg);
+  }
+  60% {
+    transform: translateY(-1px) rotate(7deg);
+  }
+}
+@keyframes pr-steam {
+  0% {
+    opacity: 0;
+    transform: translateY(2px) scaleX(1);
+  }
+  25% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-16px) scaleX(1.5);
+  }
+}
+@keyframes pr-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes pr-sweep {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(220%);
+  }
+}
+@keyframes pr-blip {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+@keyframes pr-fill {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+@keyframes pr-orbit {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes pr-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95) translateY(-20px);
+  }
+}
+@keyframes pr-brew {
+  0% {
+    transform: translateY(102%);
+  }
+  70% {
+    transform: translateY(6%);
+  }
+  100% {
+    transform: translateY(2%);
+  }
+}
+@keyframes pr-pour {
+  0% {
+    transform: translateY(100%);
+  }
+  42% {
+    transform: translateY(4%);
+  }
+  72% {
+    transform: translateY(9%);
+  }
+  88% {
+    transform: translateY(4%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+@keyframes pr-ice {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-8deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(10deg);
+  }
+}
+@keyframes pr-sip {
+  0%,
+  100% {
+    transform: rotate(15deg) translateY(0);
+  }
+  50% {
+    transform: rotate(13deg) translateY(2px);
+  }
+}
+@keyframes pr-slosh {
+  0%,
+  100% {
+    transform: translateX(-14%) rotate(-1.6deg);
+  }
+  50% {
+    transform: translateX(14%) rotate(1.6deg);
+  }
+}
+@keyframes pr-drip {
+  0% {
+    opacity: 0;
+    transform: translateY(-2px) scaleY(0.4);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(16px) scaleY(1.1);
+  }
+}
+@keyframes pr-shine {
+  0% {
+    transform: translateX(-160%) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(320%) skewX(-18deg);
+  }
+}
+@keyframes pr-heart {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.45);
+  }
+  70% {
+    transform: scale(0.92);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes pr-toast {
+  0% {
+    opacity: 0;
+    transform: translateY(-18px) scale(0.96);
+  }
+  12% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  82% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.98);
+  }
+}
+@keyframes pr-rain {
+  0% {
+    opacity: 0;
+    transform: translateY(-8vh) rotate(-14deg) scale(0.65);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(104vh) rotate(20deg) scale(1.05);
+  }
+}
+@keyframes pr-pan2 {
+  0%,
+  8% {
+    transform: translateX(0);
+  }
+  92%,
+  100% {
+    transform: translateX(calc(-100% + 136px));
+  }
+}
+@keyframes pr-pan {
+  0%,
+  8% {
+    transform: translateX(0);
+  }
+  92%,
+  100% {
+    transform: translateX(calc(-100% + 96px));
+  }
+}
+@keyframes pr-qfloat {
+  0% {
+    opacity: 0;
+    transform: translateY(120%) rotate(-14deg) scale(0.7);
+  }
+  18% {
+    opacity: 0.55;
+  }
+  72% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-140%) rotate(16deg) scale(1.05);
+  }
+}
+@keyframes pr-crawlx {
+  0%,
+  100% {
+    transform: translateX(0) rotate(-4deg);
+  }
+  50% {
+    transform: translateX(16px) rotate(6deg);
+  }
+}
+@keyframes pr-arrow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  45% {
+    transform: translateY(-5px);
+  }
+}
+@keyframes sq-squish {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1, 1) rotate(0);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.5, 0.34) rotate(-6deg);
+  }
+  34% {
+    transform: translate(-50%, -50%) scale(1.32, 0.44) rotate(4deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(1.4, 0.3) rotate(2deg);
+  }
+}
+@keyframes sq-goo {
+  0% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  45% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+}
+@keyframes sq-fleck {
+  0% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(var(--fx), var(--fy)) scale(0.4);
+  }
+}
+@keyframes sq-scurry {
+  0% {
+    transform: translate(-11px, 7px) rotate(-38deg);
+  }
+  8% {
+    transform: translate(-11px, 7px) rotate(-38deg);
+  }
+  26% {
+    transform: translate(7px, -8px) rotate(-38deg);
+  }
+  34% {
+    transform: translate(7px, -8px) rotate(52deg);
+  }
+  52% {
+    transform: translate(10px, 9px) rotate(52deg);
+  }
+  58% {
+    transform: translate(10px, 9px) rotate(52deg);
+  }
+  62% {
+    transform: translate(10px, 9px) rotate(160deg);
+  }
+  84% {
+    transform: translate(-11px, 7px) rotate(160deg);
+  }
+  92% {
+    transform: translate(-11px, 7px) rotate(200deg);
+  }
+  100% {
+    transform: translate(-11px, 7px) rotate(322deg);
+  }
+}
+@keyframes sq-wobble {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+}
+@keyframes sq-tick {
+  0%,
+  100% {
+    transform: rotate(-7deg);
+  }
+  50% {
+    transform: rotate(7deg);
+  }
+}
+@keyframes pr-ring {
+  0% {
+    opacity: 0.55;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+@keyframes sq-crawl {
+  0% {
+    transform: translate(-6px, 2px) rotate(-12deg);
+  }
+  25% {
+    transform: translate(0, -2px) rotate(6deg);
+  }
+  50% {
+    transform: translate(6px, 1px) rotate(14deg);
+  }
+  75% {
+    transform: translate(0, -1px) rotate(-4deg);
+  }
+  100% {
+    transform: translate(-6px, 2px) rotate(-12deg);
+  }
+}
+@keyframes sq-legs {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.08, 0.92);
+  }
+}
+@keyframes sq-burst {
+  0% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.4);
+  }
+}
+@keyframes sq-scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(400%);
+  }
+}
+@keyframes sq-flicker {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes ice-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  50% {
+    transform: translateY(-5px) rotate(-0.6deg);
+  }
+}
+@keyframes ice-water {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-6px);
+  }
+}
+@keyframes ice-sink {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(6px) scale(1.01);
+  }
+}
+@keyframes ice-bubble {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6);
+  }
+  15% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-120px) scale(1.1);
+  }
+}
+
+// Identical to g-shake: Bug Squash alternates the two names so every squash restarts the shake.
+@keyframes g-shake-alt {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-3px, 2px);
+  }
+  40% {
+    transform: translate(3px, -2px);
+  }
+  60% {
+    transform: translate(-2px, -2px);
+  }
+  80% {
+    transform: translate(2px, 2px);
+  }
+}

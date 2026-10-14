@@ -1,0 +1,168 @@
+@use 'mixins' as *;
+@use 'about-shared' as *;
+
+:host {
+  display: block;
+}
+
+.sheet {
+  padding: 40px 44px;
+
+  @include below($bp-md) {
+    padding: 28px 22px;
+  }
+}
+
+.label {
+  @include kicker(10.5px, 0.22em);
+  color: tx(55%);
+  margin-bottom: 12px;
+}
+
+// ── Off the clock ─────────────────────────────────────
+.clock-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.clock-title {
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.clock-pill {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid ac(24%);
+  background: ac(4%);
+  @include kicker(9.5px, 0.16em);
+  color: tx(62%);
+}
+
+.hobbies {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+
+  @include below($bp-md) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.hobby {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 18px 20px;
+  border-radius: 20px;
+  border: 1px solid tx(9%);
+  background: ac(3%);
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+
+  &:hover {
+    border-color: var(--gs-accent);
+    transform: translateY(-3px);
+    box-shadow: 0 18px 34px -26px ac(70%);
+  }
+
+  @include below($bp-sm) {
+    flex-wrap: wrap;
+    padding: 16px;
+  }
+}
+
+.hobby-icon {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  background: ac(12%);
+  color: var(--gs-accent);
+  font-size: 16px;
+  transition: transform 0.3s ease;
+
+  .hobby:hover & {
+    transform: rotate(-8deg) scale(1.08);
+  }
+}
+
+.hobby-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.hobby-t {
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.hobby-d {
+  @include mono(11px);
+  line-height: 1.75;
+  color: tx(62%);
+}
+
+.strip {
+  position: relative;
+  flex: none;
+  width: 96px;
+  height: 116px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid tx(10%);
+  background: ac(6%);
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+
+  &:hover {
+    transform: translateY(-3px) scale(1.05);
+    border-color: var(--gs-accent);
+    box-shadow: 0 16px 30px -22px ac(80%);
+  }
+}
+
+.strip-track {
+  display: flex;
+  height: 100%;
+  width: max-content;
+  animation: pr-pan 6s ease-in-out infinite alternate;
+}
+
+.shot {
+  flex: none;
+  width: 96px;
+  height: 116px;
+
+  app-image-placeholder {
+    height: 100%;
+  }
+}
+
+.shot-count {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  @include mono(8.5px, 0.1em);
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(20, 20, 40, 0.55);
+  color: #fff;
+  pointer-events: none;
+}

@@ -1,0 +1,148 @@
+<div class="hero">
+  <div class="grid">
+    <span class="wash" aria-hidden="true"></span>
+
+    <div class="copy">
+      <p class="availability">
+        <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+        <span>{{ profile.availability }}</span>
+      </p>
+      <h1>
+        <span class="line-1">There's more to it than</span><br />
+        <span class="line-2">meets the eye.</span>
+      </h1>
+      <p class="intro">
+        Senior QA Engineer &amp; Quality Assurance Advocate<br /><br />
+        Software exists to solve someone's problem.<br />
+        Quality is whether it really does.
+      </p>
+      <div class="actions">
+        <a class="pill pill--dark" routerLink="/projects">
+          <span>See my projects</span><i class="ph ph-arrow-right arrow" aria-hidden="true"></i>
+        </a>
+        <a class="pill pill--outline resume" routerLink="/resume">
+          <i class="ph ph-file-text arrow arrow--slow" aria-hidden="true"></i>Résumé
+        </a>
+      </div>
+      <div class="proof">
+        <div class="badges">
+          <span class="badge badge--accent" title="8 years in QA">8y</span>
+          <span class="badge badge--hot" title="ISTQB® Certified Tester Foundation Level"
+            ><i class="ph ph-seal-check" aria-hidden="true"></i
+          ></span>
+          <span class="badge badge--dark" title="Zero critical defects escaped to production"
+            ><i class="ph ph-shield-check" aria-hidden="true"></i
+          ></span>
+        </div>
+        <div class="proof-text">
+          <div class="proof-title">{{ profile.yearsInQa }} Years of Experience</div>
+          <div class="proof-sub">{{ profile.certification }} Certified</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="iceberg">
+      <span class="ice-grid" aria-hidden="true"></span>
+      <svg
+        viewBox="0 0 400 560"
+        preserveAspectRatio="xMidYMid meet"
+        role="img"
+        aria-label="An animated iceberg: testing sits above the waterline while quality evaluation, quality assurance and quality thinking run deeper"
+      >
+        <defs>
+          <linearGradient id="pv-tip" x1=".3" y1="0" x2=".7" y2="1">
+            <stop offset="0" stop-color="#ffffff" />
+            <stop offset="1" stop-color="var(--gs-accent-hi)" stop-opacity=".85" />
+          </linearGradient>
+          <linearGradient id="pv-deep" x1=".3" y1="0" x2=".7" y2="1">
+            <stop offset="0" stop-color="var(--gs-accent)" stop-opacity=".55" />
+            <stop offset=".55" stop-color="var(--gs-accent)" stop-opacity=".3" />
+            <stop offset="1" stop-color="var(--gs-accent)" stop-opacity=".07" />
+          </linearGradient>
+          <linearGradient id="pv-line" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="var(--gs-accent)" stop-opacity="0" />
+            <stop offset=".22" stop-color="var(--gs-accent)" stop-opacity=".8" />
+            <stop offset=".78" stop-color="var(--gs-accent)" stop-opacity=".8" />
+            <stop offset="1" stop-color="var(--gs-accent)" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <g class="tip">
+          <polygon points="200,72 252,196 148,196" fill="url(#pv-tip)" />
+          <polygon points="200,72 252,196 200,196" fill="var(--gs-accent)" opacity=".14" />
+        </g>
+        <g class="water">
+          <rect x="-30" y="196" width="460" height="2" fill="url(#pv-line)" />
+          <rect x="-30" y="204" width="460" height="1" fill="url(#pv-line)" opacity=".35" />
+        </g>
+        <g class="deep">
+          <polygon
+            points="148,198 252,198 312,300 288,430 200,486 108,420 84,300"
+            fill="url(#pv-deep)"
+            stroke="var(--gs-accent)"
+            stroke-width="1"
+            stroke-opacity=".35"
+          />
+          <polygon
+            points="186,200 224,200 268,308 244,420 190,448 178,320"
+            fill="#ffffff"
+            opacity=".24"
+          />
+        </g>
+        @for (b of bubbles; track $index) {
+          <circle
+            class="bubble"
+            [attr.cx]="b.cx"
+            [attr.cy]="b.cy"
+            [attr.r]="b.r"
+            [attr.fill]="b.hot ? 'var(--gs-hot)' : 'var(--gs-accent)'"
+            [style.animation-duration.s]="b.dur"
+            [style.animation-delay.s]="b.delay"
+          />
+        }
+      </svg>
+
+      <div class="tag tag--top" aria-hidden="true">
+        <span class="tag-dot"></span>
+        <span>What others see · Testing</span>
+      </div>
+
+      <div class="note note--eval">
+        <div class="note-title">Quality Evaluation</div>
+        <div class="note-sub">Risk analysis · test design</div>
+      </div>
+
+      <div class="note note--assure">
+        <div class="note-title">Quality Assurance</div>
+        <div class="note-sub">Standards · defect prevention</div>
+      </div>
+
+      <div class="bottom">
+        <div class="mindset">
+          <div class="mindset-head">
+            <i class="ph ph-brain" aria-hidden="true"></i>
+            <span>Quality Thinking &amp; Mindset</span>
+          </div>
+          <div class="rule"></div>
+          <ul class="mindset-chips">
+            @for (m of mindset; track m) {
+              <li>{{ m }}</li>
+            }
+          </ul>
+        </div>
+        <a
+          class="brew"
+          routerLink="/contact"
+          title="Let's grab coffee"
+          aria-label="Let's grab coffee"
+        >
+          <span class="brew-fill" aria-hidden="true"></span>
+          <span class="brew-steam" aria-hidden="true"></span>
+          <span class="brew-steam brew-steam--2" aria-hidden="true"></span>
+          <span class="brew-drip" aria-hidden="true"></span>
+          <span class="brew-ring" aria-hidden="true"></span>
+          <i class="ph ph-coffee" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

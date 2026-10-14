@@ -1,0 +1,62 @@
+<section class="contact">
+  <span class="grid-bg" aria-hidden="true"></span>
+  <span class="orb orb--accent" aria-hidden="true"></span>
+  <span class="orb orb--hot" aria-hidden="true"></span>
+
+  <div class="container inner">
+    <div class="layout">
+      <div class="intro">
+        <p class="status">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Open to what's next</span>
+        </p>
+        <h1 class="title">LET'S TALK QUALITY.</h1>
+        <p class="copy">
+          A QA Lead role, a Senior QA Engineer seat, a process that needs rescuing, or a consulting
+          engagement
+        </p>
+        <p class="copy">
+          I'm interested in all of it. I reply fast, usually before the coffee cools.
+        </p>
+
+        <div class="coffee">
+          <i class="ph ph-coffee" aria-hidden="true"></i>
+          <div class="coffee-text">
+            <p class="coffee-title">Coffee first, contracts later</p>
+            <p class="coffee-sub">30 minutes, no agenda, no recruiter script.</p>
+          </div>
+          <a class="book" [href]="coffeeHref">Book it</a>
+        </div>
+
+        <app-contact-form class="form" />
+      </div>
+
+      <div class="links">
+        <ul class="link-list">
+          @for (l of links; track l.label) {
+            <li>
+              <a
+                class="link"
+                [href]="l.href"
+                [style.animation-duration]="l.dur"
+                [attr.target]="isExternal(l.href) ? '_blank' : null"
+                [attr.rel]="isExternal(l.href) ? 'noopener noreferrer' : null"
+              >
+                <span class="link-icon"><i class="ph {{ l.icon }}" aria-hidden="true"></i></span>
+                <span class="link-text">
+                  <span class="link-label">{{ l.label }}</span>
+                  <span class="link-value">{{ l.value }}</span>
+                </span>
+                <i class="ph ph-arrow-up-right link-arrow" aria-hidden="true"></i>
+                @if (isExternal(l.href)) {
+                  <span class="visually-hidden">(opens in a new tab)</span>
+                }
+              </a>
+            </li>
+          }
+        </ul>
+        <p class="footnote">Manila · GMT+8 · happy to overlap hours</p>
+      </div>
+    </div>
+  </div>
+</section>

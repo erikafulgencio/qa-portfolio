@@ -1,0 +1,254 @@
+@if (study(); as c) {
+  <div class="progress" aria-hidden="true" [style.transform]="'scaleX(' + progress() + ')'"></div>
+
+  <section class="hero">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-scan" aria-hidden="true"></div>
+    <div class="ghost" aria-hidden="true">{{ fileNo() }}</div>
+
+    <div class="hero-inner">
+      <div class="topline">
+        <a class="back" routerLink="/projects">← Back to case studies</a>
+        <div class="file-meta">
+          <span class="classification">Classification · {{ c.kicker }}</span>
+          <span>Case file {{ fileNo() }}</span>
+          <span class="read"
+            ><span class="pulse" aria-hidden="true"></span>{{ minutes() }} min read</span
+          >
+        </div>
+      </div>
+
+      <div class="hero-kicker">{{ c.kicker }} · {{ c.meta }}</div>
+      <h1 class="title" [class.title--long]="longTitle()">{{ c.title }}</h1>
+      <div class="hero-cols">
+        @if (showHeadline()) {
+          <p class="headline">{{ c.headline }}</p>
+        } @else {
+          <p class="headline">{{ c.sub }}</p>
+        }
+        <div class="hero-side">
+          @if (showHeadline()) {
+            <p class="hero-sub">{{ c.sub }}</p>
+          }
+          <div class="role">Role — {{ c.role }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container stats-wrap" aria-label="Key results">
+    <dl class="stats">
+      @for (s of c.stats; track s.k) {
+        <div class="stat">
+          <span class="stat-shine" aria-hidden="true"></span>
+          <dt class="stat-v">{{ s.v }}</dt>
+          <dd class="stat-k">{{ s.k }}</dd>
+        </div>
+      }
+    </dl>
+  </section>
+
+  <div class="container">
+    <div class="body">
+      <aside class="aside">
+        <nav aria-label="Case contents">
+          <div class="aside-label">Contents</div>
+          <ul class="toc">
+            @for (s of sections(); track s.id) {
+              <li>
+                <button type="button" class="toc-link" (click)="jump(s.id)">
+                  <span class="toc-n">{{ s.n }}</span
+                  ><span>{{ s.label }}</span>
+                </button>
+              </li>
+            }
+          </ul>
+        </nav>
+        <div class="aside-block">
+          <div class="aside-label">Artifacts</div>
+          <ul class="docs">
+            @for (d of c.docs; track d) {
+              <li>
+                <i class="ph ph-scroll" aria-hidden="true"></i><span>{{ d }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+        <div class="aside-block">
+          <div class="aside-label">Gear</div>
+          <ul class="gear">
+            @for (t of c.tools; track t) {
+              <li>{{ t }}</li>
+            }
+          </ul>
+        </div>
+      </aside>
+
+      <article class="main">
+        @if (c.glance.length) {
+          <div class="glance">
+            <h2 class="label">At a glance</h2>
+            <dl class="glance-rows">
+              @for (g of c.glance; track g.k) {
+                <div class="glance-row reveal">
+                  <dt>{{ g.k }}</dt>
+                  <dd>{{ g.v }}</dd>
+                </div>
+              }
+            </dl>
+          </div>
+        }
+
+        <section id="cs-situation" class="chapter" tabindex="-1" aria-labelledby="cs-situation-h">
+          <ng-container
+            *ngTemplateOutlet="
+              head;
+              context: { n: n('cs-situation'), label: 'The situation', hid: 'cs-situation-h' }
+            "
+          />
+          <div class="prose reveal">
+            @if (c.problem) {
+              <p>{{ c.problem }}</p>
+            }
+            @for (pp of c.problemParas; track $index) {
+              <p>{{ pp }}</p>
+            }
+          </div>
+        </section>
+
+        @if (c.challenges.length) {
+          <section id="cs-challenge" class="chapter" tabindex="-1" aria-labelledby="cs-challenge-h">
+            <ng-container
+              *ngTemplateOutlet="
+                head;
+                context: { n: n('cs-challenge'), label: 'The challenge', hid: 'cs-challenge-h' }
+              "
+            />
+            <ul class="rows">
+              @for (ch of c.challenges; track ch.t) {
+                <li class="row row--hot reveal-x">
+                  <i class="ph ph-warning-diamond" aria-hidden="true"></i>
+                  <div>
+                    <h3 class="row-title">{{ ch.t }}</h3>
+                    <p class="row-text">{{ ch.d }}</p>
+                  </div>
+                </li>
+              }
+            </ul>
+          </section>
+        }
+
+        <section id="cs-did" class="chapter" tabindex="-1" aria-labelledby="cs-did-h">
+          <ng-container
+            *ngTemplateOutlet="
+              head;
+              context: { n: n('cs-did'), label: 'What I did', hid: 'cs-did-h' }
+            "
+          />
+          <div class="timeline">
+            <span class="line" aria-hidden="true"></span>
+            <span class="line line--fill" aria-hidden="true"></span>
+            <ol class="steps">
+              @for (a of c.actions; track a.n) {
+                <li class="step reveal-x">
+                  <span class="step-n" aria-hidden="true">{{ a.n }}</span>
+                  <h3 class="row-title">{{ a.t }}</h3>
+                  <p class="row-text">{{ a.d }}</p>
+                </li>
+              }
+            </ol>
+          </div>
+        </section>
+
+        <section id="cs-results" class="chapter" tabindex="-1" aria-labelledby="cs-results-h">
+          <ng-container
+            *ngTemplateOutlet="
+              head;
+              context: { n: n('cs-results'), label: 'The results', hid: 'cs-results-h' }
+            "
+          />
+          <ul class="rows">
+            @for (r of c.results; track $index) {
+              <li class="row result reveal">
+                <i class="ph ph-check-circle" aria-hidden="true"></i>
+                <span>{{ r }}</span>
+              </li>
+            }
+          </ul>
+          @if (c.closing) {
+            <p class="closing reveal">{{ c.closing }}</p>
+          }
+        </section>
+
+        @if (c.learnings.length) {
+          <section id="cs-learned" class="chapter" tabindex="-1" aria-labelledby="cs-learned-h">
+            <ng-container
+              *ngTemplateOutlet="
+                head;
+                context: { n: n('cs-learned'), label: 'What I learned', hid: 'cs-learned-h' }
+              "
+            />
+            <div class="learnings">
+              @for (l of c.learnings; track l.t) {
+                <div class="learning reveal">
+                  <span class="learning-shine" aria-hidden="true"></span>
+                  <i class="ph ph-quotes" aria-hidden="true"></i>
+                  <h3 class="learning-title">{{ l.t }}</h3>
+                  <p class="learning-text">{{ l.d }}</p>
+                </div>
+              }
+            </div>
+          </section>
+        }
+
+        <figure class="lesson reveal">
+          <figcaption class="lesson-label">The line I keep</figcaption>
+          <blockquote>{{ c.lesson }}</blockquote>
+        </figure>
+
+        @if (c.skills.length) {
+          <div class="skills">
+            <h2 class="skills-label">Skills demonstrated</h2>
+            <ul class="skill-list">
+              @for (s of c.skills; track s) {
+                <li>{{ s }}</li>
+              }
+            </ul>
+          </div>
+        }
+      </article>
+    </div>
+  </div>
+
+  @if (next(); as nx) {
+    <section class="next">
+      <div class="next-grid" aria-hidden="true"></div>
+      <a class="next-link" [routerLink]="['/cases', nx.id]">
+        <span>
+          <span class="next-label">Next case file</span>
+          <span class="next-title">{{ nx.title }}</span>
+        </span>
+        <i class="ph ph-arrow-right" aria-hidden="true"></i>
+      </a>
+    </section>
+  }
+
+  <ng-template #head let-n="n" let-label="label" let-hid="hid">
+    <div class="chapter-head">
+      <span class="chapter-n" aria-hidden="true">{{ n }}</span>
+      <h2 class="chapter-label" [id]="hid">{{ label }}</h2>
+      <span class="chapter-rule" aria-hidden="true"></span>
+    </div>
+  </ng-template>
+} @else {
+  <section class="page">
+    <div class="container container--narrow">
+      <div class="missing" role="alert">
+        <i class="ph ph-bug-beetle" aria-hidden="true"></i>
+        <h1>Case file not found</h1>
+        <p>This case file was never opened, or it has been archived.</p>
+        <a class="pill pill--dark" routerLink="/projects">Back to case studies</a>
+      </div>
+    </div>
+  </section>
+}

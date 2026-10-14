@@ -1,0 +1,139 @@
+@use 'mixins' as *;
+
+// Shared by the About sections: body copy, dots, pull quotes and the purple panel.
+
+.mono-p {
+  @include mono(12.5px);
+  line-height: 1.95;
+  color: tx(68%);
+  max-width: 74ch;
+  text-wrap: pretty;
+}
+
+.pulse-dot,
+.white-dot {
+  flex: none;
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gs-accent);
+  animation: g-pulse 2.6s ease-in-out infinite;
+}
+
+.white-dot {
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  animation-duration: 2.2s;
+}
+
+.pull {
+  position: relative;
+  margin: 16px 0 10px;
+  padding: 26px 0 24px;
+  border-top: 1px solid ac(22%);
+  border-bottom: 1px solid ac(22%);
+
+  &--act {
+    margin: 24px 0 0;
+  }
+}
+
+.pull-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 12px;
+  @include kicker(9.5px, 0.24em);
+  color: tx(55%);
+}
+
+.pull-body {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+
+  p {
+    font-family: var(--font-heading);
+    font-size: 27px;
+    line-height: 1.3;
+    letter-spacing: -0.03em;
+    color: tx(92%);
+    text-wrap: pretty;
+
+    .pull--act & {
+      font-size: 22px;
+      line-height: 1.38;
+      letter-spacing: -0.025em;
+      max-width: 60ch;
+    }
+
+    @include below($bp-sm) {
+      font-size: 21px;
+    }
+  }
+}
+
+.quote-mark {
+  font-family: var(--font-heading);
+  font-size: 52px;
+  line-height: 0.72;
+  color: ac(32%);
+}
+
+.pull-rule {
+  display: block;
+  height: 2px;
+  width: 84px;
+  margin: 18px 0 0 66px;
+  transform-origin: left;
+  background: linear-gradient(90deg, var(--gs-accent), hot(70%));
+  animation: g-fill 1.1s cubic-bezier(0.2, 0.8, 0.3, 1) both 0.2s;
+}
+
+// Purple "digging" panel, reused by the full-story header.
+@mixin purple($deep: 80%, $mid: 38%) {
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--gs-accent) $deep, #0d0a20),
+    color-mix(in srgb, var(--gs-accent) $mid, #120d27) 62%,
+    #14102c
+  );
+  box-shadow: 0 26px 54px -32px ac(85%);
+}
+
+.depth-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+  background-size: 30px 30px;
+  pointer-events: none;
+}
+
+.depth-lines {
+  position: absolute;
+  inset: -30% 0;
+  opacity: 0.14;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px);
+  background-size: 100% 30px;
+  animation: g-grid 9s linear infinite;
+  pointer-events: none;
+}
+
+.depth-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 22%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent);
+  animation: g-scan 7.5s linear infinite;
+  pointer-events: none;
+}

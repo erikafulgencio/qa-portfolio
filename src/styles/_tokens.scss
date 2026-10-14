@@ -1,0 +1,53 @@
+// Theme tokens. Alter Ego (dark game HUD) is the base; Professional overrides it.
+// ModeService sets <html data-mode="pro|alter">, so every component just reads var(--gs-*).
+:root {
+  --gs-bg: #0c0e1a;
+  --gs-text: #e9e9ed;
+  --gs-accent: #78dcff;
+  --gs-accent-hi: #b6ecff;
+  --gs-accent-soft: #bfeaff;
+  --gs-hot: #ff3c6a;
+  --gs-hot-soft: #ff8fab;
+  --gs-hot-hi: #ff7a9b;
+  --gs-hot-pale: #ffd9e2;
+  --gs-on-accent: #0c0e1a;
+  --gs-radius: 0px;
+  --gs-scrim-1: 92%;
+  --gs-scrim-2: 62%;
+  --gs-scrim-stop: 34%;
+  --gs-scrim-3: 8%;
+  // --gs-clip is intentionally unset in alter mode so `var(--gs-clip, polygon(...))` falls back to the chamfer.
+
+  --font-heading: 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --surface: #ffffff;
+  --shadow-card: 0 26px 66px -38px rgba(20, 20, 40, 0.3), 0 1px 0 rgba(20, 20, 40, 0.04);
+  --shadow-hero: 0 30px 80px -40px rgba(20, 20, 40, 0.34);
+  --shadow-hover: 0 26px 46px -26px rgba(20, 20, 40, 0.45);
+  --header-h: 64px;
+
+  color-scheme: dark;
+}
+
+:root[data-mode='pro'] {
+  --gs-bg: #f2f1f6;
+  --gs-text: #221c33;
+  --gs-accent: #6d4bd6;
+  --gs-accent-hi: #8b6cea;
+  --gs-accent-soft: #3f2b8f;
+  --gs-hot: #c9678f;
+  --gs-hot-soft: #8f3f60;
+  --gs-hot-hi: #dd8bab;
+  --gs-hot-pale: #5c2740;
+  --gs-on-accent: #ffffff;
+  --gs-clip: none;
+  --gs-radius: 18px;
+  --gs-scrim-1: 97%;
+  --gs-scrim-2: 90%;
+  --gs-scrim-stop: 58%;
+  --gs-scrim-3: 18%;
+
+  color-scheme: light;
+}

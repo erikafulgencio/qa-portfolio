@@ -1,0 +1,70 @@
+<div class="sheet">
+  <div class="kicker-label">Projects</div>
+  <div class="head">
+    <div>
+      <h2>Features, failures, and everything in between</h2>
+      <p class="copy">
+        I like understanding how things work, figuring out why they don't, and occasionally finding
+        something nobody thought to look for.
+      </p>
+    </div>
+    <div class="socials">
+      <a
+        class="social social--left"
+        [href]="profile.github"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="GitHub"
+        ><i class="ph ph-github-logo" aria-hidden="true"></i
+        ><span class="visually-hidden">GitHub (opens in a new tab)</span></a
+      >
+      <a
+        class="social social--right"
+        [href]="profile.codepen"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="CodePen"
+        ><i class="ph ph-codepen-logo" aria-hidden="true"></i
+        ><span class="visually-hidden">CodePen (opens in a new tab)</span></a
+      >
+    </div>
+  </div>
+
+  <div class="filters" role="group" aria-label="Filter projects">
+    @for (c of categories; track c.label) {
+      <button
+        type="button"
+        class="filter"
+        [class.on]="category() === c.label"
+        [attr.aria-pressed]="category() === c.label"
+        (click)="category.set(c.label)"
+      >
+        <i class="ph {{ c.icon }}" aria-hidden="true"></i>{{ c.label
+        }}<span class="count">{{ buckets[c.label].length }}</span>
+      </button>
+    }
+  </div>
+
+  <ul class="grid">
+    @for (p of visible(); track p.id; let i = $index) {
+      <li class="card" [style.animation-delay.s]="i * 0.07">
+        <div class="card-top">
+          <span class="card-icon"><i class="ph {{ p.icon }}" aria-hidden="true"></i></span>
+          <span class="card-kicker">{{ p.kicker }}</span>
+          <app-like-button class="like" [projectId]="p.id" [title]="p.title" />
+        </div>
+        <h3 class="card-title">{{ p.title }}</h3>
+        <p class="card-sub">{{ p.sub }}</p>
+        <ul class="stack" aria-label="Stack">
+          @for (t of p.stack; track t) {
+            <li>{{ t }}</li>
+          }
+        </ul>
+        <a class="view" [routerLink]="['/projects', p.id]"
+          >View project<span class="visually-hidden">: {{ p.title }}</span>
+          <i class="ph ph-arrow-right" aria-hidden="true"></i
+        ></a>
+      </li>
+    }
+  </ul>
+</div>

@@ -1,0 +1,151 @@
+<div class="container container--wide wrap">
+  <section class="sheet hero" aria-labelledby="about-title">
+    <span class="hero-glow" aria-hidden="true"></span>
+    <div class="hero-grid">
+      <div>
+        <p class="label">About · origin story</p>
+        <h1 class="hero-title" id="about-title">
+          <span>The more I looked,</span><br />
+          <span class="accent">the more I found.</span>
+        </h1>
+        <p class="hero-sub">
+          I didn't plan to become a QA Engineer.<br />
+          I found my way here by looking deeper.
+        </p>
+        <ul class="chips-row">
+          @for (c of chips; track c) {
+            <li class="soft-chip">{{ c }}</li>
+          }
+        </ul>
+      </div>
+
+      <div class="portrait-stage">
+        <span class="portrait-glow" aria-hidden="true"></span>
+        <span class="portrait-frame" aria-hidden="true"></span>
+        <div class="portrait">
+          <img
+            src="assets/img/erika-portrait.jpg"
+            alt="Portrait of Erika Fulgencio"
+            width="720"
+            height="960"
+            decoding="async"
+          />
+          <span class="portrait-tint" aria-hidden="true"></span>
+          <span class="portrait-scan" aria-hidden="true"></span>
+        </div>
+        <span class="float-chip float-chip--loc"
+          ><i class="ph ph-map-pin" aria-hidden="true"></i>Manila, PH</span
+        >
+        <span class="float-chip float-chip--cert"
+          ><i class="ph ph-certificate" aria-hidden="true"></i>ISTQB certified</span
+        >
+        <span class="float-chip float-chip--years"
+          ><span class="pulse-dot" aria-hidden="true"></span>8 years in QA</span
+        >
+      </div>
+    </div>
+  </section>
+
+  <section class="sheet short" aria-labelledby="short-title">
+    <span class="short-bar" aria-hidden="true"></span>
+    <p class="label">The short version</p>
+    <h2 class="short-title" id="short-title">The more I looked, the more I found.</h2>
+    <div class="short-grid">
+      <div class="short-copy">
+        <p class="mono-p">{{ lead }}</p>
+        <figure class="pull">
+          <figcaption class="pull-label">
+            <span class="pulse-dot" aria-hidden="true"></span>What kept me going
+          </figcaption>
+          <blockquote class="pull-body">
+            <span class="quote-mark" aria-hidden="true">“</span>
+            <p>{{ pull }}</p>
+          </blockquote>
+          <span class="pull-rule" aria-hidden="true"></span>
+        </figure>
+        <p class="mono-p">{{ body }}</p>
+      </div>
+
+      <aside class="depth" aria-label="Depth of the look">
+        <span class="depth-grid" aria-hidden="true"></span>
+        <span class="depth-lines" aria-hidden="true"></span>
+        <span class="depth-scan" aria-hidden="true"></span>
+        <div class="depth-head">
+          <span>Depth of the look</span>
+          <span class="digging"><span class="white-dot" aria-hidden="true"></span>Digging</span>
+        </div>
+        <ol class="layers">
+          @for (l of layers; track l.n; let first = $first) {
+            <li class="layer" [class.layer--top]="first">
+              <span class="layer-n">{{ l.n }}</span>
+              <span class="layer-text">
+                <span class="layer-t">{{ l.t }}</span>
+                <span class="layer-d">{{ l.d }}</span>
+              </span>
+              @if (!first) {
+                <span class="layer-pin" aria-hidden="true"></span>
+              }
+            </li>
+          }
+        </ol>
+        <div class="root-cause">
+          <span class="root-sweep" aria-hidden="true"></span>
+          <span class="root-icon"><i class="ph ph-magnifying-glass" aria-hidden="true"></i></span>
+          <span>
+            <span class="layer-t">Root cause</span>
+            <span class="layer-d">where the answer actually lives</span>
+          </span>
+        </div>
+      </aside>
+    </div>
+
+    <button
+      type="button"
+      class="story-toggle"
+      aria-controls="full-story"
+      [attr.aria-expanded]="showFull()"
+      (click)="toggleStory()"
+    >
+      <span class="toggle-ring" aria-hidden="true"></span>
+      <i
+        class="ph toggle-icon"
+        [class.ph-book-open]="!showFull()"
+        [class.ph-book]="showFull()"
+        aria-hidden="true"
+      ></i>
+      <span>{{ showFull() ? 'Hide the full story' : 'Read the full story' }}</span>
+      <i
+        class="ph toggle-caret"
+        [class.ph-caret-down]="!showFull()"
+        [class.ph-caret-up]="showFull()"
+        aria-hidden="true"
+      ></i>
+    </button>
+  </section>
+
+  @if (showFull()) {
+    <app-pro-about-story />
+  }
+
+  <app-about-hobbies />
+
+  <section class="sheet closing" aria-labelledby="closing-title">
+    <span class="closing-glow" aria-hidden="true"></span>
+    <span class="big-quote big-quote--open" aria-hidden="true">“</span>
+    <span class="big-quote big-quote--close" aria-hidden="true">”</span>
+    <span class="closing-rule" aria-hidden="true"></span>
+    <div class="closing-body">
+      <span class="closing-icon"
+        ><i class="ph ph-magnifying-glass-plus" aria-hidden="true"></i
+      ></span>
+      <h2 class="closing-title" id="closing-title">
+        The more I looked,<br /><span class="accent">the more I found.</span>
+      </h2>
+      <p class="closing-sub">
+        And after eight years, I'm still looking — because there's always something beneath the
+        surface.
+      </p>
+      <app-coffee-link size="lg" />
+    </div>
+  </section>
+</div>

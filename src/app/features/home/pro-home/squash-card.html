@@ -1,0 +1,49 @@
+<div class="sheet">
+  <div class="kicker-label">Mini game</div>
+  <div class="split">
+    <div class="intro">
+      <h2>
+        <span class="beetle" aria-hidden="true"
+          ><span class="scurry"
+            ><span class="wobble"><i class="ph ph-bug-beetle"></i></span></span
+        ></span>
+        Bug Squash
+      </h2>
+      <p class="copy">
+        Twenty seconds, one screen, and bugs that escape if you let them. A small joke about the day
+        job — and about how quickly risk leaves the room.
+      </p>
+
+      <section class="board" aria-label="Scoreboard">
+        <div class="board-head">
+          <i class="ph ph-trophy" aria-hidden="true"></i>
+          <span class="board-label">Scoreboard</span>
+          <span class="clock"
+            ><i class="ph ph-timer" aria-hidden="true"></i>{{ game.clock() }}</span
+          >
+        </div>
+        <dl class="scores">
+          <div class="score">
+            <dt>Score</dt>
+            <dd class="accent">{{ pad(game.score(), 3) }}</dd>
+          </div>
+          <div class="score">
+            <dt>Best</dt>
+            <dd>{{ pad(game.best(), 3) }}</dd>
+          </div>
+          <div class="score">
+            <dt>Escaped</dt>
+            <dd class="hot">{{ pad(game.escaped(), 2) }}</dd>
+          </div>
+        </dl>
+      </section>
+
+      <p class="hint">
+        <i class="ph ph-cursor-click" aria-hidden="true"></i>Fast squashes are worth 15 points.
+        Anything you miss ships.
+      </p>
+    </div>
+
+    <app-bug-squash-arena variant="pro" />
+  </div>
+</div>

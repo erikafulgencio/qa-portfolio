@@ -1,0 +1,334 @@
+@use 'mixins' as *;
+@use 'pro-shell' as shell;
+
+:host {
+  @include shell.slot;
+}
+
+.kicker-label {
+  @include shell.section-kicker;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 34px;
+  align-items: start;
+
+  @include below($bp-md) {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+h2 {
+  @include shell.section-h2;
+  margin-bottom: 16px;
+}
+
+.copy {
+  @include shell.section-copy;
+  margin-bottom: 22px;
+  max-width: 440px;
+}
+
+.principles {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.principle {
+  display: flex;
+  gap: 13px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid tx(9%);
+  background: ac(3%);
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease;
+
+  &:hover {
+    border-color: var(--gs-accent);
+    transform: translateX(4px);
+  }
+}
+
+.mini-icon {
+  @include shell.mini-icon(30px);
+  font-size: 15px;
+}
+
+.item-title {
+  font-family: var(--font-heading);
+  font-size: 14.5px;
+  line-height: 1.3;
+}
+
+.item-text {
+  @include mono(10.5px);
+  line-height: 1.7;
+  color: tx(60%);
+}
+
+.loop {
+  border-radius: 22px;
+  padding: 24px 26px;
+  border: 1px solid ac(22%);
+  background: ac(4%);
+
+  @include below($bp-sm) {
+    padding: 20px 14px;
+  }
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+
+  span:last-child {
+    @include kicker(10px, 0.2em);
+    color: tx(64%);
+  }
+}
+
+.pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gs-accent);
+  animation: g-pulse 1.8s ease-in-out infinite;
+}
+
+.panel-note {
+  @include mono(10.5px);
+  line-height: 1.7;
+  color: tx(60%);
+  margin-bottom: 16px;
+}
+
+.stages {
+  list-style: none;
+  display: grid;
+  gap: 2px;
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 10px 12px;
+  border-radius: 14px;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: ac(8%);
+  }
+
+  .item-title {
+    font-size: 14px;
+  }
+}
+
+.stage-n {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid ac(34%);
+  color: var(--gs-accent);
+  @include mono(10px);
+}
+
+.stage-body {
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.trio {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 26px;
+
+  @include below($bp-lg) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @include below($bp-md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.box {
+  border-radius: 22px;
+  padding: 22px 24px;
+  border: 1px solid tx(9%);
+  background: ac(3%);
+
+  &--hot {
+    border-color: hot(24%);
+    background: hot(5%);
+
+    .box-icon {
+      background: hot(14%);
+      color: var(--gs-hot-soft);
+    }
+  }
+}
+
+.box-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  @include kicker(10px, 0.18em);
+  font-weight: 400;
+  color: tx(62%);
+}
+
+.box-icon {
+  @include shell.mini-icon(28px, 9px);
+  font-size: 14px;
+}
+
+.checks {
+  list-style: none;
+  display: grid;
+  gap: 9px;
+
+  li {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+  }
+
+  i {
+    color: var(--gs-accent);
+    font-size: 12px;
+    flex: none;
+  }
+
+  span {
+    @include mono(11px);
+    line-height: 1.7;
+    color: tx(72%);
+  }
+}
+
+.defs {
+  margin: 0;
+  display: grid;
+  gap: 10px;
+
+  dt {
+    font-family: var(--font-heading);
+    font-size: 13.5px;
+  }
+
+  dd {
+    margin: 0;
+    @include mono(10.5px);
+    line-height: 1.65;
+    color: tx(60%);
+  }
+}
+
+// The design hard-coded 1060×202px here; it is fluid now.
+.quote {
+  position: relative;
+  overflow: hidden;
+  margin: 20px 0 0;
+  border-radius: 26px;
+  padding: 44px 48px 46px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: flex-start;
+  background: linear-gradient(
+    128deg,
+    color-mix(in srgb, var(--gs-accent) 12%, #ffffff),
+    color-mix(in srgb, var(--gs-hot) 7%, #ffffff) 62%,
+    #ffffff
+  );
+  border: 1px solid ac(18%);
+  box-shadow: 0 26px 60px -42px ac(90%);
+
+  @include below($bp-sm) {
+    padding: 34px 22px 32px;
+  }
+
+  > :not(.quote-mark, .quote-glow) {
+    position: relative;
+  }
+
+  blockquote {
+    margin: 0;
+    display: grid;
+    gap: 18px;
+  }
+}
+
+.quote-mark {
+  position: absolute;
+  top: -34px;
+  left: 22px;
+  font-family: var(--font-heading);
+  font-size: 150px;
+  line-height: 1;
+  color: ac(14%);
+  pointer-events: none;
+}
+
+.quote-glow {
+  position: absolute;
+  right: -40px;
+  bottom: -60px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, hot(14%), transparent 70%);
+  pointer-events: none;
+}
+
+.quote-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  @include kicker(9.5px, 0.24em);
+  color: var(--gs-accent);
+
+  i {
+    font-size: 13px;
+  }
+}
+
+.quote-main {
+  font-family: var(--font-heading);
+  font-size: clamp(21px, 2.1vw, 29px);
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  color: tx(92%);
+  max-width: 50ch;
+  text-wrap: pretty;
+}
+
+.quote-sub {
+  @include mono(12px);
+  line-height: 1.9;
+  color: tx(66%);
+  text-wrap: pretty;
+}
+
+.quote-rule {
+  width: 54px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--gs-accent), transparent);
+}

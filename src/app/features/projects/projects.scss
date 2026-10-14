@@ -1,0 +1,275 @@
+@use 'mixins' as *;
+
+.page {
+  padding-top: 56px;
+  padding-bottom: 84px;
+}
+
+.kicker {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+}
+
+.page-title {
+  letter-spacing: -0.03em;
+  margin: 10px 0 12px;
+}
+
+.intro {
+  max-width: 58ch;
+  color: tx(70%);
+  margin-bottom: 30px;
+
+  &--small {
+    color: tx(65%);
+    margin-bottom: 20px;
+  }
+}
+
+.filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.filter {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 9px 15px;
+  color: var(--gs-text);
+  background: transparent;
+  border: 1px solid tx(24%);
+  border-radius: var(--gs-radius, 0px);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+
+  @include pro {
+    border-radius: 999px;
+  }
+
+  &:hover {
+    border-color: var(--gs-accent);
+  }
+
+  &.on {
+    color: var(--gs-bg);
+    background: var(--gs-accent);
+    border-color: var(--gs-accent);
+  }
+}
+
+.count {
+  opacity: 0.85;
+  margin-left: 7px;
+}
+
+.grid,
+.artifacts {
+  list-style: none;
+  display: grid;
+  gap: 14px;
+}
+
+.grid {
+  grid-template-columns: repeat(2, 1fr);
+
+  @include below($bp-md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card-item {
+  display: flex;
+  animation: g-rise 0.45s ease both;
+}
+
+.card {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  padding: 22px;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid ac(20%);
+  background: bg(70%);
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+  @include chamfer(12px);
+
+  @include pro {
+    background: var(--surface);
+    border-color: tx(10%);
+    box-shadow: 0 18px 40px -32px rgba(20, 20, 40, 0.35);
+  }
+
+  &:hover {
+    border-color: var(--gs-accent);
+    background: ac(7%);
+    transform: translateY(-3px);
+
+    @include pro {
+      background: var(--surface);
+      box-shadow: var(--shadow-hover);
+    }
+  }
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  i {
+    color: var(--gs-accent);
+    font-size: 20px;
+  }
+}
+
+.card-kicker {
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: tx(60%);
+}
+
+.card-title {
+  font-family: var(--font-heading);
+  font-size: 21px;
+  line-height: 1.2;
+}
+
+.card-sub {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: tx(70%);
+}
+
+.bullets {
+  display: grid;
+  gap: 5px;
+}
+
+.bullet {
+  display: flex;
+  gap: 8px;
+  font-size: 12.5px;
+  color: tx(64%);
+
+  i {
+    flex: none;
+    color: var(--gs-accent);
+    font-size: 12px;
+    margin-top: 3px;
+  }
+}
+
+.stack {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.tag {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  white-space: nowrap;
+  border: 1px solid ac(30%);
+  color: var(--gs-accent-soft);
+
+  @include pro {
+    border-radius: 999px;
+  }
+}
+
+.cta {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gs-hot-soft);
+}
+
+.behind-title {
+  margin: 64px 0 6px;
+  font-size: 30px;
+
+  @include below($bp-sm) {
+    font-size: 25px;
+  }
+}
+
+.artifacts {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+
+  @include below($bp-lg) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include below($bp-sm) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.artifact {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 17px;
+  border: 1px solid tx(14%);
+  background: bg(60%);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+  border-radius: var(--gs-radius, 0px);
+
+  @include pro {
+    background: var(--surface);
+  }
+
+  &:hover {
+    border-color: var(--gs-accent);
+    background: ac(6%);
+  }
+
+  > i {
+    color: var(--gs-accent);
+    font-size: 19px;
+  }
+}
+
+.artifact-name {
+  font-family: var(--font-heading);
+  font-size: 14.5px;
+}
+
+.artifact-desc {
+  font-size: 12px;
+  line-height: 1.5;
+  color: tx(62%);
+}
+
+.artifact-cta {
+  margin-top: auto;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gs-hot-soft);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

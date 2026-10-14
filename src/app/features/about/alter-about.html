@@ -1,0 +1,80 @@
+<section class="page">
+  <div class="container">
+    <p class="eyebrow">Origin story</p>
+    <h1 class="page-title title">How a shortcut turned into a craft</h1>
+
+    <div class="layout">
+      <div class="main">
+        <div class="intro">
+          <div class="portrait">
+            <img
+              src="assets/img/erika-alter-portrait.png"
+              alt="Erika Fulgencio in her Glitchbane alter-ego art style"
+              width="627"
+              height="621"
+              decoding="async"
+            />
+          </div>
+          <p class="lead">
+            Honest origin story: I took the QA job because it was near my house and I did not want
+            to face Manila traffic. I had a developer offer on the table and picked the commute.
+          </p>
+        </div>
+
+        @for (p of lore; track $index) {
+          <p class="lore">{{ p }}</p>
+        }
+
+        <ul class="interests">
+          @for (l of interests; track l.title) {
+            <li class="interest">
+              <i class="ph {{ l.icon }}" aria-hidden="true"></i>
+              <div>
+                <h2 class="interest-title">{{ l.title }}</h2>
+                <p class="interest-body">{{ l.body }}</p>
+              </div>
+            </li>
+          }
+        </ul>
+
+        <section class="cosplay" aria-labelledby="cosplay-title">
+          <div class="cosplay-head">
+            <h2 class="cosplay-title" id="cosplay-title">First cosplay, zero regrets</h2>
+            <span class="tag">Kento Nanami, fem ver.</span>
+          </div>
+          <p class="cosplay-sub">
+            Company townhall cosplay event. I committed to the bit — sunglasses, the whole
+            silhouette.
+          </p>
+          <ul class="gallery">
+            @for (c of cosplay; track c.src) {
+              <li class="photo">
+                <img
+                  [src]="c.src"
+                  [alt]="c.alt"
+                  [style.object-position]="c.position"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </li>
+            }
+          </ul>
+        </section>
+      </div>
+
+      <aside class="side">
+        <app-spot-the-defect />
+        <section class="currently" aria-labelledby="currently-title">
+          <h2 class="currently-title" id="currently-title">Currently</h2>
+          <ul class="currently-list">
+            @for (c of currently; track c.text) {
+              <li>
+                <i class="ph {{ c.icon }}" aria-hidden="true"></i><span>{{ c.text }}</span>
+              </li>
+            }
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </div>
+</section>

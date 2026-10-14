@@ -1,0 +1,32 @@
+<section class="sheet clock" aria-labelledby="clock-title">
+  <div class="clock-head">
+    <div>
+      <p class="label">Off the clock</p>
+      <h2 class="clock-title" id="clock-title">What I'm into when I'm not testing</h2>
+    </div>
+    <span class="clock-pill"
+      ><span class="pulse-dot" aria-hidden="true"></span>Same curiosity, different screens</span
+    >
+  </div>
+  <ul class="hobbies">
+    @for (h of hobbies; track h.t) {
+      <li class="hobby">
+        <span class="hobby-icon"><i class="ph {{ h.icon }}" aria-hidden="true"></i></span>
+        <div class="hobby-copy">
+          <h3 class="hobby-t">{{ h.t }}</h3>
+          <p class="hobby-d">{{ h.d }}</p>
+        </div>
+        <div class="strip" [attr.aria-label]="h.shots.length + ' images'" role="group">
+          <div class="strip-track" [style.animation-duration]="panDuration(h.shots.length)">
+            @for (s of h.shots; track s.label) {
+              <div class="shot" [title]="s.label">
+                <app-image-placeholder [label]="s.label" [src]="s.src" />
+              </div>
+            }
+          </div>
+          <span class="shot-count" aria-hidden="true">{{ h.shots.length }}</span>
+        </div>
+      </li>
+    }
+  </ul>
+</section>

@@ -1,0 +1,146 @@
+@use 'mixins' as *;
+@use 'pro-shell' as shell;
+
+:host {
+  @include shell.slot;
+}
+
+.sheet {
+  overflow: hidden;
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.6;
+  background-image: radial-gradient(circle at 82% 26%, hot(14%), transparent 56%);
+}
+
+.split {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 34px;
+  align-items: center;
+
+  @include below($bp-md) {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+}
+
+.kicker-label {
+  @include shell.section-kicker;
+}
+
+h2 {
+  @include shell.section-h2(36px);
+  margin-bottom: 14px;
+}
+
+.copy {
+  @include shell.section-copy;
+  margin-bottom: 24px;
+  max-width: 67ch;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.resume {
+  color: tx(72%);
+  border-color: tx(16%);
+  padding: 15px 24px;
+}
+
+.links {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 13px 16px;
+  border-radius: 14px;
+  text-decoration: none;
+  border: 1px solid tx(9%);
+  color: var(--gs-text);
+  background: ac(3%);
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease;
+
+  &:hover {
+    border-color: var(--gs-accent);
+    background: ac(8%);
+    transform: translateX(4px);
+  }
+
+  > i {
+    color: var(--gs-accent);
+  }
+}
+
+.link-icon {
+  @include shell.mini-icon;
+  font-size: 15px;
+}
+
+.link-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.link-label {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 14px;
+}
+
+.link-value {
+  display: block;
+  @include mono(10.5px);
+  color: tx(60%);
+  overflow-wrap: anywhere;
+}
+
+.form-panel {
+  border: 1px solid ac(26%);
+  border-radius: 22px;
+  padding: 24px 26px;
+  background: ac(4%);
+
+  @include below($bp-sm) {
+    padding: 20px 16px;
+  }
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+
+  h3 {
+    @include kicker(10px, 0.2em);
+    font-weight: 400;
+    color: tx(64%);
+  }
+}
+
+.pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gs-accent);
+  animation: g-pulse 1.6s ease-in-out infinite;
+}

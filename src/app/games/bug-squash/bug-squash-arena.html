@@ -1,0 +1,91 @@
+<div class="head">
+  <span class="live" aria-hidden="true"></span>
+  <span class="label">Mini game · Bug squash</span>
+  <span class="clock" aria-label="Time left"
+    ><i class="ph ph-timer" aria-hidden="true"></i>{{ game.clock() }}</span
+  >
+</div>
+
+<div
+  class="field"
+  data-testid="squash-field"
+  [style.animation-name]="
+    game.squashes() ? (game.squashes() % 2 ? 'g-shake' : 'g-shake-alt') : 'none'
+  "
+>
+  @if (variant() === 'pro') {
+    <span class="grid" aria-hidden="true"></span>
+    <span class="inner-glow" aria-hidden="true"></span>
+    <span class="zone zone--staging" aria-hidden="true">Staging</span>
+    <span class="prod-strip" aria-hidden="true"></span>
+    <span class="zone zone--prod" aria-hidden="true">Production</span>
+  }
+
+  @for (b of game.bugs(); track b.id) {
+    <button
+      type="button"
+      class="bug"
+      title="Squash it"
+      aria-label="Squash bug"
+      [style.left.%]="b.x"
+      [style.top.%]="b.y"
+      [style.transform]="'translate(-50%, -50%) rotate(' + heading(b) + 'deg)'"
+      (pointerdown)="game.squash(b.id)"
+      (keydown.enter)="game.squash(b.id)"
+      (keydown.space)="game.squash(b.id)"
+    >
+      <i
+        class="ph"
+        [class.ph-bug-beetle]="variant() === 'pro'"
+        [class.ph-bug]="variant() === 'alter'"
+        aria-hidden="true"
+      ></i>
+    </button>
+  }
+
+  @for (s of game.splats(); track s.id) {
+    <span class="splat-anchor" [style.left.%]="s.x" [style.top.%]="s.y" aria-hidden="true">
+      @if (variant() === 'pro') {
+        <span class="burst"></span>
+        <span class="goo"></span>
+        <span class="squished"><i class="ph ph-bug-beetle"></i></span>
+        @for (f of flecks; track $index) {
+          <span
+            class="fleck"
+            [class.fleck--hot]="f.hot"
+            [style.width.px]="f.size"
+            [style.height.px]="f.size"
+            [style.--fx]="f.fx"
+            [style.--fy]="f.fy"
+            [style.animation-duration.s]="f.dur"
+          ></span>
+        }
+      }
+      <span class="points">+{{ s.pts }}</span>
+    </span>
+  }
+
+  @if (game.phase() !== 'run') {
+    <div class="overlay">
+      <div class="overlay-body">
+        <div class="overlay-title">{{ game.title() }}</div>
+        <p class="overlay-sub" role="status">{{ game.subtitle() }}</p>
+        <button type="button" class="start" (click)="game.start()">{{ game.cta() }}</button>
+      </div>
+    </div>
+  }
+</div>
+
+@if (variant() === 'alter') {
+  <div class="tally">
+    <span
+      >Score <b class="accent">{{ game.score() }}</b></span
+    >
+    <span
+      >Best <b>{{ game.best() }}</b></span
+    >
+    <span class="push"
+      >Escaped <b>{{ game.escaped() }}</b></span
+    >
+  </div>
+}

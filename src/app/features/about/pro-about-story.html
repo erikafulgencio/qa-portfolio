@@ -1,0 +1,101 @@
+<header class="story-head">
+  <span class="depth-grid" aria-hidden="true"></span>
+  <span class="depth-lines" aria-hidden="true"></span>
+  <span class="depth-scan" aria-hidden="true"></span>
+  <div class="story-head-row">
+    <div class="story-head-copy">
+      <p class="story-kicker">
+        <span class="white-dot" aria-hidden="true"></span>The full story · 7 chapters
+      </p>
+      <h2 class="story-title" id="story-title">How a practical decision turned into a craft.</h2>
+      <p class="story-sub">
+        No plan, a lot of questions, and one habit that never went away — keep looking until it
+        makes sense.
+      </p>
+    </div>
+    <span class="read-time"><i class="ph ph-clock" aria-hidden="true"></i>8 min read</span>
+  </div>
+  <div class="progress">
+    <div class="progress-row">
+      <span>Progress</span>
+      <span>{{ progress() }}% read</span>
+    </div>
+    <div
+      class="progress-track"
+      role="progressbar"
+      aria-label="Story reading progress"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      [attr.aria-valuenow]="progress()"
+    >
+      <span class="progress-fill" [style.width.%]="progress()"></span>
+    </div>
+  </div>
+</header>
+
+<div class="story-grid">
+  <nav class="rail" aria-label="Chapters">
+    <p class="rail-title">Chapters</p>
+    @for (a of acts; track a.n; let i = $index) {
+      <button
+        type="button"
+        class="rail-item"
+        [class.active]="activeIdx() === i"
+        [attr.aria-current]="activeIdx() === i ? 'step' : null"
+        (click)="jumpTo(i)"
+      >
+        <span class="rail-n">{{ a.n }}</span>
+        <span class="rail-t">{{ a.title }}</span>
+      </button>
+    }
+  </nav>
+
+  <div class="acts">
+    <span class="acts-line" aria-hidden="true"></span>
+    @for (a of acts; track a.n; let i = $index) {
+      <article
+        #chapter
+        class="act"
+        [style.animation-delay.s]="i * 0.06"
+        [attr.aria-labelledby]="'act-' + a.n"
+      >
+        <span class="act-pin" aria-hidden="true"></span>
+        <div class="act-card">
+          <span class="act-top" aria-hidden="true"></span>
+          <span class="act-ghost" aria-hidden="true">{{ a.n }}</span>
+          <div class="act-head">
+            <span class="act-icon"><i class="ph {{ a.icon }}" aria-hidden="true"></i></span>
+            <div>
+              <p class="act-label">Chapter {{ a.n }}</p>
+              <h3 class="act-title" [id]="'act-' + a.n">{{ a.title }}</h3>
+            </div>
+          </div>
+          <div class="act-paras">
+            @for (p of a.paras; track $index) {
+              <p class="mono-p">{{ p }}</p>
+            }
+          </div>
+          @if (a.list.length) {
+            <ul class="act-list">
+              @for (q of a.list; track $index) {
+                <li><span class="pulse-dot" aria-hidden="true"></span>{{ q }}</li>
+              }
+            </ul>
+          }
+          @if (a.quote) {
+            <figure class="pull pull--act">
+              <figcaption class="pull-label">
+                <span class="pulse-dot" aria-hidden="true"></span>What I took from it
+              </figcaption>
+              <blockquote class="pull-body">
+                <span class="quote-mark" aria-hidden="true">“</span>
+                <p>{{ a.quote }}</p>
+              </blockquote>
+              <span class="pull-rule" aria-hidden="true"></span>
+            </figure>
+          }
+        </div>
+      </article>
+    }
+  </div>
+</div>

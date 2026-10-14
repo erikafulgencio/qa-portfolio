@@ -1,0 +1,82 @@
+<section class="page">
+  <div class="container container--narrow">
+    <a class="back" routerLink="/projects"
+      ><i class="ph ph-arrow-left" aria-hidden="true"></i>All projects</a
+    >
+
+    @if (project(); as p) {
+      <article class="sheet detail">
+        <header class="head">
+          <span class="icon-tile big"><i class="ph {{ p.icon }}" aria-hidden="true"></i></span>
+          <div class="head-text">
+            <div class="meta">{{ p.kicker }} · {{ p.category }}</div>
+            <h1>{{ p.title }}</h1>
+          </div>
+          <app-like-button class="like" [projectId]="p.id" [title]="p.title" [withLabel]="true" />
+        </header>
+
+        <p class="sub">{{ p.sub }}</p>
+
+        <div class="cols">
+          <section class="box box--inside" aria-labelledby="inside-label">
+            <h2 id="inside-label" class="box-label">What's inside</h2>
+            <ul class="checks">
+              @for (b of p.bullets; track b) {
+                <li>
+                  <i class="ph ph-check" aria-hidden="true"></i><span>{{ b }}</span>
+                </li>
+              }
+            </ul>
+          </section>
+
+          <div class="side">
+            <section class="box box--why" aria-labelledby="why-label">
+              <h2 id="why-label" class="box-label">Why it exists</h2>
+              <p class="why">{{ p.why }}</p>
+            </section>
+            <section class="box" aria-labelledby="stack-label">
+              <h2 id="stack-label" class="box-label">Stack</h2>
+              <ul class="stack">
+                @for (t of p.stack; track t) {
+                  <li>{{ t }}</li>
+                }
+              </ul>
+            </section>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a class="pill pill--dark ask" routerLink="/contact">
+            @for (q of questions; track $index) {
+              <span
+                class="q"
+                aria-hidden="true"
+                [style.left.%]="q[0]"
+                [style.font-size.px]="q[1]"
+                [style.animation-duration.s]="q[2]"
+                [style.animation-delay.s]="q[3]"
+                >?</span
+              >
+            }
+            <i class="ph ph-coffee" aria-hidden="true"></i
+            ><span class="label">Ask me about it</span>
+          </a>
+          @if (next(); as n) {
+            <a class="pill pill--outline" [routerLink]="['/projects', n.id]"
+              >Next: {{ n.title }}<i class="ph ph-arrow-right" aria-hidden="true"></i
+            ></a>
+          }
+        </div>
+      </article>
+    } @else {
+      <div class="sheet missing" role="alert">
+        <i class="ph ph-bug-beetle" aria-hidden="true"></i>
+        <h1>Project not found</h1>
+        <p>
+          That one escaped to production. The project you were looking for doesn't exist (any more).
+        </p>
+        <a class="pill pill--dark" routerLink="/projects">Back to all projects</a>
+      </div>
+    }
+  </div>
+</section>

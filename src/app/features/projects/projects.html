@@ -1,0 +1,73 @@
+<section class="page">
+  <div class="container">
+    <div class="kicker">Projects</div>
+    <h1 class="page-title">Features, failures, and everything in between</h1>
+    <p class="intro">
+      I like understanding how things work, figuring out why they don't, and occasionally finding
+      something nobody thought to look for.
+    </p>
+
+    <div class="filters" role="group" aria-label="Filter projects">
+      @for (f of filters(); track f.label) {
+        <button
+          type="button"
+          class="filter"
+          [class.on]="activeFilter() === f.label"
+          [attr.aria-pressed]="activeFilter() === f.label"
+          (click)="pick(f.label)"
+        >
+          {{ f.label }}<span class="count">{{ f.count }}</span>
+        </button>
+      }
+    </div>
+
+    <ul class="grid" data-testid="project-grid">
+      @for (c of cards(); track c.id; let i = $index) {
+        <li class="card-item" [style.animation-delay.s]="i * 0.06">
+          <a class="card" [routerLink]="c.link">
+            <span class="card-head">
+              <i class="ph {{ c.icon }}" aria-hidden="true"></i>
+              <span class="card-kicker">{{ c.kicker }}</span>
+            </span>
+            <span class="card-title">{{ c.title }}</span>
+            <span class="card-sub">{{ c.sub }}</span>
+            <span class="bullets">
+              @for (b of c.bullets; track b) {
+                <span class="bullet"
+                  ><i class="ph ph-caret-right" aria-hidden="true"></i><span>{{ b }}</span></span
+                >
+              }
+            </span>
+            <span class="stack">
+              @for (s of c.stack; track s) {
+                <span class="tag">{{ s }}</span>
+              }
+            </span>
+            <span class="cta">{{ c.cta }} →</span>
+          </a>
+        </li>
+      }
+    </ul>
+
+    <h2 class="behind-title">The Work Behind Quality</h2>
+    <p class="intro intro--small">
+      The test cases and reports behind the work<br />where expected results meet unexpected
+      behavior.
+    </p>
+    <ul class="artifacts">
+      @for (a of artifacts; track a.name) {
+        <li class="artifact">
+          <i class="ph {{ a.icon }}" aria-hidden="true"></i>
+          <span class="artifact-name">{{ a.name }}</span>
+          <span class="artifact-desc">{{ a.desc }}</span>
+          <a
+            class="artifact-cta"
+            routerLink="/contact"
+            [attr.aria-label]="'Request a ' + a.name + ' sample'"
+            >Request sample →</a
+          >
+        </li>
+      }
+    </ul>
+  </div>
+</section>

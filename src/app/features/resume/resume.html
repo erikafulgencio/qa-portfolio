@@ -1,0 +1,110 @@
+<section class="page">
+  <div class="container">
+    <header class="head">
+      <div>
+        <p class="eyebrow">The formal version</p>
+        <h1 class="title">Still learning. Still curious. Still looking deeper.</h1>
+        <p class="tagline">ISTQB CTFL · Manila · open to remote and global</p>
+      </div>
+      @if (profile.resumePdfUrl) {
+        <a class="download" [href]="profile.resumePdfUrl" download
+          ><i class="ph ph-download-simple" aria-hidden="true"></i>Download résumé</a
+        >
+      }
+    </header>
+
+    <figure class="curve">
+      <span class="curve-grid" aria-hidden="true"></span>
+      <figcaption class="curve-title">Experience curve</figcaption>
+      <ol class="bars">
+        @for (b of chart; track b.year; let i = $index) {
+          <li class="bar-col" [title]="b.year + ' — ' + b.label">
+            <span class="bar-track">
+              <span
+                class="bar bar--{{ b.level }}"
+                [style.height]="b.h"
+                [style.animation-delay.s]="0.05 + i * 0.08"
+              ></span>
+            </span>
+            <span class="year" aria-hidden="true">{{ b.year }}</span>
+            <span class="visually-hidden"
+              >{{ b.year }}, {{ levelLabel[b.level] }}: {{ b.label }}</span
+            >
+          </li>
+        }
+      </ol>
+      <ul class="legend" aria-label="Legend">
+        @for (l of levels; track l[0]) {
+          <li><span class="swatch bar--{{ l[0] }}" aria-hidden="true"></span>{{ l[1] }}</li>
+        }
+      </ul>
+    </figure>
+
+    <div class="layout">
+      <ol class="jobs">
+        @for (j of jobs; track j.dates; let i = $index) {
+          <li class="job" [style.animation-delay.s]="0.05 + i * 0.12">
+            <div class="rail" aria-hidden="true">
+              <span class="node">
+                <span class="node-ring"></span>
+                <span class="node-glow" [style.animation-delay.s]="i * 0.12"></span>
+                <span class="node-n">{{ pad(i + 1) }}</span>
+              </span>
+              <span class="line"></span>
+            </div>
+            <article class="card">
+              <span class="card-top" aria-hidden="true"></span>
+              <span class="card-orb" aria-hidden="true"></span>
+              <div class="card-head">
+                <app-image-placeholder
+                  class="logo"
+                  [label]="j.company"
+                  [src]="j.logo"
+                  [initials]="j.mark"
+                  [showLabel]="false"
+                />
+                <div class="card-meta">
+                  <div class="pills">
+                    <span class="pill-date">{{ j.dates }}</span>
+                    <span class="pill-domain">{{ j.domain }}</span>
+                  </div>
+                  <h2 class="role">{{ j.role }}</h2>
+                  <p class="company">{{ j.company }}</p>
+                </div>
+              </div>
+              <ul class="points">
+                @for (p of j.points; track $index) {
+                  <li>{{ p }}</li>
+                }
+              </ul>
+            </article>
+          </li>
+        }
+      </ol>
+
+      <aside class="side">
+        <section class="box">
+          <h2 class="box-title">Education</h2>
+          <p class="degree">{{ education.degree }}<br />{{ education.major }}</p>
+          <p class="school">{{ education.school }}</p>
+        </section>
+        <section class="box">
+          <h2 class="box-title">Core competencies</h2>
+          <ul class="tags">
+            @for (c of competencies; track c) {
+              <li>{{ c }}</li>
+            }
+          </ul>
+        </section>
+        <section class="box">
+          <h2 class="box-title">Domains tested</h2>
+          <ul class="domains">
+            @for (d of domains; track d.label) {
+              <li><i class="ph {{ d.icon }}" aria-hidden="true"></i>{{ d.label }}</li>
+            }
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </div>
+</section>

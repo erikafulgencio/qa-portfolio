@@ -1,0 +1,298 @@
+@use 'mixins' as *;
+
+:host {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: block;
+}
+
+.bar {
+  transition:
+    background 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+
+  &--pro {
+    backdrop-filter: blur(14px);
+    background: color-mix(in srgb, #ffffff 90%, transparent);
+    border-bottom: 1px solid tx(10%);
+    box-shadow: 0 10px 30px -26px rgba(20, 20, 40, 0.55);
+
+    :host(.solid) & {
+      box-shadow: 0 18px 40px -30px rgba(20, 20, 40, 0.85);
+    }
+  }
+
+  &--alter {
+    backdrop-filter: blur(16px);
+    background: bg(82%);
+    border-bottom: 1px solid ac(16%);
+
+    :host(.solid) & {
+      box-shadow: 0 18px 44px -30px rgba(0, 0, 0, 0.9);
+    }
+  }
+}
+
+.inner {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 14px 30px;
+  display: flex;
+  align-items: center;
+  gap: 12px 16px;
+  transition: padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  :host(.solid) & {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  @include below($bp-sm) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  color: inherit;
+  margin-right: auto;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.08;
+}
+
+.brand-name {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+
+  .bar--alter & {
+    font-size: 15px;
+    letter-spacing: 0.04em;
+  }
+}
+
+.brand-tag {
+  @include kicker(8.5px, 0.22em);
+  color: #6546c6;
+  white-space: nowrap;
+  margin-top: 4px;
+
+  .bar--alter & {
+    font-family: var(--font-body);
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    color: var(--gs-accent);
+    margin-top: 2px;
+  }
+}
+
+.collapse {
+  display: flex;
+  align-items: center;
+  gap: 12px 16px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 12px 14px;
+  flex-wrap: wrap;
+
+  .bar--alter & {
+    gap: 4px;
+  }
+}
+
+.nav-link {
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 3px 0;
+  border-bottom: 1px solid transparent;
+  color: tx(70%);
+  white-space: nowrap;
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+
+  &:hover {
+    color: var(--gs-accent);
+    transform: translateY(-2px);
+    border-bottom-color: var(--gs-accent);
+  }
+
+  &.active {
+    color: #2a1f33;
+    border-bottom-color: #2a1f33;
+  }
+}
+
+.tab {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 9px 14px;
+  white-space: nowrap;
+  color: tx(70%);
+  border: 1px solid ac(14%);
+  @include chamfer(6px);
+
+  &:hover {
+    border-color: var(--gs-accent);
+    color: var(--gs-accent-hi);
+  }
+
+  &.active {
+    color: var(--gs-on-accent);
+    background: var(--gs-accent);
+    border-color: var(--gs-accent);
+  }
+}
+
+.modes {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  background: tx(6%);
+
+  .bar--alter & {
+    gap: 3px;
+    border: 1px solid ac(26%);
+    background: bg(60%);
+    border-radius: var(--gs-radius, 0px);
+  }
+}
+
+.mode {
+  @include kicker(9px, 0.1em);
+  cursor: pointer;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: none;
+  white-space: nowrap;
+  color: tx(60%);
+  background: transparent;
+
+  &.on {
+    color: #fff;
+    background: tx(84%);
+  }
+
+  i {
+    margin-right: 6px;
+  }
+
+  .bar--alter & {
+    font-family: var(--font-body);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    padding: 8px 12px;
+    border-radius: var(--gs-radius, 0px);
+    color: tx(66%);
+
+    &:hover {
+      color: var(--gs-accent-hi);
+    }
+
+    &.on {
+      color: var(--gs-on-accent);
+      background: var(--gs-accent);
+    }
+  }
+}
+
+.party {
+  flex: none;
+  padding: 9px 15px;
+  font-size: 12px;
+}
+
+.glow-line {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gs-accent), var(--gs-hot), transparent);
+  opacity: 0.7;
+}
+
+.menu-btn {
+  display: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid tx(14%);
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 20px;
+
+  .bar--alter & {
+    border-color: ac(30%);
+    color: var(--gs-accent);
+    @include chamfer(6px);
+  }
+}
+
+// Below the large breakpoint the header collapses into a toggled menu panel.
+@include below($bp-lg) {
+  .inner {
+    flex-wrap: wrap;
+  }
+
+  .menu-btn {
+    display: grid;
+  }
+
+  .collapse {
+    display: none;
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 10px 0 14px;
+
+    :host(.menu-open) & {
+      display: flex;
+    }
+  }
+
+  .nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+  }
+
+  .nav-link,
+  .tab {
+    font-size: 13px;
+    padding: 12px 4px;
+  }
+
+  .nav-link.active {
+    border-bottom-color: transparent;
+    color: var(--gs-accent);
+  }
+
+  .modes {
+    align-self: flex-start;
+  }
+
+  .cta,
+  .party {
+    align-self: flex-start;
+  }
+}

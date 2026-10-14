@@ -1,0 +1,104 @@
+<div class="sheet">
+  <div class="kicker-label">How I work</div>
+  <div class="split">
+    <div>
+      <h2>Process first, heroics second</h2>
+      <p class="copy">
+        The best part of QA isn't catching a bug in production — it's the ritual, the metric or the
+        environment that meant the bug never got there. When one does slip out, the question isn't
+        whose fault it is; it's which layer let it through.
+      </p>
+      <ul class="principles">
+        @for (p of principles; track p.t) {
+          <li class="principle">
+            <span class="mini-icon"><i class="ph {{ p.icon }}" aria-hidden="true"></i></span>
+            <div>
+              <div class="item-title">{{ p.t }}</div>
+              <div class="item-text">{{ p.d }}</div>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <div class="loop">
+      <div class="panel-head">
+        <span class="pulse" aria-hidden="true"></span>
+        <span>The loop I run</span>
+      </div>
+      <p class="panel-note">
+        Same six moves on a two-week sprint or a six-month platform migration — the depth changes,
+        the order doesn't.
+      </p>
+      <ol class="stages">
+        @for (s of loop; track s.n) {
+          <li class="stage">
+            <span class="stage-n" aria-hidden="true">{{ s.n }}</span>
+            <div class="stage-body">
+              <div class="item-title">{{ s.t }}</div>
+              <div class="item-text">{{ s.d }}</div>
+            </div>
+          </li>
+        }
+      </ol>
+    </div>
+  </div>
+
+  <div class="trio">
+    <section class="box">
+      <h3 class="box-head">
+        <span class="box-icon"><i class="ph ph-folders" aria-hidden="true"></i></span>What I leave
+        behind
+      </h3>
+      <ul class="checks">
+        @for (a of leaveBehind; track a) {
+          <li>
+            <i class="ph ph-check" aria-hidden="true"></i><span>{{ a }}</span>
+          </li>
+        }
+      </ul>
+    </section>
+    <section class="box box--hot">
+      <h3 class="box-head">
+        <span class="box-icon"><i class="ph ph-gauge" aria-hidden="true"></i></span>Signals I watch
+      </h3>
+      <dl class="defs">
+        @for (s of signals; track s.t) {
+          <div>
+            <dt>{{ s.t }}</dt>
+            <dd>{{ s.d }}</dd>
+          </div>
+        }
+      </dl>
+    </section>
+    <section class="box">
+      <h3 class="box-head">
+        <span class="box-icon"><i class="ph ph-users-three" aria-hidden="true"></i></span>Working
+        with the team
+      </h3>
+      <dl class="defs">
+        @for (r of rituals; track r.t) {
+          <div>
+            <dt>{{ r.t }}</dt>
+            <dd>{{ r.d }}</dd>
+          </div>
+        }
+      </dl>
+    </section>
+  </div>
+
+  <figure class="quote">
+    <span class="quote-mark" aria-hidden="true">“</span>
+    <span class="quote-glow" aria-hidden="true"></span>
+    <figcaption class="quote-label">
+      <i class="ph ph-chats-circle" aria-hidden="true"></i>How I see the work
+    </figcaption>
+    <blockquote>
+      <p class="quote-main">A bug report is a conversation, not a verdict.</p>
+      <p class="quote-sub">
+        My job is to make the risk visible early enough that the team still has cheap choices left.
+      </p>
+    </blockquote>
+    <span class="quote-rule" aria-hidden="true"></span>
+  </figure>
+</div>

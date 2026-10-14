@@ -1,0 +1,162 @@
+<section class="hero">
+  <div
+    class="media"
+    role="img"
+    aria-label="Erika as The Glitchbane, mid-leap with a magnifying-glass blade against critical defects"
+  >
+    <img
+      class="still"
+      src="assets/img/glitchbane-hero.jpg"
+      alt=""
+      fetchpriority="high"
+      decoding="async"
+    />
+    <video
+      #heroVideo
+      class="clip"
+      src="assets/video/glitchbane-hero.mp4"
+      poster="assets/img/glitchbane-hero.jpg"
+      loop
+      muted
+      playsinline
+      preload="metadata"
+      tabindex="-1"
+    ></video>
+  </div>
+  <div class="scrim" aria-hidden="true"></div>
+  <div class="fade" aria-hidden="true"></div>
+  <div class="grid" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="scanband" aria-hidden="true"></div>
+  <div class="embers" aria-hidden="true">
+    @for (e of embers; track $index) {
+      <span
+        [style.left.%]="e.left"
+        [style.width.px]="e.size"
+        [style.height.px]="e.size"
+        [style.background]="e.color"
+        [style.animation-duration.s]="e.dur"
+        [style.animation-delay.s]="e.delay"
+      ></span>
+    }
+  </div>
+
+  <div class="hero-copy">
+    <p class="chip-line">
+      <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+      <span>{{ profile.availability }}</span>
+    </p>
+    <p class="motto">Quality is not an act, it is a habit</p>
+    <h1>THERE'S MORE TO IT THAN MEETS THE EYE.</h1>
+    <p class="lede-big">
+      I'm Erika Fulgencio — ISTQB-certified Senior QA Engineer and QA Lead in Manila. I hunt the
+      bugs that matter and build the process that keeps them out.
+    </p>
+    <p class="focus">Test Strategy · QA Leadership · Automation · AI-Driven Testing</p>
+    <div class="ctas">
+      <a class="cta cta--solid" routerLink="/projects"
+        ><i class="ph ph-sword" aria-hidden="true"></i>Enter the quest log</a
+      >
+      <a class="cta cta--ghost" routerLink="/resume"
+        ><i class="ph ph-scroll" aria-hidden="true"></i>Campaign log</a
+      >
+    </div>
+  </div>
+
+  <div class="hud-wrap">
+    <dl class="hud">
+      @for (s of hud; track s.k; let i = $index) {
+        <div class="hud-stat">
+          <dt><i class="ph {{ s.icon }}" aria-hidden="true"></i>{{ s.k }}</dt>
+          <dd>
+            <span class="hud-value">{{ s.v }}</span>
+            <span class="bar" aria-hidden="true"
+              ><span
+                class="bar-fill"
+                [style.width]="s.w"
+                [style.animation-delay.s]="0.05 + i * 0.1"
+              ></span
+            ></span>
+          </dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
+
+<div class="ticker" aria-label="Tools in the kit">
+  <div class="ticker-track">
+    <ul class="ticker-row">
+      @for (m of ticker; track m) {
+        <li>{{ m }}</li>
+      }
+    </ul>
+    <ul class="ticker-row" aria-hidden="true">
+      @for (m of ticker; track m) {
+        <li>{{ m }}</li>
+      }
+    </ul>
+  </div>
+</div>
+
+<section class="block sheet-block">
+  <div>
+    <p class="eyebrow eyebrow--hot">Character sheet</p>
+    <h2 class="h-big">⚔️ The Glitchbane</h2>
+    <p class="sheet-lede">Hunter of hidden failures. No bug remains undiscovered.</p>
+    <dl class="sheet-rows">
+      @for (s of sheet; track s.k) {
+        <div class="sheet-row">
+          <dt>{{ s.k }}</dt>
+          <dd>{{ s.v }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+  <div class="arena-panel">
+    <span class="arena-lines" aria-hidden="true"></span>
+    <app-bug-squash-arena variant="alter" />
+  </div>
+</section>
+
+<section class="block">
+  <div class="board-head">
+    <div>
+      <p class="eyebrow">Quest board</p>
+      <h2 class="h-mid">Featured missions</h2>
+    </div>
+    <a class="all" routerLink="/projects">All quests →</a>
+  </div>
+  <ul class="quests">
+    @for (q of featured; track q.id; let i = $index) {
+      <li class="quest" [style.animation-delay.s]="i * 0.08">
+        <div class="quest-top">
+          <i class="ph {{ q.icon }}" aria-hidden="true"></i>
+          <span>{{ q.kicker }}</span>
+        </div>
+        <h3 class="quest-title">
+          <a [routerLink]="questLink(q)">{{ q.title }}</a>
+        </h3>
+        <p class="quest-sub">{{ q.sub }}</p>
+        <ul class="quest-stack" aria-label="Stack">
+          @for (s of q.stack; track s) {
+            <li>{{ s }}</li>
+          }
+        </ul>
+      </li>
+    }
+  </ul>
+</section>
+
+<section class="block block--last">
+  <div class="recruit">
+    <div class="recruit-copy">
+      <p class="eyebrow eyebrow--hot">Recruit</p>
+      <h3>Need a Glitchbane on your raid team?</h3>
+      <p>Roles, consulting, QA process rescue — or a coffee and a conversation about quality.</p>
+    </div>
+    <a class="invite" routerLink="/contact"
+      ><i class="ph ph-coffee" aria-hidden="true"></i>Send an invite</a
+    >
+  </div>
+</section>

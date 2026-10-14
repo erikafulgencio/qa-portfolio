@@ -1,0 +1,172 @@
+@use 'mixins' as *;
+@use 'pro-shell' as shell;
+
+:host {
+  @include shell.slot(56px);
+}
+
+.kicker-label {
+  @include shell.section-kicker;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 34px;
+  align-items: start;
+
+  @include below($bp-md) {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+h2 {
+  @include shell.section-h2(32px);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.beetle {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  flex: none;
+  border-radius: 16px;
+  overflow: hidden;
+  background: ac(10%);
+  color: var(--gs-accent);
+
+  i {
+    font-size: 20px;
+    display: block;
+  }
+}
+
+.scurry {
+  display: grid;
+  place-items: center;
+  animation: sq-scurry 6s ease-in-out infinite;
+}
+
+.wobble {
+  display: grid;
+  place-items: center;
+  animation: sq-wobble 0.22s ease-in-out infinite;
+}
+
+.copy {
+  @include shell.section-copy;
+  max-width: 44ch;
+}
+
+.board {
+  border-radius: 22px;
+  border: 1px solid ac(20%);
+  background: ac(4%);
+  overflow: hidden;
+}
+
+.board-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 13px 18px;
+  border-bottom: 1px solid ac(14%);
+
+  > i {
+    font-size: 14px;
+    color: var(--gs-accent);
+  }
+}
+
+.board-label {
+  @include kicker(9.5px, 0.22em);
+  color: tx(60%);
+}
+
+.clock {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  @include mono(11px);
+  color: var(--gs-accent);
+
+  i {
+    font-size: 13px;
+    animation: sq-tick 1.1s ease-in-out infinite;
+  }
+}
+
+.scores {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.score {
+  padding: 18px 18px 20px;
+
+  & + & {
+    border-left: 1px solid ac(12%);
+  }
+
+  dt {
+    @include kicker(8.5px, 0.22em);
+    color: tx(55%);
+    margin-bottom: 9px;
+  }
+
+  dd {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: tx(88%);
+    font-variant-numeric: tabular-nums;
+
+    &.accent {
+      color: var(--gs-accent);
+    }
+
+    &.hot {
+      color: var(--gs-hot-soft);
+    }
+  }
+
+  @include below($bp-sm) {
+    padding: 14px 12px 16px;
+
+    dd {
+      font-size: 24px;
+    }
+  }
+}
+
+.hint {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  @include mono(10px);
+  line-height: 1.7;
+  color: tx(55%);
+
+  i {
+    font-size: 13px;
+    color: var(--gs-accent);
+    flex: none;
+  }
+}

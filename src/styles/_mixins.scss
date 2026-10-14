@@ -1,0 +1,74 @@
+// Shared helpers for component stylesheets: `@use 'mixins' as *;`
+// (src/styles is on the Sass include path via angular.json stylePreprocessorOptions).
+
+/// Text colour at a given strength, e.g. tx(55%).
+/// Strengths in the 34–69% band are used for secondary *text*; they are raised to 70% so muted
+/// copy still meets WCAG AA contrast on the light Professional background. Lower values
+/// (borders, fills, glows) are left untouched.
+@function tx($pct) {
+  @if $pct > 34% and $pct < 70% {
+    $pct: 70%;
+  }
+  @return color-mix(in srgb, var(--gs-text) #{$pct}, transparent);
+}
+
+/// Accent colour at a given strength.
+@function ac($pct) {
+  @return color-mix(in srgb, var(--gs-accent) #{$pct}, transparent);
+}
+
+/// Hot (secondary highlight) colour at a given strength.
+@function hot($pct) {
+  @return color-mix(in srgb, var(--gs-hot) #{$pct}, transparent);
+}
+
+/// Background colour at a given strength.
+@function bg($pct) {
+  @return color-mix(in srgb, var(--gs-bg) #{$pct}, transparent);
+}
+
+/// Alter-mode chamfered corners; Professional sets --gs-clip:none so it disappears.
+@mixin chamfer($n: 10px) {
+  clip-path: var(
+    --gs-clip,
+    polygon(#{$n} 0, 100% 0, 100% calc(100% - #{$n}), calc(100% - #{$n}) 100%, 0 100%, 0 #{$n})
+  );
+  border-radius: var(--gs-radius, 0px);
+}
+
+@mixin mono($size: 11px, $spacing: 0) {
+  font-family: var(--font-mono);
+  font-size: $size;
+  letter-spacing: $spacing;
+}
+
+/// Small uppercase label used above headings.
+@mixin kicker($size: 10.5px, $spacing: 0.2em) {
+  @include mono($size, $spacing);
+  text-transform: uppercase;
+}
+
+/// Mode-only rules for component stylesheets. :host-context survives Angular's style
+/// encapsulation (a :root[data-mode] prefix does not). Global styles use explicit selectors.
+@mixin pro {
+  :host-context([data-mode='pro']) & {
+    @content;
+  }
+}
+
+@mixin alter {
+  :host-context([data-mode='alter']) & {
+    @content;
+  }
+}
+
+// Breakpoints added for the rebuild (the original design was desktop-only).
+$bp-lg: 1100px;
+$bp-md: 860px;
+$bp-sm: 560px;
+
+@mixin below($bp) {
+  @media (max-width: $bp) {
+    @content;
+  }
+}

@@ -1,0 +1,60 @@
+// Shared frame for the Professional home cards (each card is its own component).
+@use 'mixins' as *;
+
+@mixin slot($bottom: 0) {
+  display: block;
+  position: relative;
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 22px 26px $bottom;
+
+  @include below($bp-sm) {
+    padding: 16px 12px $bottom;
+  }
+}
+
+@mixin section-kicker {
+  @include kicker(10.5px, 0.22em);
+  color: tx(55%);
+  margin-bottom: 10px;
+}
+
+@mixin section-h2($size: 34px) {
+  margin: 0 0 10px;
+  font-size: $size;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+
+  @include below($bp-sm) {
+    font-size: 27px;
+  }
+}
+
+@mixin section-copy {
+  margin: 0;
+  @include mono(12px);
+  line-height: 1.9;
+  color: tx(66%);
+  text-wrap: pretty;
+}
+
+@mixin mini-icon($size: 32px, $radius: 10px) {
+  flex: none;
+  width: $size;
+  height: $size;
+  border-radius: $radius;
+  display: grid;
+  place-items: center;
+  background: ac(12%);
+  color: var(--gs-accent);
+}
+
+/// Makes a link cover its whole positioned card ("stretched link"), keeping inner buttons clickable above it.
+@mixin stretched-link {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+}
