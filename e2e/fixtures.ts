@@ -39,24 +39,19 @@ interface Fixtures {
   consoleErrors: string[];
 }
 
-/** HubSpot's embed host. Tests that need the real form call `page.route(HUBSPOT_SCRIPT, r => r.continue())`. */
-export const HUBSPOT_SCRIPT = /hsforms\.(net|com)/;
-
-const THIRD_PARTY = /hubspot\.com|hsforms\.(net|com)|hscollectedforms\.net|recaptcha|gstatic\.com/;
+/** HubSpot's Forms API. Contact tests register their own `page.route(HUBSPOT_API, …)` to assert on it. */
+export const HUBSPOT_API = /api\.hsforms\.com/;
 
 export const test = base.extend<Fixtures>({
   consoleErrors: [
     async ({ page }, use) => {
-      // Keep tests hermetic: HubSpot's embed is stubbed with an empty script unless a test opts in.
-      await page.route(HUBSPOT_SCRIPT, (route) =>
-        route.fulfill({ status: 200, contentType: 'text/javascript', body: '' }),
+      // Keep tests hermetic: never let a test create a real contact in HubSpot.
+      await page.route(HUBSPOT_API, (route) =>
+        route.fulfill({ status: 200, contentType: 'application/json', body: '{}' }),
       );
       const errors: string[] = [];
       page.on('console', (msg) => {
-        if (msg.type() !== 'error') return;
-        // Third-party frames (HubSpot's form, reCAPTCHA) log their own noise; only this site's errors count.
-        if (THIRD_PARTY.test(msg.location().url) || THIRD_PARTY.test(msg.text())) return;
-        errors.push(msg.text());
+        if (msg.type() === 'error') errors.push(msg.text());
       });
       page.on('pageerror', (err) => errors.push(err.message));
       await use(errors);

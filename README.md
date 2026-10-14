@@ -44,9 +44,11 @@ All copy and data lives in typed files under [`src/app/content/`](src/app/conten
 
 ## Contact form (HubSpot, free)
 
-The Contact page and the Professional home page embed a HubSpot form (free CRM). Submissions land in HubSpot as contacts. Fields, styling, the thank-you message and spam protection (reCAPTCHA) are all edited in HubSpot's form editor, so form changes don't need a code change.
+The Contact page and the Professional home page use the site's own form, styled for both modes. It sends messages to a HubSpot form (free CRM), where they arrive as contacts.
 
-To point the site at a different form, copy the values from HubSpot's embed code (**Marketing → Forms → Share → Embed**) into [`src/environments/environment.ts`](src/environments/environment.ts). If a visitor's ad blocker stops HubSpot from loading, the site offers an email link instead.
+- The HubSpot portal ID and form GUID are in [`src/environments/environment.ts`](src/environments/environment.ts). Copy them from the form's embed code (`data-portal-id`, `data-form-id`).
+- **CAPTCHA must be turned off on the HubSpot form.** HubSpot blocks submissions from other sites while it's on. Spam is handled by the site's strict validation and a hidden bot trap.
+- If HubSpot rejects a message, the visitor gets an email link with their message already filled in.
 
 ## Deploying
 

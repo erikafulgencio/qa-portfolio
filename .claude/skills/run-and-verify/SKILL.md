@@ -42,7 +42,7 @@ Interactive spot checks:
 
 - **Home:** Bug Squash. Start the hunt and click a bug; "+15" or "+10" should pop.
 - **Alter About:** Spot the defect. TC-03 is the bug.
-- **Contact:** HubSpot's form should render (scroll it into view; it sizes lazily). Navigate away and back in-app; it must render again, not stay on "Loading the form…". Don't submit it unless the user asks, because a submission creates a real contact in their HubSpot.
+- **Contact:** submit the form empty. All 4 messages should show, and focus should move to Name. Don't send a valid message unless the user asks, because it creates a real contact in their HubSpot.
 - **Project detail:** the like button should trigger the heart rain and a toast.
 - **Mode switch:** the loader covers the page, the theme flips, and the route stays the same.
 
@@ -52,4 +52,4 @@ Report what you checked, plus screenshots of anything wrong. State failures plai
 
 ## Automated equivalent
 
-`npm run e2e` runs the Playwright suite in `e2e/`, which covers routes × modes, mobile overflow, the contact embed and its fallback, games and axe accessibility. It starts its own server on port 4300 (`E2E_PORT` overrides this).
+`npm run e2e` runs the Playwright suite in `e2e/`, which covers routes × modes, mobile overflow, contact validation and the HubSpot submission, games and axe accessibility. It starts its own server on port 4300 (`E2E_PORT` overrides this).

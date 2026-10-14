@@ -3,11 +3,11 @@ import { RouterLink } from '@angular/router';
 
 import { CONTACT_LINKS } from '../../../content/profile';
 import { CoffeeLink } from '../../../shared/coffee-link';
-import { HubspotForm } from '../../../shared/hubspot-form/hubspot-form';
+import { ContactForm } from '../../../shared/contact-form/contact-form';
 
 @Component({
   selector: 'app-contact-card',
-  imports: [RouterLink, CoffeeLink, HubspotForm],
+  imports: [RouterLink, CoffeeLink, ContactForm],
   templateUrl: './contact-card.html',
   styleUrl: './contact-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

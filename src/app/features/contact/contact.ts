@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { CONTACT_LINKS, PROFILE } from '../../content/profile';
-import { HubspotForm } from '../../shared/hubspot-form/hubspot-form';
+import { ContactForm } from '../../shared/contact-form/contact-form';
 
 @Component({
   selector: 'app-contact-page',
-  imports: [HubspotForm],
+  imports: [ContactForm],
   templateUrl: './contact.html',
   styleUrl: './contact.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
