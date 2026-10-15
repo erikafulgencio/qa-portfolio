@@ -5,8 +5,6 @@ import { Router, RouterLink } from '@angular/router';
 import { LikeButton } from '../../shared/like-button';
 import { findProject, hasCaseStudy, nextProject } from './project-lookup';
 
-const SITE = 'Erika Fulgencio';
-
 @Component({
   selector: 'app-project-detail-page',
   imports: [RouterLink, LikeButton],
@@ -46,7 +44,7 @@ export default class ProjectDetailPage {
         return;
       }
       const p = this.project();
-      this.title.setTitle(p ? `${p.title} · ${SITE}` : `Project not found · ${SITE}`);
+      this.title.setTitle(p ? p.title : 'Project not found');
     });
   }
 }

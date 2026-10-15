@@ -15,8 +15,6 @@ import { ScrollService } from '../../core/scroll.service';
 import { CASES } from '../../content/cases';
 import { type CaseSectionId, caseSections, nextCase, pad2, readMins } from './case-study.utils';
 
-const SITE = 'Erika Fulgencio';
-
 @Component({
   selector: 'app-case-study-page',
   imports: [RouterLink, NgTemplateOutlet],
@@ -65,9 +63,7 @@ export default class CaseStudyPage {
   constructor() {
     effect(() => {
       const c = this.study();
-      this.title.setTitle(
-        c ? `${c.title} · Case study · ${SITE}` : `Case study not found · ${SITE}`,
-      );
+      this.title.setTitle(c ? c.title : 'Case study not found');
     });
   }
 
