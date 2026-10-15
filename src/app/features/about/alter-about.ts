@@ -41,7 +41,7 @@ export class AlterAbout {
   protected readonly currently: { icon: IconName; text: string }[] = [
     {
       icon: 'ph-books',
-      text: 'Reviewing for the ISTQB Test Management exam, and exploring Claude Design, Claude Code and automation testing.',
+      text: 'Just earned my ISTQB® Advanced Level Test Management certification (CTAL-TM). Now exploring Claude Design, Claude Code and automation testing.',
     },
     { icon: 'ph-television-simple', text: 'Watching The Office — third run.' },
     {

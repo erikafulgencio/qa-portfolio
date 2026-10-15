@@ -154,8 +154,8 @@ export const SKILL_GROUPS: SkillGroup[] = [
 export const TRAINING: TrainingItem[] = [
   {
     icon: 'ph-certificate',
-    label: 'ISTQB Test Management',
-    pct: '65%',
+    label: 'ISTQB Test Automation Engineering',
+    pct: '10%',
   },
   {
     icon: 'ph-code-block',
@@ -170,6 +170,12 @@ export const TRAINING: TrainingItem[] = [
 ];
 
 export const CERTIFICATIONS: Certification[] = [
+  {
+    icon: 'ph-certificate',
+    badge: 'Certified',
+    title: 'ISTQB Certified Tester, Advanced Level — Test Management',
+    issuer: 'ISTQB',
+  },
   {
     icon: 'ph-certificate',
     badge: 'Certified',

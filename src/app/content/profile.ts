@@ -9,7 +9,7 @@ export const PROFILE = {
   location: 'Manila, PH',
   timezone: 'GMT+8',
   yearsInQa: 8,
-  certification: 'ISTQB® CTFL',
+  certification: 'ISTQB® CTAL-TM and CTFL',
   email: 'm.erika.fulgencio@gmail.com',
   github: 'https://github.com/meafulgencio',
   codepen: 'https://codepen.io/meafulgencio',

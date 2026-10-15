@@ -208,7 +208,7 @@ export const HOBBIES: Hobby[] = [
   {
     icon: 'ph-books',
     t: 'Studying, always',
-    d: 'Reviewing for the ISTQB Test Management exam, and exploring Claude Design, Claude Code and automation testing.',
+    d: 'Just earned my ISTQB® Advanced Level Test Management certification (CTAL-TM). Now exploring Claude Design, Claude Code and automation testing.',
     shots: [
       {
         label: 'ISTQB',

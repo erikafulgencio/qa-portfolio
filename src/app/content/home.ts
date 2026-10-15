@@ -174,5 +174,6 @@ export const TICKER: string[] = [
   'BrowserStack',
   'AWS',
   'Claude Skills',
+  'ISTQB CTAL-TM',
   'ISTQB CTFL',
 ];
