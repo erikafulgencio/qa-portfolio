@@ -348,13 +348,29 @@
     color: var(--gs-accent);
   }
 
+  // Drawer order in both modes: mode switch, then the CTA, then the page links.
+  // (The full-width header keeps each mode's own DOM order.)
   .modes {
     align-self: flex-start;
+    order: -2;
   }
 
   .cta,
   .party {
     align-self: flex-start;
+    order: -1;
+  }
+
+  .nav {
+    padding-top: 14px;
+
+    .bar--pro & {
+      border-top: 1px solid tx(10%);
+    }
+
+    .bar--alter & {
+      border-top: 1px solid ac(18%);
+    }
   }
 }
 

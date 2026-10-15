@@ -5,7 +5,7 @@ const SITE = 'Erika Fulgencio';
 export const routes: Routes = [
   {
     path: '',
-    title: `${SITE} - Senior QA Engineer`,
+    title: `${SITE} | Senior QA Engineer`,
     loadComponent: () => import('./features/home/home'),
   },
   {
