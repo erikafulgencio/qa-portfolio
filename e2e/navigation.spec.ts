@@ -55,6 +55,42 @@ test('mobile menu opens and navigates @mobile', async ({ page }) => {
   await expect(page.getByRole('navigation', { name: 'Main' })).toBeHidden();
 });
 
+// 1536×864 laptops at 150% zoom land around 1024 CSS px: the menu is a right-hand drawer there.
+test('menu drawer slides in from the right and closes on scrim or Escape', async ({ page }) => {
+  await page.setViewportSize({ width: 1024, height: 560 });
+  await visit(page, '/');
+  const nav = page.getByRole('navigation', { name: 'Main' });
+  const menu = page.getByRole('button', { name: 'Menu' });
+
+  await expect(nav).toBeHidden();
+  await menu.click();
+  await expect(nav).toBeVisible();
+  const drawer = page.locator('app-site-header .collapse');
+  // Poll past the slide-in transition: flush against the right edge, full height.
+  await expect
+    .poll(async () => {
+      const box = await drawer.boundingBox();
+      return box && [Math.round(box.x + box.width), Math.round(box.y), Math.round(box.height)];
+    })
+    .toEqual([1024, 0, 560]);
+
+  await page.getByRole('button', { name: 'Close menu' }).click({ position: { x: 20, y: 300 } });
+  await expect(nav).toBeHidden();
+
+  await menu.click();
+  await expect(nav).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(nav).toBeHidden();
+});
+
+test('home hero keeps the iceberg beside the copy on small laptops', async ({ page }) => {
+  await page.setViewportSize({ width: 1024, height: 560 });
+  await visit(page, '/', 'pro');
+  const copy = await page.locator('app-pro-hero .copy').boundingBox();
+  const iceberg = await page.locator('app-pro-hero .iceberg').boundingBox();
+  expect(iceberg!.x).toBeGreaterThan(copy!.x + copy!.width);
+});
+
 test('deep links and unknown paths', async ({ page }) => {
   await visit(page, '/cases/uat');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('A room of our own');

@@ -27,6 +27,7 @@ import { Monogram } from '../shared/monogram';
   host: {
     '[class.solid]': 'solid()',
     '[class.menu-open]': 'menuOpen()',
+    '(document:keydown.escape)': 'closeMenu()',
   },
 })
 export class SiteHeader {
@@ -49,7 +50,7 @@ export class SiteHeader {
   );
 
   constructor() {
-    // Close the mobile menu after every navigation.
+    // Close the menu drawer after every navigation.
     effect(() => {
       this.url();
       untracked(() => this.menuOpen.set(false));
@@ -62,5 +63,9 @@ export class SiteHeader {
 
   protected toggleMenu(): void {
     this.menuOpen.update((v) => !v);
+  }
+
+  protected closeMenu(): void {
+    this.menuOpen.set(false);
   }
 }

@@ -29,7 +29,8 @@
   gap: 30px;
   align-items: center;
 
-  @include below($bp-lg) {
+  // Keep the iceberg beside the copy on small laptops and zoomed-in desktops; stack only on tablets.
+  @include below($bp-md) {
     grid-template-columns: 1fr;
   }
 }

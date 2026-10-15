@@ -25,6 +25,16 @@
         <span class="visually-hidden">Menu</span>
       </button>
 
+      @if (menuOpen()) {
+        <button
+          type="button"
+          class="scrim"
+          tabindex="-1"
+          aria-label="Close menu"
+          (click)="closeMenu()"
+        ></button>
+      }
+
       <div class="collapse">
         <nav id="site-nav" class="nav" aria-label="Main">
           @for (item of nav(); track item.path) {
@@ -82,6 +92,16 @@
         ></i>
         <span class="visually-hidden">Menu</span>
       </button>
+
+      @if (menuOpen()) {
+        <button
+          type="button"
+          class="scrim"
+          tabindex="-1"
+          aria-label="Close menu"
+          (click)="closeMenu()"
+        ></button>
+      }
 
       <div class="collapse">
         <div class="modes" role="group" aria-label="Site mode">
