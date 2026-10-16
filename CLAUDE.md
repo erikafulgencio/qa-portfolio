@@ -89,8 +89,8 @@ Environment notes:
 - Pushing to `main` runs `.github/workflows/deploy.yml`: CI (`ci.yml`), then `build:pages`, then GitHub Pages. Nothing deploys unless every CI job passes:
   - **quality**: lint, unit tests, production build.
   - **e2e**: the Playwright suite in each of the six projects (Google Chrome, Firefox, WebKit desktop; Chrome Android, Safari iPhone, Firefox Android).
-  - **security**: npm audit, gitleaks secret scan (full history), `e2e:prod` against the built site, OWASP ZAP baseline (`.zap/rules.tsv` ignores only header rules GitHub Pages can't satisfy).
-  - **performance**: Lighthouse CI, 5 pages × 3 runs with mobile emulation. Budgets: performance ≥ 90; accessibility, best practices and SEO = 100; LCP ≤ 3 s; CLS ≤ 0.1; TBT ≤ 200 ms; ≤ 500 KB per page.
+  - **security**: npm audit, gitleaks secret scan (CLI, pinned and checksum-verified, full history), `e2e:prod` against the built site, OWASP ZAP baseline (`.zap/rules.tsv` ignores only header rules GitHub Pages can't satisfy).
+  - **performance**: Lighthouse CI, 5 pages × 3 runs with mobile emulation. Budgets: performance ≥ 90; accessibility, best practices and SEO = 100; LCP ≤ 3.5 s (lab, CI hardware); CLS ≤ 0.1; TBT ≤ 200 ms; ≤ 500 KB per page.
   - **dependency-review** on pull requests.
 - `codeql.yml` runs CodeQL static analysis on pushes, pull requests and weekly; findings go to the Security tab.
 - `autofix.yml`: when the deploy run fails on a test or build job, Claude Code fixes it on an `autofix/<run id>` branch (up to 3 attempts, each checked with `npm run verify`), opens a PR, re-runs CI on it, then squash-merges and dispatches the deploy. If it can't get green it labels the PR `autofix-needs-human`. Claude only edits files; the workflow does the git, PR and merge steps. It needs the `CLAUDE_CODE_OAUTH_TOKEN` secret (`/install-github-app`) or `ANTHROPIC_API_KEY`, and skips with a warning without one.
