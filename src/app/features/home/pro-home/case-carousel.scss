@@ -422,32 +422,54 @@ h3 {
   margin: -9px -6px;
 }
 
-// Each dot is a thin bar inside a 24px tap target (WCAG 2.2 target size): the padding is the hit
-// area and background-clip keeps the bar itself small.
+// Each dot is a thin bar (::before) inside a transparent 24px tap target (WCAG 2.2 target size),
+// so state styles can never paint the whole hit area.
 .dot {
   box-sizing: content-box;
+  display: flex;
+  align-items: center;
+  width: 12px;
+  height: 24px;
+  padding: 0 6px;
   cursor: pointer;
   border: none;
-  padding: 9px 6px;
-  height: 6px;
-  width: 12px;
-  border-radius: 999px;
-  background: ac(22%);
-  background-clip: content-box;
-  transition:
-    width 0.25s ease,
-    background 0.25s ease;
+  background: none;
+  transition: width 0.25s ease;
+
+  &::before {
+    content: '';
+    flex: 1;
+    height: 6px;
+    border-radius: 999px;
+    background: ac(22%);
+    transition: background-color 0.25s ease;
+  }
 
   @media (hover: hover) {
     &:hover {
       width: 22px;
-      background: ac(45%);
+
+      &::before {
+        background: ac(45%);
+      }
     }
   }
 
   &.on {
     width: 30px;
-    background: var(--gs-accent);
+
+    &::before {
+      background: var(--gs-accent);
+    }
+  }
+
+  &:focus-visible {
+    outline: none;
+
+    &::before {
+      outline: 2px solid var(--gs-accent);
+      outline-offset: 3px;
+    }
   }
 }
 
