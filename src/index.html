@@ -51,6 +51,7 @@
         --pl-name: #221c33;
         --pl-sub: #6b6485;
         --pl-track: rgba(34, 28, 51, 0.1);
+        --pl-trace: #c9678f;
         position: fixed;
         inset: 0;
         z-index: 2147483000;
@@ -70,6 +71,7 @@
         --pl-name: #e9e9ed;
         --pl-sub: #8f93ad;
         --pl-track: rgba(233, 233, 237, 0.12);
+        --pl-trace: #b6ecff;
       }
       #pl-loader.enter {
         opacity: 0;
@@ -124,6 +126,32 @@
         stroke-width: 1.8;
         animation: pl-draw 0.6s cubic-bezier(0.65, 0, 0.35, 1) 1.05s forwards;
       }
+      /* Once drawn, the mark comes alive: it floats gently, a short light glides around the
+         diamond, and a soft halo behind the accent bar breathes. */
+      #pl-loader .pl-mark {
+        animation: pl-float 4.4s ease-in-out 1.7s infinite;
+      }
+      #pl-loader .pl-mark .pl-trace {
+        stroke: var(--pl-trace);
+        stroke-width: 1.3;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: 0.12 0.88;
+        stroke-dashoffset: 1;
+        opacity: 0;
+        animation:
+          pl-fade 0.7s ease 1.3s forwards,
+          pl-trace 3.4s linear 1.3s infinite;
+      }
+      #pl-loader .pl-mark .pl-glow {
+        stroke: var(--pl-hot);
+        stroke-width: 5;
+        stroke-linecap: round;
+        stroke-dasharray: none;
+        stroke-dashoffset: 0;
+        opacity: 0;
+        animation: pl-breathe 3s ease-in-out 1.7s infinite;
+      }
       #pl-loader .pl-name {
         margin: 30px 0 0;
         font:
@@ -175,6 +203,14 @@
         animation-duration: 0.01s;
         animation-delay: 0s;
       }
+      #pl-loader.fast .pl-mark,
+      #pl-loader.fast .pl-mark .pl-glow {
+        animation-delay: 0.1s;
+      }
+      #pl-loader.fast .pl-mark .pl-trace {
+        animation-duration: 0.4s, 3.4s;
+        animation-delay: 0.1s, 0.1s;
+      }
       @keyframes pl-draw {
         to {
           stroke-dashoffset: 0;
@@ -193,6 +229,29 @@
       @keyframes pl-fade {
         to {
           opacity: 1;
+        }
+      }
+      @keyframes pl-trace {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+      @keyframes pl-breathe {
+        0%,
+        100% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 0.22;
+        }
+      }
+      @keyframes pl-float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-3px);
         }
       }
       @media (prefers-reduced-motion: reduce) {
@@ -220,9 +279,11 @@
           '<div class="pl-col">' +
           '<svg class="pl-mark" viewBox="0 0 48 48" aria-hidden="true">' +
           '<path class="pl-dia" pathLength="1" d="M24 2.5 L45.5 24 L24 45.5 L2.5 24 Z"/>' +
+          '<path class="pl-trace" pathLength="1" d="M24 2.5 L45.5 24 L24 45.5 L2.5 24 Z"/>' +
           '<path class="pl-e pl-e1" pathLength="1" d="M15 14.5 V33.5"/>' +
           '<path class="pl-e pl-e2" pathLength="1" d="M15 15.5 H31"/>' +
           '<path class="pl-e pl-e3" pathLength="1" d="M15 32.5 H31"/>' +
+          '<path class="pl-glow" d="M15 24 H45"/>' +
           '<path class="pl-bar" pathLength="1" d="M15 24 H45"/>' +
           '</svg>' +
           '<p class="pl-name">ERIKA FULGENCIO</p>' +
