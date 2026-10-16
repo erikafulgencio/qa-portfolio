@@ -38,6 +38,7 @@
               [attr.srcset]="sc[0].srcset"
               sizes="(max-width: 560px) 92vw, 60vw"
               [alt]="altOf(sc[0])"
+              fetchpriority="low"
               decoding="async"
             />
             <img
@@ -46,6 +47,8 @@
               [attr.srcset]="sc[1].srcset"
               sizes="(max-width: 560px) 92vw, 60vw"
               [alt]="altOf(sc[1])"
+              loading="lazy"
+              fetchpriority="low"
               decoding="async"
             />
             <span class="seam" aria-hidden="true"
