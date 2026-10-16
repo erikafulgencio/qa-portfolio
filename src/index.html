@@ -40,328 +40,154 @@
       })();
     </script>
     <style>
-      /* Boot loader. The brand monogram assembles on a frosted tile while a gradient ring fills
-         with real loading progress; when the app is ready the mark settles and the screen opens
-         like an iris. Everything is inline so it paints before Angular boots. */
+      /* Boot loader: quiet and classic. The monogram draws itself in a fine line, the name and
+         title fade in beneath it, and a hairline fills with real progress. Inline, so it paints
+         before Angular boots. */
       #pl-loader {
-        --pl-bg: #f2f1f6;
-        --pl-aurora-1: #b9a6f5;
-        --pl-aurora-2: #f0b8ce;
-        --pl-aurora-3: #cfc3fb;
+        --pl-bg: #f4f3f8;
+        --pl-glow: rgba(109, 75, 214, 0.06);
         --pl-line: #6d4bd6;
         --pl-hot: #c9678f;
         --pl-name: #221c33;
-        --pl-sub: #5f587a;
-        --pl-msg: #6b6485;
-        --pl-track: rgba(109, 75, 214, 0.12);
-        --pl-tile: rgba(255, 255, 255, 0.72);
-        --pl-tile-edge: rgba(255, 255, 255, 0.95);
-        --pl-sheen: rgba(255, 255, 255, 0.9);
-        --pl-shadow: rgba(52, 33, 120, 0.22);
-        --pl-scan: rgba(109, 75, 214, 0.2);
-        --pl-pattern: rgba(109, 75, 214, 0.09);
+        --pl-sub: #6b6485;
+        --pl-track: rgba(34, 28, 51, 0.1);
         position: fixed;
         inset: 0;
         z-index: 2147483000;
-        overflow: hidden;
-        background: var(--pl-bg);
-        /* On exit the solid background hands over to the veil just as the iris starts. */
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(60% 50% at 50% 45%, var(--pl-glow), transparent 70%), var(--pl-bg);
         transition:
-          background-color 0s 0.18s,
-          opacity 0.25s ease 0.75s,
-          visibility 0s 1s;
+          opacity 0.5s ease,
+          visibility 0s 0.5s;
       }
       #pl-loader.alter {
         --pl-bg: #0b0d18;
-        --pl-aurora-1: #1d4e6b;
-        --pl-aurora-2: #5a1a37;
-        --pl-aurora-3: #1b2a55;
+        --pl-glow: rgba(120, 220, 255, 0.05);
         --pl-line: #78dcff;
         --pl-hot: #ff3c6a;
-        --pl-name: #eceef5;
-        --pl-sub: #9296b2;
-        --pl-msg: #8a8ea8;
-        --pl-track: rgba(120, 220, 255, 0.12);
-        --pl-tile: rgba(18, 22, 40, 0.78);
-        --pl-tile-edge: rgba(120, 220, 255, 0.28);
-        --pl-sheen: rgba(120, 220, 255, 0.16);
-        --pl-shadow: rgba(0, 0, 0, 0.55);
-        --pl-scan: rgba(120, 220, 255, 0.26);
-        --pl-pattern: rgba(120, 220, 255, 0.07);
-      }
-      /* Backdrop texture: a dot grid (Professional) or a HUD grid with scanlines (Alter Ego). */
-      #pl-loader::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(var(--pl-pattern) 1.1px, transparent 1.5px) 0 0 / 22px 22px;
-        -webkit-mask: radial-gradient(ellipse 70% 60% at 50% 42%, #000 20%, transparent 75%);
-        mask: radial-gradient(ellipse 70% 60% at 50% 42%, #000 20%, transparent 75%);
-      }
-      #pl-loader.alter::before {
-        background:
-          repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px),
-          linear-gradient(var(--pl-pattern) 1px, transparent 1px) 0 0 / 28px 28px,
-          linear-gradient(90deg, var(--pl-pattern) 1px, transparent 1px) 0 0 / 28px 28px;
+        --pl-name: #e9e9ed;
+        --pl-sub: #8f93ad;
+        --pl-track: rgba(233, 233, 237, 0.12);
       }
       #pl-loader.enter {
         opacity: 0;
         transition: opacity 0.35s ease;
       }
       #pl-loader.out {
-        background-color: transparent;
         opacity: 0;
         visibility: hidden;
       }
-      #pl-loader.out::before,
-      #pl-loader.out .pl-aurora {
-        opacity: 0;
-        transition: opacity 0.2s ease;
+      #pl-loader .pl-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: -4vh;
+        transition: transform 0.5s ease;
       }
-      /* The iris: a screen-covering veil with a hole at the mark, scaled up on the GPU (a transform,
-         not an animated mask, so phones and WebKit don't repaint the whole screen every frame).
-         It starts with the hole hidden behind the fading tile. */
-      #pl-loader .pl-veil {
-        display: none;
-        position: absolute;
-        left: 50%;
-        top: 40.5%;
-        width: 200vmax;
-        height: 200vmax;
-        margin: -100vmax 0 0 -100vmax;
-        background: radial-gradient(circle, transparent 8vmax, var(--pl-bg) calc(8vmax + 1px));
-        transform: scale(0.8);
-        will-change: transform;
+      #pl-loader.out .pl-col {
+        transform: translateY(-6px);
       }
-      #pl-loader.out .pl-veil {
-        display: block;
-        animation: pl-iris 0.8s cubic-bezier(0.55, 0, 0.25, 1) 0.18s forwards;
-      }
-      @keyframes pl-iris {
-        to {
-          transform: scale(11);
-        }
-      }
-      /* Aurora: three soft colour fields drifting on their own GPU layers. */
-      #pl-loader .pl-aurora {
-        position: absolute;
-        inset: 0;
-      }
-      #pl-loader .pl-aurora i {
-        --s: min(125vmin, 640px);
-        position: absolute;
-        left: 50%;
-        top: 46%;
-        width: var(--s);
-        height: var(--s);
-        margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
-        border-radius: 50%;
-        background: radial-gradient(closest-side, var(--pl-aurora-1), transparent);
-        opacity: 0.75;
-        translate: -22% -18%;
-        will-change: transform;
-        animation: pl-drift 9s ease-in-out infinite alternate;
-      }
-      #pl-loader .pl-aurora i:nth-child(2) {
-        --s: min(115vmin, 600px);
-        background: radial-gradient(closest-side, var(--pl-aurora-2), transparent);
-        opacity: 0.7;
-        translate: 24% 16%;
-        animation-duration: 11s;
-        animation-direction: alternate-reverse;
-      }
-      #pl-loader .pl-aurora i:nth-child(3) {
-        --s: min(110vmin, 560px);
-        background: radial-gradient(closest-side, var(--pl-aurora-3), transparent);
-        opacity: 0.6;
-        translate: 0 52%;
-        animation-duration: 13s;
-      }
-      #pl-loader svg {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: min(84vw, 380px);
-        height: auto;
-        transform: translate(-50%, -52%);
+      #pl-loader .pl-mark {
+        width: 64px;
+        height: 64px;
         overflow: visible;
       }
-      #pl-loader .pl-fit {
-        transform-box: fill-box;
-        transform-origin: center;
+      #pl-loader .pl-mark path {
+        fill: none;
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
       }
-      /* The floating glass tile. */
-      #pl-loader .pl-float {
-        animation: pl-float 4.2s ease-in-out infinite;
-      }
-      #pl-loader .pl-shadow {
-        animation: pl-shadow 4.2s ease-in-out infinite;
-      }
-      /* Assembly (lengths in monogram units: diamond 122, E strokes 19/16, bar 30). */
       #pl-loader .pl-dia {
-        stroke-dasharray: 122;
-        stroke-dashoffset: 122;
-        animation: pl-draw 0.62s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
+        stroke: var(--pl-line);
+        stroke-width: 1;
+        stroke-linejoin: round;
+        animation: pl-draw 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.1s forwards;
       }
       #pl-loader .pl-e {
-        stroke-dasharray: 19;
-        stroke-dashoffset: 19;
-        animation: pl-draw 0.26s ease-out forwards;
+        stroke: var(--pl-line);
+        stroke-width: 1.8;
+        animation: pl-draw 0.45s ease-out forwards;
       }
       #pl-loader .pl-e1 {
-        animation-delay: 0.36s;
+        animation-delay: 0.65s;
       }
       #pl-loader .pl-e2 {
-        animation-delay: 0.48s;
+        animation-delay: 0.8s;
       }
       #pl-loader .pl-e3 {
-        animation-delay: 0.56s;
+        animation-delay: 0.9s;
       }
-      #pl-loader .pl-bar,
-      #pl-loader .pl-bar-glow {
-        transform-box: fill-box;
-        transform-origin: left center;
+      #pl-loader .pl-bar {
+        stroke: var(--pl-hot);
+        stroke-width: 1.8;
+        animation: pl-draw 0.6s cubic-bezier(0.65, 0, 0.35, 1) 1.05s forwards;
+      }
+      #pl-loader .pl-name {
+        margin: 30px 0 0;
+        font:
+          400 15px/1 'Inter',
+          'Segoe UI',
+          'Helvetica Neue',
+          Arial,
+          sans-serif;
+        letter-spacing: 0.34em;
+        text-indent: 0.34em; /* balances the trailing letter-spacing so the name sits centred */
+        color: var(--pl-name);
+        opacity: 0;
+        animation: pl-rise 0.9s ease 0.45s forwards;
+      }
+      #pl-loader .pl-role {
+        margin: 12px 0 0;
+        font:
+          400 10px/1 ui-monospace,
+          'SFMono-Regular',
+          Menlo,
+          Consolas,
+          monospace;
+        letter-spacing: 0.3em;
+        text-indent: 0.3em;
+        color: var(--pl-sub);
+        opacity: 0;
+        animation: pl-rise 0.9s ease 0.65s forwards;
+      }
+      #pl-loader .pl-track {
+        width: 88px;
+        height: 1px;
+        margin-top: 30px;
+        overflow: hidden;
+        background: var(--pl-track);
+        opacity: 0;
+        animation: pl-fade 0.6s ease 0.8s forwards;
+      }
+      #pl-loader .pl-fill {
+        height: 100%;
+        background: var(--pl-line);
         transform: scaleX(0);
-        animation: pl-shoot 0.34s cubic-bezier(0.2, 0.8, 0.2, 1) 0.66s forwards;
+        transform-origin: left center;
       }
-      #pl-loader .pl-bar-glow {
-        opacity: 0.22;
-      }
-      #pl-loader .pl-spark {
-        transform-box: fill-box;
-        transform-origin: center;
-        opacity: 0;
-        animation: pl-spark 2.4s ease-out 0.95s infinite;
-      }
-      #pl-loader .pl-sweep {
-        transform: translateX(-40px);
-        animation: pl-sweep 2.6s cubic-bezier(0.45, 0, 0.55, 1) 1.1s infinite;
-      }
-      #pl-loader .pl-stage {
-        animation: pl-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-      }
-      #pl-loader .pl-ch {
-        opacity: 0;
-        animation: pl-fade 0.45s ease forwards;
-      }
-      #pl-loader .pl-sub-txt {
-        animation: pl-rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.9s both;
-      }
-      /* Ready: the ring flashes once, then the mark settles before the iris opens. */
-      #pl-loader.done .pl-ring {
-        animation: pl-flash 0.45s ease-out;
-      }
-      #pl-loader .pl-stage,
-      #pl-loader .pl-txt {
-        transition:
-          transform 0.4s cubic-bezier(0.7, 0, 0.3, 1),
-          opacity 0.3s ease;
-      }
-      #pl-loader.out .pl-stage {
-        transform: scale(0.88);
-        opacity: 0;
-      }
-      #pl-loader.out .pl-txt {
-        transform: translateY(8px);
-        opacity: 0;
-      }
-      /* Alter Ego: HUD brackets lock on and the bar glitches. */
-      #pl-loader .pl-hud {
-        display: none;
-      }
-      #pl-loader.alter .pl-hud {
-        display: inline;
-        animation: pl-lock 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.25s both;
-      }
-      #pl-loader.alter .pl-bar {
-        animation:
-          pl-shoot 0.34s cubic-bezier(0.2, 0.8, 0.2, 1) 0.66s forwards,
-          pl-glitch 2.4s steps(1) 1.3s infinite;
-      }
-      /* Fast variant (a reload in the same session, or a mode swap): the mark is already drawn. */
-      #pl-loader.fast .pl-dia,
-      #pl-loader.fast .pl-e {
+      /* A reload in the same session, or a mode swap: everything is already in place. */
+      #pl-loader.fast .pl-mark path,
+      #pl-loader.fast .pl-name,
+      #pl-loader.fast .pl-role,
+      #pl-loader.fast .pl-track {
         animation-duration: 0.01s;
         animation-delay: 0s;
-      }
-      #pl-loader.fast .pl-bar,
-      #pl-loader.fast .pl-bar-glow {
-        animation-duration: 0.2s;
-        animation-delay: 0.05s;
-      }
-      #pl-loader.fast .pl-ch,
-      #pl-loader.fast .pl-sub-txt {
-        animation-duration: 0.2s;
-        animation-delay: 0s !important;
       }
       @keyframes pl-draw {
         to {
           stroke-dashoffset: 0;
         }
       }
-      @keyframes pl-shoot {
-        to {
-          transform: scaleX(1);
-        }
-      }
-      @keyframes pl-spark {
-        0% {
-          opacity: 0.95;
-          transform: scale(0.4);
-        }
-        35%,
-        100% {
-          opacity: 0;
-          transform: scale(2.8);
-        }
-      }
-      @keyframes pl-sweep {
-        0% {
-          transform: translateX(-40px);
-        }
-        55%,
-        100% {
-          transform: translateX(150px);
-        }
-      }
-      @keyframes pl-drift {
-        from {
-          transform: translate(-14px, -10px) scale(1);
-        }
-        to {
-          transform: translate(18px, 14px) scale(1.12);
-        }
-      }
-      @keyframes pl-float {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-5px);
-        }
-      }
-      @keyframes pl-shadow {
-        0%,
-        100% {
-          transform: scaleX(1);
-          opacity: 1;
-        }
-        50% {
-          transform: scaleX(0.88);
-          opacity: 0.7;
-        }
-      }
-      @keyframes pl-in {
-        from {
-          opacity: 0;
-          transform: scale(0.9);
-        }
-      }
       @keyframes pl-rise {
         from {
           opacity: 0;
-          transform: translateY(8px);
+          transform: translateY(4px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
         }
       }
       @keyframes pl-fade {
@@ -369,59 +195,16 @@
           opacity: 1;
         }
       }
-      @keyframes pl-flash {
-        50% {
-          stroke-width: 6;
-          opacity: 0.7;
-        }
-      }
-      @keyframes pl-lock {
-        from {
-          opacity: 0;
-          transform: scale(1.3);
-        }
-      }
-      @keyframes pl-glitch {
-        0%,
-        88%,
-        100% {
-          opacity: 1;
-        }
-        90% {
-          opacity: 0.2;
-        }
-        93% {
-          opacity: 1;
-        }
-        95% {
-          opacity: 0.45;
-        }
-      }
       @media (prefers-reduced-motion: reduce) {
-        #pl-loader,
         #pl-loader * {
           animation: none !important;
         }
-        #pl-loader {
-          transition:
-            opacity 0.3s ease,
-            visibility 0s 0.3s;
-        }
-        #pl-loader.out {
-          background-color: var(--pl-bg);
-        }
-        #pl-loader .pl-veil {
-          display: none !important;
-        }
-        #pl-loader .pl-dia,
-        #pl-loader .pl-e {
+        #pl-loader .pl-mark path {
           stroke-dashoffset: 0;
         }
-        #pl-loader .pl-bar,
-        #pl-loader .pl-bar-glow {
-          transform: none;
-        }
-        #pl-loader .pl-ch {
+        #pl-loader .pl-name,
+        #pl-loader .pl-role,
+        #pl-loader .pl-track {
           opacity: 1;
         }
       }
@@ -431,87 +214,21 @@
     <script>
       // window.__efLoader.show(mode, { swap, onCovered }) / .ready() — driven by LoaderService.
       (function () {
-        // The brand monogram (same geometry as shared/monogram.ts) on a frosted tile, ringed by
-        // the progress arc. Stage centre is (400, 318) in a 300x380 crop of an 800x800 canvas.
-        var MONO = 'ui-monospace,SFMono-Regular,Menlo,Consolas,monospace';
-        var SANS = 'Segoe UI,Helvetica Neue,Helvetica,Arial,sans-serif';
-        var MARK = 'transform="translate(342.4 260.4) scale(2.4)"';
-        var RING_R = 112;
-        var RING_C = 2 * Math.PI * RING_R;
-        var NAME = 'ERIKA FULGENCIO';
-        var letters = NAME.split('')
-          .map(function (c, i) {
-            return (
-              '<tspan class="pl-ch" style="animation-delay:' +
-              (0.62 + i * 0.035).toFixed(3) +
-              's">' +
-              (c === ' ' ? ' ' : c) +
-              '</tspan>'
-            );
-          })
-          .join('');
-        // HUD corner brackets (Alter Ego), just outside the ring.
-        var HUD =
-          '<g class="pl-hud pl-fit" fill="none" stroke="var(--pl-line)" stroke-width="2" stroke-opacity=".75">' +
-          '<path d="M276 214V194H296M504 194H524V214M524 422V442H504M296 442H276V422"/></g>';
-        var SVG =
-          '<svg viewBox="250 190 300 380" aria-hidden="true">' +
-          '<defs>' +
-          '<radialGradient id="pl-sh"><stop offset="0" stop-color="var(--pl-shadow)"/><stop offset="1" stop-color="var(--pl-shadow)" stop-opacity="0"/></radialGradient>' +
-          '<linearGradient id="pl-gm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--pl-line)"/><stop offset="1" stop-color="var(--pl-hot)"/></linearGradient>' +
-          '<linearGradient id="pl-gr" gradientUnits="userSpaceOnUse" x1="288" y1="206" x2="512" y2="430"><stop offset="0" stop-color="var(--pl-line)"/><stop offset="1" stop-color="var(--pl-hot)"/></linearGradient>' +
-          '<linearGradient id="pl-gsheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--pl-sheen)"/><stop offset=".55" stop-color="var(--pl-sheen)" stop-opacity="0"/></linearGradient>' +
-          '<linearGradient id="pl-gs" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="var(--pl-scan)" stop-opacity="0"/><stop offset=".5" stop-color="var(--pl-scan)"/><stop offset="1" stop-color="var(--pl-scan)" stop-opacity="0"/></linearGradient>' +
-          '<clipPath id="pl-clip"><path d="M24 2.5 L45.5 24 L24 45.5 L2.5 24 Z"/></clipPath>' +
-          '<clipPath id="pl-tile-clip"><rect x="318" y="236" width="164" height="164" rx="40"/></clipPath>' +
-          '</defs>' +
-          '<g class="pl-stage pl-fit">' +
-          HUD +
-          // Progress ring: track, arc and a glowing head that rides the arc.
-          '<circle cx="400" cy="318" r="' +
-          RING_R +
-          '" fill="none" stroke="var(--pl-track)" stroke-width="3"/>' +
-          '<circle class="pl-ring" cx="400" cy="318" r="' +
-          RING_R +
-          '" fill="none" stroke="url(#pl-gr)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="' +
-          RING_C.toFixed(2) +
-          '" stroke-dashoffset="' +
-          RING_C.toFixed(2) +
-          '" transform="rotate(-90 400 318)"/>' +
-          '<circle class="pl-halo" cx="400" cy="206" r="9" fill="var(--pl-hot)" opacity=".25"/>' +
-          '<circle class="pl-head" cx="400" cy="206" r="4" fill="var(--pl-hot)"/>' +
-          // Floating glass tile with its shadow.
-          '<ellipse class="pl-shadow" cx="400" cy="420" rx="66" ry="9" fill="url(#pl-sh)"/>' +
-          '<g class="pl-float">' +
-          '<rect x="318" y="236" width="164" height="164" rx="40" fill="var(--pl-tile)" stroke="var(--pl-tile-edge)" stroke-width="1.2"/>' +
-          '<rect x="318" y="236" width="164" height="164" rx="40" fill="url(#pl-gsheen)" clip-path="url(#pl-tile-clip)" opacity=".7"/>' +
-          '<g ' +
-          MARK +
-          ' fill="none" stroke-linecap="square">' +
-          '<g clip-path="url(#pl-clip)"><rect class="pl-sweep" x="0" y="0" width="18" height="48" fill="url(#pl-gs)" stroke="none"/></g>' +
-          '<path class="pl-dia" d="M24 2.5 L45.5 24 L24 45.5 L2.5 24 Z" stroke="url(#pl-gm)" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>' +
-          '<path class="pl-e pl-e1" d="M15 14.5 V33.5" stroke="var(--pl-line)" stroke-width="2.4"/>' +
-          '<path class="pl-e pl-e2" d="M15 15.5 H31" stroke="var(--pl-line)" stroke-width="2.4"/>' +
-          '<path class="pl-e pl-e3" d="M15 32.5 H31" stroke="var(--pl-line)" stroke-width="2.4"/>' +
-          '<path class="pl-bar-glow" d="M15 24 H45" stroke="var(--pl-hot)" stroke-width="6" stroke-linecap="round"/>' +
-          '<path class="pl-bar" d="M15 24 H45" stroke="var(--pl-hot)" stroke-width="2.4"/>' +
-          '<circle class="pl-spark" cx="45" cy="24" r="1.6" fill="var(--pl-hot)" stroke="none"/>' +
-          '</g></g></g>' +
-          // Name (letter by letter), role and QA-flavoured status.
-          '<g class="pl-txt pl-fit">' +
-          '<text x="400" y="478" text-anchor="middle" font-family="' +
-          SANS +
-          '" font-size="18" font-weight="600" letter-spacing="6.5" fill="var(--pl-name)">' +
-          letters +
-          '</text>' +
-          '<g class="pl-sub-txt">' +
-          '<text x="400" y="503" text-anchor="middle" font-family="' +
-          MONO +
-          '" font-size="10.5" letter-spacing="3.5" fill="var(--pl-sub)" class="pl-role"></text>' +
-          '<text x="400" y="542" text-anchor="middle" font-family="' +
-          MONO +
-          '" font-size="9.5" letter-spacing="2.6" fill="var(--pl-msg)"><tspan class="pl-msg"></tspan><tspan class="pl-pct" dx="8" fill="var(--pl-line)"></tspan></text>' +
-          '</g></g></svg>';
+        // The brand monogram (same geometry as shared/monogram.ts). pathLength="1" lets every stroke
+        // draw with the same dash values.
+        var MARKUP =
+          '<div class="pl-col">' +
+          '<svg class="pl-mark" viewBox="0 0 48 48" aria-hidden="true">' +
+          '<path class="pl-dia" pathLength="1" d="M24 2.5 L45.5 24 L24 45.5 L2.5 24 Z"/>' +
+          '<path class="pl-e pl-e1" pathLength="1" d="M15 14.5 V33.5"/>' +
+          '<path class="pl-e pl-e2" pathLength="1" d="M15 15.5 H31"/>' +
+          '<path class="pl-e pl-e3" pathLength="1" d="M15 32.5 H31"/>' +
+          '<path class="pl-bar" pathLength="1" d="M15 24 H45"/>' +
+          '</svg>' +
+          '<p class="pl-name">ERIKA FULGENCIO</p>' +
+          '<p class="pl-role"></p>' +
+          '<div class="pl-track"><div class="pl-fill"></div></div>' +
+          '</div>';
 
         var appReady = false;
         var state = null;
@@ -535,28 +252,14 @@
             (mode === 'alter' ? 'alter' : 'pro') +
             (opt.swap ? ' enter' : '') +
             (fast ? ' fast' : '');
-          d.innerHTML =
-            '<div class="pl-veil"></div><div class="pl-aurora"><i></i><i></i><i></i></div>' + SVG;
+          d.innerHTML = MARKUP;
           d.querySelector('.pl-role').textContent =
             mode === 'alter' ? 'THE GLITCHBANE \u00b7 LV.08' : 'SENIOR QA ENGINEER';
           document.body.appendChild(d);
-          var ring = d.querySelector('.pl-ring');
-          var head = d.querySelector('.pl-head');
-          var halo = d.querySelector('.pl-halo');
+          var fill = d.querySelector('.pl-fill');
           var last = 0;
-          var pct = d.querySelector('.pl-pct');
-          var msg = d.querySelector('.pl-msg');
-          var STEPS =
-            mode === 'alter'
-              ? ['SCANNING SECTOR', 'TRACKING GLITCHES', 'LOCKING TARGET', '\u2713 TARGET SECURED']
-              : [
-                  'RUNNING SMOKE TESTS',
-                  'CHECKING EDGE CASES',
-                  'VERIFYING QUALITY',
-                  '\u2713 ALL CHECKS PASSED',
-                ];
           var t0 = performance.now();
-          var minT = opt.swap ? 900 : fast ? 250 : 950;
+          var minT = opt.swap ? 900 : fast ? 250 : 1400;
           var p = 0;
           var ended = false;
           state = { covered: !opt.swap, swap: !!opt.swap };
@@ -575,15 +278,13 @@
           function end() {
             if (ended) return;
             ended = true;
-            msg.textContent = STEPS[3];
-            pct.textContent = '';
-            d.classList.add('done');
+            fill.style.transform = 'scaleX(1)';
             setTimeout(function () {
               d.classList.add('out');
               setTimeout(function () {
                 d.remove();
-              }, 1000);
-            }, 200);
+              }, 550);
+            }, 160);
           }
           function tick(now) {
             var el = Math.max(0, now - t0); // the first rAF timestamp can predate t0
@@ -594,17 +295,7 @@
             last = now;
             p += (goal - p) * (1 - Math.pow(0.84, dt / 16.67));
             if (goal === 1 && p > 0.995) p = 1;
-            var q = Math.max(0, p);
-            ring.setAttribute('stroke-dashoffset', (RING_C * (1 - q)).toFixed(2));
-            var angle = q * 2 * Math.PI - Math.PI / 2;
-            var hx = (400 + RING_R * Math.cos(angle)).toFixed(2);
-            var hy = (318 + RING_R * Math.sin(angle)).toFixed(2);
-            head.setAttribute('cx', hx);
-            head.setAttribute('cy', hy);
-            halo.setAttribute('cx', hx);
-            halo.setAttribute('cy', hy);
-            msg.textContent = STEPS[q < 0.34 ? 0 : q < 0.68 ? 1 : 2];
-            pct.textContent = Math.round(q * 100) + '%';
+            fill.style.transform = 'scaleX(' + Math.max(0, p).toFixed(4) + ')';
             if (p >= 1) return end();
             requestAnimationFrame(tick);
           }
