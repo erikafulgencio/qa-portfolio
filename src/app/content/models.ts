@@ -33,6 +33,28 @@ export interface Quest {
   cta?: string;
 }
 
+/** A screenshot under `public/`, e.g. `assets/img/projects/portfolio-pro-desktop.webp`. */
+export interface Snapshot {
+  src: string;
+  /** Responsive candidates, e.g. "a-720.webp 720w, a.webp 1440w"; phones download the small one. */
+  srcset?: string;
+  alt: string;
+  /** Short label shown with the image, e.g. "Professional · home". */
+  caption: string;
+}
+
+/**
+ * Artwork drawn for a development project: `site` frames real screenshots in a browser,
+ * `editor` is an animated code pen, `terminal` an animated shell session.
+ */
+export type DevArt = 'site' | 'editor' | 'terminal';
+
+export interface ExternalLink {
+  label: string;
+  href: string;
+  icon: IconName;
+}
+
 /** Development project, only listed in Professional mode. */
 export interface DevProject {
   id: string;
@@ -43,6 +65,14 @@ export interface DevProject {
   bullets: string[];
   stack: string[];
   why: string;
+  art: DevArt;
+  /** Short facts that float over the artwork as glass chips (keep them to a few words). */
+  highlights?: { icon: IconName; label: string }[];
+  /** For `site` art: two desktop captures the browser wipes between on a loop (e.g. both modes). */
+  screens?: [Snapshot, Snapshot];
+  /** Screenshots listed on the project page. */
+  gallery?: Snapshot[];
+  links?: ExternalLink[];
 }
 
 export interface WorkArtifact {
@@ -171,8 +201,12 @@ export interface HudStat {
 export interface ContactLink {
   icon: IconName;
   label: string;
+  /** Shown text. For a protected detail, its masked form, e.g. "+63 9•• ••• ••89". */
   value: string;
+  /** Link target. Empty for a protected detail: it is built from `protect` once revealed. */
   href: string;
   /** Float animation duration. */
   dur: string;
+  /** A personal detail kept away from scrapers: encoded (scripts/protect.mjs), revealed on tap. */
+  protect?: { kind: 'email' | 'phone' | 'viber'; code: string };
 }

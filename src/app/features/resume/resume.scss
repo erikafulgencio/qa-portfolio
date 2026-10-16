@@ -52,8 +52,10 @@
     border-radius: 999px;
   }
 
-  &:hover {
-    background: var(--gs-accent-hi);
+  @media (hover: hover) {
+    &:hover {
+      background: var(--gs-accent-hi);
+    }
   }
 }
 
@@ -134,8 +136,10 @@
   animation: bar-grow 0.8s ease both;
   transition: filter 0.2s ease;
 
-  .bar-col:hover & {
-    filter: brightness(1.3);
+  @media (hover: hover) {
+    .bar-col:hover & {
+      filter: brightness(1.3);
+    }
   }
 }
 
@@ -292,10 +296,12 @@
     box-shadow: 0 20px 46px -34px rgba(20, 20, 40, 0.4);
   }
 
-  &:hover {
-    transform: translateY(-4px);
-    border-color: ac(34%);
-    box-shadow: 0 32px 60px -34px ac(55%);
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-4px);
+      border-color: ac(34%);
+      box-shadow: 0 32px 60px -34px ac(55%);
+    }
   }
 
   @include below($bp-sm) {
@@ -330,6 +336,33 @@
   display: flex;
   align-items: flex-start;
   gap: 16px;
+
+  // Phones: badge beside the date pills, title and company across the full width below.
+  @include below($bp-sm) {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 12px;
+
+    .card-meta {
+      display: contents;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 13px;
+    }
+
+    .pills {
+      align-self: center;
+    }
+
+    .role,
+    .company {
+      grid-column: 1 / -1;
+      margin-top: 0;
+    }
+  }
 }
 
 .logo {
@@ -346,8 +379,10 @@
     border-radius: 0;
   }
 
-  .card:hover & {
-    transform: translateY(-2px) rotate(-4deg) scale(1.05);
+  @media (hover: hover) {
+    .card:hover & {
+      transform: translateY(-2px) rotate(-4deg) scale(1.05);
+    }
   }
 
   @include below($bp-sm) {
@@ -439,9 +474,11 @@
       background: var(--gs-accent);
     }
 
-    &:hover {
-      background: ac(6%);
-      transform: translateX(3px);
+    @media (hover: hover) {
+      &:hover {
+        background: ac(6%);
+        transform: translateX(3px);
+      }
     }
   }
 }

@@ -46,6 +46,15 @@
   background: ac(4%);
   @include kicker(9.5px, 0.16em);
   color: tx(62%);
+
+  // Phones: the larger label may need two lines on a 320px screen.
+  @include phone {
+    flex: 0 1 auto;
+    max-width: 100%;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+    border-radius: 16px;
+  }
 }
 
 .hobbies {
@@ -72,10 +81,12 @@
     border-color 0.3s ease,
     box-shadow 0.3s ease;
 
-  &:hover {
-    border-color: var(--gs-accent);
-    transform: translateY(-3px);
-    box-shadow: 0 18px 34px -26px ac(70%);
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--gs-accent);
+      transform: translateY(-3px);
+      box-shadow: 0 18px 34px -26px ac(70%);
+    }
   }
 
   @include below($bp-sm) {
@@ -96,8 +107,10 @@
   font-size: 16px;
   transition: transform 0.3s ease;
 
-  .hobby:hover & {
-    transform: rotate(-8deg) scale(1.08);
+  @media (hover: hover) {
+    .hobby:hover & {
+      transform: rotate(-8deg) scale(1.08);
+    }
   }
 }
 
@@ -131,10 +144,12 @@
     box-shadow 0.35s ease,
     border-color 0.35s ease;
 
-  &:hover {
-    transform: translateY(-3px) scale(1.05);
-    border-color: var(--gs-accent);
-    box-shadow: 0 16px 30px -22px ac(80%);
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-3px) scale(1.05);
+      border-color: var(--gs-accent);
+      box-shadow: 0 16px 30px -22px ac(80%);
+    }
   }
 }
 

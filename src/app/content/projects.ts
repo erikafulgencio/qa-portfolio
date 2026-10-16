@@ -1,5 +1,24 @@
 // Content migrated verbatim from the Claude Design source. Edit freely; components read only from here.
-import type { DevProject, Quest, WorkArtifact } from './models';
+import type { DevProject, Quest, Snapshot, WorkArtifact } from './models';
+
+/** Screenshots captured from the live site by `npm run snapshots`. */
+const shot = (file: string, caption: string, alt: string): Snapshot => ({
+  src: `assets/img/projects/${file}.webp`,
+  srcset: `assets/img/projects/${file}-720.webp 720w, assets/img/projects/${file}.webp 1440w`,
+  caption,
+  alt,
+});
+
+const PORTFOLIO_PRO = shot(
+  'portfolio-pro-desktop',
+  'Professional · home',
+  'The portfolio home page in Professional mode: a light lavender hero with an iceberg illustration.',
+);
+const PORTFOLIO_ALTER = shot(
+  'portfolio-alter-desktop',
+  'Alter Ego · home',
+  'The portfolio home page in Alter Ego mode: a dark game-HUD hero with the Glitchbane character art.',
+);
 
 export const QUESTS: Quest[] = [
   {
@@ -176,8 +195,45 @@ export const DEV_PROJECTS: DevProject[] = [
       'Interactive QA mini-games built from scratch',
       'Animation and layout work done without a UI framework',
     ],
-    stack: ['HTML', 'CSS', 'JavaScript'],
+    stack: ['Angular', 'TypeScript', 'SCSS', 'Playwright'],
     why: 'A QA portfolio should show judgement, not just a CV. Building it myself also keeps my front-end reading sharp — it is easier to test what you have had to build.',
+    art: 'site',
+    highlights: [
+      { icon: 'ph-swap', label: '2 modes · 1 codebase' },
+      { icon: 'ph-check-circle', label: 'axe-checked in both modes' },
+    ],
+    screens: [PORTFOLIO_PRO, PORTFOLIO_ALTER],
+    gallery: [
+      PORTFOLIO_PRO,
+      PORTFOLIO_ALTER,
+      shot(
+        'portfolio-pro-squash',
+        'Mini game · Bug Squash',
+        'Bug Squash mid-hunt: bugs crawl across a staging grid towards production.',
+      ),
+      shot(
+        'portfolio-alter-about',
+        'Mini game · Spot the defect',
+        'The Alter Ego origin story page beside the Spot the defect mini game.',
+      ),
+      shot(
+        'portfolio-pro-skills',
+        'Professional · skill tree',
+        'The Professional skills page: grouped skill cards and a currently-training panel.',
+      ),
+    ],
+    links: [
+      {
+        label: 'Visit the live site',
+        href: 'https://erikafulgencio.github.io/qa-portfolio/',
+        icon: 'ph-globe',
+      },
+      {
+        label: 'View source',
+        href: 'https://github.com/erikafulgencio/qa-portfolio',
+        icon: 'ph-github-logo',
+      },
+    ],
   },
   {
     id: 'pen',
@@ -192,6 +248,8 @@ export const DEV_PROJECTS: DevProject[] = [
     ],
     stack: ['HTML', 'CSS', 'JavaScript'],
     why: 'Half of the UI defects I find come from knowing how the layer is normally built. Experimenting keeps that instinct current.',
+    art: 'editor',
+    highlights: [{ icon: 'ph-sparkle', label: 'Motion & state studies' }],
   },
   {
     id: 'tools',
@@ -206,6 +264,8 @@ export const DEV_PROJECTS: DevProject[] = [
     ],
     stack: ['Python', 'SQL', 'CLI'],
     why: 'Most flaky suites are not flaky code — they are dirty data. Owning the data setup removed a whole class of false failures.',
+    art: 'terminal',
+    highlights: [{ icon: 'ph-arrows-clockwise', label: 'Run #2 · same result' }],
   },
 ];
 

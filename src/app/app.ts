@@ -36,6 +36,10 @@ import { HeartRain } from './shared/heart-rain';
     main {
       flex: 1;
       outline: none;
+      // At least a screen tall, so the footer starts below the fold and doesn't jump down when the
+      // lazily loaded page arrives (it was the site's one layout shift, CLS 0.2).
+      min-height: 100vh;
+      min-height: 100svh;
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

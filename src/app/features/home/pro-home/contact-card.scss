@@ -79,10 +79,12 @@ h2 {
     background 0.25s ease,
     transform 0.25s ease;
 
-  &:hover {
-    border-color: var(--gs-accent);
-    background: ac(8%);
-    transform: translateX(4px);
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--gs-accent);
+      background: ac(8%);
+      transform: translateX(4px);
+    }
   }
 
   > i {
@@ -143,4 +145,12 @@ h2 {
   border-radius: 50%;
   background: var(--gs-accent);
   animation: g-pulse 1.6s ease-in-out infinite;
+}
+
+// Reveal-on-tap buttons for protected details share the link styling.
+button.link {
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 }

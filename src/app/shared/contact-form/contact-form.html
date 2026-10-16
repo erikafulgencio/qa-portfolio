@@ -123,5 +123,14 @@
         Sending opens your email app.
       }
     </p>
+    <p class="foot privacy">
+      <i class="ph ph-lock-simple" aria-hidden="true"></i>
+      @if (usesHubSpot) {
+        Your message is delivered through HubSpot and used only to reply to you.
+      } @else {
+        Your message goes straight from your email app to my inbox.
+      }
+      No cookies, no tracking.
+    </p>
   </form>
 }

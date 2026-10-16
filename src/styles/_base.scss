@@ -107,6 +107,39 @@ ol {
   }
 }
 
+// Touch screens. Hover effects only apply where a real pointer can hover (every :hover rule sits in
+// @media (hover: hover)), so a tap never leaves a "stuck" hover state behind. Taps get a brief press
+// state instead, without the grey iOS tap flash or the double-tap-to-zoom delay.
+a,
+button,
+[role='button'],
+summary,
+label,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+@media (hover: none) {
+  :is(a, button, [role='button']):active {
+    filter: brightness(0.94);
+  }
+}
+
+// Same-document view transitions (the Projects filter): cards glide to their new slots while the
+// page itself stays put. Skipped entirely under reduced motion by the caller.
+::view-transition-group(*) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -142,10 +142,12 @@
     border-color 0.25s ease,
     transform 0.25s ease;
 
-  &:hover {
-    color: var(--gs-accent);
-    transform: translateY(-2px);
-    border-bottom-color: var(--gs-accent);
+  @media (hover: hover) {
+    &:hover {
+      color: var(--gs-accent);
+      transform: translateY(-2px);
+      border-bottom-color: var(--gs-accent);
+    }
   }
 
   &.active {
@@ -165,9 +167,11 @@
   border: 1px solid ac(14%);
   @include chamfer(6px);
 
-  &:hover {
-    border-color: var(--gs-accent);
-    color: var(--gs-accent-hi);
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--gs-accent);
+      color: var(--gs-accent-hi);
+    }
   }
 
   &.active {
@@ -220,8 +224,10 @@
     border-radius: var(--gs-radius, 0px);
     color: tx(66%);
 
-    &:hover {
-      color: var(--gs-accent-hi);
+    @media (hover: hover) {
+      &:hover {
+        color: var(--gs-accent-hi);
+      }
     }
 
     &.on {

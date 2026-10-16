@@ -42,6 +42,14 @@ import { PROFILE } from '../content/profile';
       flex-wrap: wrap;
       align-items: center;
       font-size: 11.5px;
+
+      @include phone {
+        font-size: 12.5px;
+        // Room for the back-to-top button, so it never sits on the last links.
+        padding: 24px 20px calc(80px + env(safe-area-inset-bottom, 0px));
+        flex-direction: column;
+        text-align: center;
+      }
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: tx(55%);
@@ -52,12 +60,23 @@ import { PROFILE } from '../content/profile';
       display: flex;
       gap: 16px;
 
+      @include phone {
+        margin-left: 0;
+        justify-content: center;
+        gap: 22px;
+      }
+
       a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 24px; // WCAG 2.2 target size
         text-decoration: none;
         color: var(--gs-accent);
 
-        &:hover {
-          text-decoration: underline;
+        @media (hover: hover) {
+          &:hover {
+            text-decoration: underline;
+          }
         }
       }
     }

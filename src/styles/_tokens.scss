@@ -1,12 +1,18 @@
 // Theme tokens. Alter Ego (dark game HUD) is the base; Professional overrides it.
 // ModeService sets <html data-mode="pro|alter">, so every component just reads var(--gs-*).
 :root {
-  --gs-bg: #0c0e1a;
-  --gs-text: #e9e9ed;
-  --gs-accent: #78dcff;
+  // The Alter Ego core palette, never overridden, so Professional mode can still preview it.
+  --ae-bg: #0c0e1a;
+  --ae-text: #e9e9ed;
+  --ae-accent: #78dcff;
+  --ae-hot: #ff3c6a;
+
+  --gs-bg: var(--ae-bg);
+  --gs-text: var(--ae-text);
+  --gs-accent: var(--ae-accent);
   --gs-accent-hi: #b6ecff;
   --gs-accent-soft: #bfeaff;
-  --gs-hot: #ff3c6a;
+  --gs-hot: var(--ae-hot);
   --gs-hot-soft: #ff8fab;
   --gs-hot-hi: #ff7a9b;
   --gs-hot-pale: #ffd9e2;

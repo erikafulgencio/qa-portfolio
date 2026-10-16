@@ -1,4 +1,5 @@
 import type { ContactLink } from './models';
+import { reveal } from './protect';
 
 export const PROFILE = {
   name: 'Erika Fulgencio',
@@ -10,20 +11,27 @@ export const PROFILE = {
   timezone: 'GMT+8',
   yearsInQa: 8,
   certification: 'ISTQB® CTAL-TM and CTFL',
-  email: 'm.erika.fulgencio@gmail.com',
+  /** Email address, encoded (see content/protect.ts). Use `profileEmail()` to read it. */
+  emailCode: 'bW9jLmxpYW1nQG9pY25lZ2x1Zi5ha2lyZS5t',
   github: 'https://github.com/meafulgencio',
   codepen: 'https://codepen.io/meafulgencio',
   /** Set to a file under `public/` (e.g. `assets/erika-fulgencio-resume.pdf`) to show the download button. */
   resumePdfUrl: '',
 } as const;
 
+/** The email address, decoded at the moment it is needed (e.g. building a mailto: link). */
+export function profileEmail(): string {
+  return reveal(PROFILE.emailCode);
+}
+
 export const CONTACT_LINKS: ContactLink[] = [
   {
     icon: 'ph-envelope-simple',
     label: 'Email',
-    value: PROFILE.email,
-    href: `mailto:${PROFILE.email}`,
+    value: 'm.erika••••@gmail.com',
+    href: '',
     dur: '6s',
+    protect: { kind: 'email', code: PROFILE.emailCode },
   },
   {
     icon: 'ph-linkedin-logo',
@@ -49,15 +57,17 @@ export const CONTACT_LINKS: ContactLink[] = [
   {
     icon: 'ph-phone',
     label: 'Phone',
-    value: '+63 XXX-XXX-XXXX',
-    href: 'tel:+63XXXXXXXXXX',
+    value: '+63 9•• ••• ••89',
+    href: '',
     dur: '7s',
+    protect: { kind: 'phone', code: 'OTgwNC02MzUtMDI5IDM2Kw==' },
   },
   {
     icon: 'ph-chat-circle-dots',
     label: 'Viber',
-    value: '+63 XXX-XXX-XXXX',
-    href: 'viber://chat?number=%2B63XXXXXXXXXX',
+    value: '+63 9•• ••• ••61',
+    href: '',
     dur: '7.8s',
+    protect: { kind: 'viber', code: 'MTY5Ni00NTQtMzI5IDM2Kw==' },
   },
 ];

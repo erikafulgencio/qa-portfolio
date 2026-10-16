@@ -1,3 +1,5 @@
+@use 'sass:meta';
+
 // Shared helpers for component stylesheets: `@use 'mixins' as *;`
 // (src/styles is on the Sass include path via angular.json stylePreprocessorOptions).
 
@@ -36,15 +38,40 @@
   border-radius: var(--gs-radius, 0px);
 }
 
-@mixin mono($size: 11px, $spacing: 0) {
+/// `$label: true` (passed by kicker) marks one-line uppercase labels, which keep their line-height.
+@mixin mono($size: 11px, $spacing: 0, $label: false) {
   font-family: var(--font-mono);
   font-size: $size;
   letter-spacing: $spacing;
+
+  // Phones: small monospace text is lifted to readable sizes (Lighthouse "legible font sizes"),
+  // and body copy gets a tighter line-height to suit the larger size.
+  // Only for plain lengths; a clamp() or var() size is already fluid.
+  @if meta.type-of($size) == 'number' and $size < 14px {
+    @include phone {
+      font-size: phone-mono($size);
+      @if not $label and $size >= 11.5px {
+        line-height: 1.75;
+      }
+    }
+  }
+}
+
+/// Monospace size on a phone for a given desktop size: body copy reads at 14px, mid labels at
+/// 12.5px and the smallest uppercase labels at 11px.
+@function phone-mono($size) {
+  @if $size >= 11.5px {
+    @return 14px;
+  }
+  @if $size >= 10.5px {
+    @return 12.5px;
+  }
+  @return 11px;
 }
 
 /// Small uppercase label used above headings.
 @mixin kicker($size: 10.5px, $spacing: 0.2em) {
-  @include mono($size, $spacing);
+  @include mono($size, $spacing, $label: true);
   text-transform: uppercase;
 }
 
@@ -67,8 +94,39 @@ $bp-lg: 1100px;
 $bp-md: 860px;
 $bp-sm: 560px;
 
+/// Phones in either orientation: narrow screens, plus touch screens up to a landscape iPhone Pro Max.
+@mixin phone {
+  @media (max-width: $bp-sm), (hover: none) and (pointer: coarse) and (max-width: 932px) {
+    @content;
+  }
+}
+
 @mixin below($bp) {
   @media (max-width: $bp) {
     @content;
+  }
+}
+
+/// Phones: a wrapping row of chips or filters becomes one swipeable line. It bleeds to the
+/// container's edges ($bleed = the container's side padding) and fades out on the right as a hint.
+@mixin chip-scroller($bleed: 18px) {
+  @include below($bp-sm) {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-inline: -$bleed;
+    padding: 2px $bleed 6px;
+    scroll-padding-inline: $bleed;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent);
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    > * {
+      flex: none;
+      scroll-snap-align: start;
+    }
   }
 }

@@ -1,0 +1,121 @@
+<div
+  class="stage stage--{{ art() }}"
+  [attr.aria-hidden]="decorative() || art() !== 'site' ? 'true' : null"
+>
+  <span class="grid" aria-hidden="true"></span>
+  @if (art() === 'site') {
+    <!-- Alter Ego backdrop: sweeps in with the Alter Ego screenshots. -->
+    <span class="alter-bg" aria-hidden="true"></span>
+    <span class="alter-edge" aria-hidden="true"></span>
+  }
+  <span class="sparks" aria-hidden="true">
+    @for (s of sparks; track s) {
+      <i></i>
+    }
+  </span>
+  @if (icon(); as i) {
+    <i class="ghost ph {{ i }}" aria-hidden="true"></i>
+  }
+
+  @switch (art()) {
+    @case ('site') {
+      @if (screens(); as sc) {
+        <div class="browser frame">
+          <div class="bar" aria-hidden="true">
+            <span class="dots"><b></b><b></b><b></b></span>
+            @if (address()) {
+              <span class="url"><i class="ph ph-lock-simple"></i>{{ address() }}</span>
+            }
+            <span class="mode">
+              <span class="mode-a">{{ modeOf(sc[0]) }}</span>
+              <span class="mode-b">{{ modeOf(sc[1]) }}</span>
+            </span>
+          </div>
+          <div class="screen">
+            <img
+              class="shot"
+              [src]="sc[0].src"
+              [attr.srcset]="sc[0].srcset"
+              sizes="(max-width: 560px) 92vw, 60vw"
+              [alt]="altOf(sc[0])"
+              decoding="async"
+            />
+            <img
+              class="shot shot--b"
+              [src]="sc[1].src"
+              [attr.srcset]="sc[1].srcset"
+              sizes="(max-width: 560px) 92vw, 60vw"
+              [alt]="altOf(sc[1])"
+              decoding="async"
+            />
+            <span class="seam" aria-hidden="true"
+              ><span class="knob"><i class="ph ph-swap"></i></span
+            ></span>
+          </div>
+        </div>
+      }
+    }
+
+    @case ('editor') {
+      <div class="window editor frame">
+        <div class="bar">
+          <span class="dots"><b></b><b></b><b></b></span>
+          <span class="tabs"><span>HTML</span><span class="on">CSS</span><span>JS</span></span>
+          <span class="run"><i class="ph ph-play"></i>Run</span>
+        </div>
+        <div class="split">
+          <div class="code">
+            @for (line of code; track $index) {
+              <span class="row"
+                ><span class="no">{{ $index + 1 }}</span
+                ><span class="txt">
+                  @for (t of line; track $index) {
+                    <span class="t-{{ t[0] }}">{{ t[1] }}</span>
+                  }
+                </span></span
+              >
+            }
+            <span class="row"
+              ><span class="no">{{ code.length + 1 }}</span
+              ><span class="caret"></span
+            ></span>
+          </div>
+          <div class="preview">
+            <span class="preview-label">Preview</span>
+            <span class="orbit"><span class="planet"></span></span>
+            <span class="switch"><span class="knob"></span></span>
+            <span class="ball-wrap"><span class="ball"></span><span class="floor"></span></span>
+          </div>
+        </div>
+      </div>
+    }
+
+    @case ('terminal') {
+      <div class="window terminal frame">
+        <div class="bar">
+          <span class="dots"><b></b><b></b><b></b></span>
+          <span class="title">qa-tools — bash</span>
+        </div>
+        <div class="shell">
+          @for (l of shell; track $index) {
+            <span class="line" [class.out]="!l.cmd">
+              @if (l.cmd) {
+                <span class="prompt">$ </span>
+              }
+              {{ l.text }}</span
+            >
+          }
+          <span class="line line--last"
+            ><span class="prompt">$ </span><span class="caret"></span
+          ></span>
+        </div>
+      </div>
+    }
+  }
+
+  @for (h of highlights(); track h.label; let i = $index) {
+    <span class="chip chip--{{ i }}"
+      ><i class="ph {{ h.icon }}" aria-hidden="true"></i>{{ h.label }}</span
+    >
+  }
+</div>

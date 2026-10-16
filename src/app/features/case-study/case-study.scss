@@ -109,12 +109,17 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
 }
 
 .back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px; // WCAG 2.2 target size
   @include kicker(11px, 0.2em);
   text-decoration: none;
   color: var(--gs-accent);
 
-  &:hover {
-    text-decoration: underline;
+  @media (hover: hover) {
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
@@ -199,6 +204,9 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
 .hero-sub {
   @include mono(12.5px);
   line-height: 1.95;
+  @include phone {
+    line-height: 1.7;
+  }
   margin: 0 0 14px;
   color: tx(72%);
   text-wrap: pretty;
@@ -250,8 +258,10 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
     border-right: none;
   }
 
-  &:hover {
-    background: ac(8%);
+  @media (hover: hover) {
+    &:hover {
+      background: ac(8%);
+    }
   }
 
   @include below($bp-md) {
@@ -287,6 +297,9 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
   margin: 0;
   @include mono(10.5px, 0.05em);
   line-height: 1.8;
+  @include phone {
+    line-height: 1.7;
+  }
   color: tx(62%);
   text-wrap: pretty;
 }
@@ -373,11 +386,13 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
     padding-left 0.25s,
     border-color 0.25s;
 
-  &:hover {
-    background: ac(10%);
-    color: var(--gs-accent);
-    border-color: var(--gs-accent);
-    padding-left: 18px;
+  @media (hover: hover) {
+    &:hover {
+      background: ac(10%);
+      color: var(--gs-accent);
+      border-color: var(--gs-accent);
+      padding-left: 18px;
+    }
   }
 }
 
@@ -453,9 +468,11 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
     background 0.25s,
     padding-left 0.25s;
 
-  &:hover {
-    background: ac(6%);
-    padding-left: 14px;
+  @media (hover: hover) {
+    &:hover {
+      background: ac(6%);
+      padding-left: 14px;
+    }
   }
 
   dt {
@@ -531,6 +548,9 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
   p {
     font-size: 15px;
     line-height: 1.9;
+    @include phone {
+      line-height: 1.7;
+    }
     hyphens: auto;
     color: tx(88%);
     text-wrap: pretty;
@@ -552,9 +572,11 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
     background 0.3s,
     padding-left 0.3s;
 
-  &:hover {
-    background: ac(7%);
-    padding-left: 16px;
+  @media (hover: hover) {
+    &:hover {
+      background: ac(7%);
+      padding-left: 16px;
+    }
   }
 
   > i {
@@ -566,8 +588,10 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
   &--hot {
     border-top-color: hot(26%);
 
-    &:hover {
-      background: hot(7%);
+    @media (hover: hover) {
+      &:hover {
+        background: hot(7%);
+      }
     }
 
     > i {
@@ -587,6 +611,9 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
 .row-text {
   font-size: 14.5px;
   line-height: 1.85;
+  @include phone {
+    line-height: 1.7;
+  }
   max-width: 62ch;
   color: tx(74%);
   text-wrap: pretty;
@@ -605,6 +632,9 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
   span {
     font-size: 15.5px;
     line-height: 1.8;
+    @include phone {
+      line-height: 1.7;
+    }
     max-width: 62ch;
     color: tx(86%);
     text-wrap: pretty;
@@ -618,6 +648,9 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
   background: ac(4%);
   font-size: 15px;
   line-height: 1.85;
+  @include phone {
+    line-height: 1.7;
+  }
   max-width: 66ch;
   color: tx(80%);
   border-radius: var(--gs-radius, 0px);
@@ -667,9 +700,11 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
     background 0.3s,
     padding-left 0.3s;
 
-  &:hover {
-    background: ac(7%);
-    padding-left: 16px;
+  @media (hover: hover) {
+    &:hover {
+      background: ac(7%);
+      padding-left: 16px;
+    }
   }
 }
 
@@ -704,9 +739,11 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
     transform 0.35s $ease-out,
     border-color 0.35s;
 
-  &:hover {
-    transform: translateY(-4px);
-    border-color: var(--gs-accent);
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-4px);
+      border-color: var(--gs-accent);
+    }
   }
 
   > i {
@@ -741,6 +778,9 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
   position: relative;
   font-size: 13.5px;
   line-height: 1.85;
+  @include phone {
+    line-height: 1.7;
+  }
   max-width: 60ch;
   color: tx(76%);
 }
@@ -804,11 +844,13 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
       color 0.28s,
       background 0.28s;
 
-    &:hover {
-      transform: translateY(-3px);
-      border-color: var(--gs-accent);
-      color: var(--gs-accent);
-      background: ac(8%);
+    @media (hover: hover) {
+      &:hover {
+        transform: translateY(-3px);
+        border-color: var(--gs-accent);
+        color: var(--gs-accent);
+        background: ac(8%);
+      }
     }
   }
 }
@@ -844,8 +886,10 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
   text-decoration: none;
   transition: padding-left 0.35s ease;
 
-  &:hover {
-    padding-left: 40px;
+  @media (hover: hover) {
+    &:hover {
+      padding-left: 40px;
+    }
   }
 
   > span {
@@ -896,6 +940,9 @@ $ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
   p {
     @include mono(12px);
     line-height: 1.8;
+    @include phone {
+      line-height: 1.7;
+    }
     color: tx(65%);
   }
 }

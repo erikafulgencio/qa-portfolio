@@ -5,6 +5,9 @@
 .mono-p {
   @include mono(12.5px);
   line-height: 1.95;
+  @include phone {
+    line-height: 1.7;
+  }
   color: tx(68%);
   max-width: 74ch;
   text-wrap: pretty;

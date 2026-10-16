@@ -53,6 +53,11 @@
     padding: 28px 24px 30px;
     border-radius: 22px;
   }
+
+  @include below($bp-sm) {
+    padding: 24px 18px 26px;
+    border-radius: 20px;
+  }
 }
 
 // Alter-mode HUD panel.
@@ -98,8 +103,10 @@
     color: var(--gs-accent);
     border-color: var(--gs-accent);
 
-    &:hover {
-      background: ac(12%);
+    @media (hover: hover) {
+      &:hover {
+        background: ac(12%);
+      }
     }
   }
 
@@ -108,8 +115,10 @@
     background: var(--gs-accent);
     border-color: var(--gs-accent);
 
-    &:hover {
-      background: var(--gs-accent-hi);
+    @media (hover: hover) {
+      &:hover {
+        background: var(--gs-accent-hi);
+      }
     }
   }
 
@@ -117,8 +126,10 @@
     color: var(--gs-hot-pale);
     border-color: var(--gs-hot);
 
-    &:hover {
-      background: hot(16%);
+    @media (hover: hover) {
+      &:hover {
+        background: hot(16%);
+      }
     }
   }
 }
@@ -141,10 +152,15 @@
   transition:
     transform 0.3s ease,
     background 0.3s ease,
-    letter-spacing 0.3s ease,
     box-shadow 0.3s ease,
     border-color 0.3s ease,
     color 0.3s ease;
+
+  // Touch press feedback: transform only, so the row never reflows.
+  &:active {
+    transform: scale(0.97);
+    transition-duration: 0.08s;
+  }
 
   &--dark {
     color: #fff;
@@ -155,11 +171,12 @@
       color: var(--gs-bg);
     }
 
-    &:hover {
-      background: var(--gs-accent);
-      transform: translateY(-3px);
-      letter-spacing: 0.22em;
-      box-shadow: 0 18px 34px -16px ac(80%);
+    @media (hover: hover) {
+      &:hover {
+        background: var(--gs-accent);
+        transform: translateY(-3px);
+        box-shadow: 0 18px 34px -16px ac(80%);
+      }
     }
   }
 
@@ -168,10 +185,12 @@
     background: transparent;
     border-color: tx(18%);
 
-    &:hover {
-      border-color: var(--gs-accent);
-      color: var(--gs-accent);
-      transform: translateY(-2px);
+    @media (hover: hover) {
+      &:hover {
+        border-color: var(--gs-accent);
+        color: var(--gs-accent);
+        transform: translateY(-2px);
+      }
     }
   }
 

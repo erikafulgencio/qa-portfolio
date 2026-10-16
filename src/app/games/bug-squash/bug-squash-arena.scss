@@ -156,8 +156,10 @@
     color: var(--gs-accent);
     box-shadow: 0 10px 18px -10px ac(70%);
 
-    &:hover {
-      box-shadow: 0 0 0 7px ac(12%);
+    @media (hover: hover) {
+      &:hover {
+        box-shadow: 0 0 0 7px ac(12%);
+      }
     }
 
     i {
@@ -173,9 +175,11 @@
     background: hot(14%);
     color: var(--gs-hot-soft);
 
-    &:hover {
-      background: hot(30%);
-      color: #fff;
+    @media (hover: hover) {
+      &:hover {
+        background: hot(30%);
+        color: #fff;
+      }
     }
   }
 }
@@ -297,10 +301,12 @@
     background: tx(84%);
     border: none;
 
-    &:hover {
-      background: var(--gs-accent);
-      transform: translateY(-2px);
-      box-shadow: 0 14px 26px -14px ac(75%);
+    @media (hover: hover) {
+      &:hover {
+        background: var(--gs-accent);
+        transform: translateY(-2px);
+        box-shadow: 0 14px 26px -14px ac(75%);
+      }
     }
   }
 
@@ -313,8 +319,10 @@
     background: var(--gs-accent);
     border: 1px solid var(--gs-accent);
 
-    &:hover {
-      background: var(--gs-accent-hi);
+    @media (hover: hover) {
+      &:hover {
+        background: var(--gs-accent-hi);
+      }
     }
   }
 }

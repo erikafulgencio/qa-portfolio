@@ -1,5 +1,5 @@
 import { CASES } from '../../content/cases';
-import type { IconName, Quest } from '../../content/models';
+import type { DevProject, IconName, Quest } from '../../content/models';
 import { DEV_PROJECTS, QUESTS } from '../../content/projects';
 
 export type ProjectCategory = 'Automation project' | 'Development project';
@@ -16,6 +16,11 @@ export interface ProjectView {
   why: string;
   category: ProjectCategory;
   cta?: string;
+  art?: DevProject['art'];
+  highlights?: DevProject['highlights'];
+  screens?: DevProject['screens'];
+  gallery?: DevProject['gallery'];
+  links?: DevProject['links'];
 }
 
 export const PRO_PROJECTS: ProjectView[] = [

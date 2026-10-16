@@ -17,6 +17,17 @@
 
         <p class="sub">{{ p.sub }}</p>
 
+        @if (p.art) {
+          <app-dev-art
+            class="hero-art"
+            [art]="p.art"
+            [screens]="p.screens"
+            [highlights]="p.highlights"
+            [icon]="p.icon"
+            [url]="p.links?.[0]?.href"
+          />
+        }
+
         <div class="cols">
           <section class="box box--inside" aria-labelledby="inside-label">
             <h2 id="inside-label" class="box-label">What's inside</h2>
@@ -45,6 +56,57 @@
           </div>
         </div>
 
+        @if (p.gallery?.length) {
+          <section class="gallery" aria-labelledby="gallery-label">
+            <h2 id="gallery-label" class="box-label">Snapshots</h2>
+            <ul class="shots">
+              @for (g of p.gallery; track g.src; let i = $index) {
+                <li [style.animation-delay.s]="0.1 + i * 0.07">
+                  <figure>
+                    <button type="button" class="shot" (click)="open(i)">
+                      <img
+                        [src]="g.src"
+                        [attr.srcset]="g.srcset"
+                        sizes="(max-width: 560px) 46vw, 240px"
+                        [alt]="g.alt"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <span class="zoom" aria-hidden="true"
+                        ><i class="ph ph-magnifying-glass-plus"></i
+                      ></span>
+                    </button>
+                    <figcaption>{{ g.caption }}</figcaption>
+                  </figure>
+                </li>
+              }
+            </ul>
+          </section>
+
+          <dialog #lightbox class="lightbox" closedby="any" (close)="shown.set(-1)">
+            @if (shownShot(); as g) {
+              <figure>
+                <img [src]="g.src" [attr.srcset]="g.srcset" sizes="100vw" [alt]="g.alt" />
+                <figcaption>
+                  <span>{{ g.caption }}</span>
+                  <span class="lb-count">{{ shown() + 1 }} / {{ p.gallery?.length }}</span>
+                </figcaption>
+              </figure>
+              <div class="lb-nav">
+                <button type="button" aria-label="Previous snapshot" (click)="step(-1)">
+                  <i class="ph ph-arrow-left" aria-hidden="true"></i>
+                </button>
+                <button type="button" aria-label="Next snapshot" (click)="step(1)">
+                  <i class="ph ph-arrow-right" aria-hidden="true"></i>
+                </button>
+                <button type="button" aria-label="Close" (click)="close()">
+                  <i class="ph ph-x" aria-hidden="true"></i>
+                </button>
+              </div>
+            }
+          </dialog>
+        }
+
         <div class="actions">
           <a class="pill pill--dark ask" routerLink="/contact">
             @for (q of questions; track $index) {
@@ -61,6 +123,12 @@
             <i class="ph ph-coffee" aria-hidden="true"></i
             ><span class="label">Ask me about it</span>
           </a>
+          @for (l of p.links; track l.href) {
+            <a class="pill pill--outline ext" [href]="l.href" target="_blank" rel="noopener"
+              ><i class="ph {{ l.icon }}" aria-hidden="true"></i>{{ l.label
+              }}<i class="ph ph-arrow-up-right" aria-hidden="true"></i
+            ></a>
+          }
           @if (next(); as n) {
             <a class="pill pill--outline" [routerLink]="['/projects', n.id]"
               >Next: {{ n.title }}<i class="ph ph-arrow-right" aria-hidden="true"></i

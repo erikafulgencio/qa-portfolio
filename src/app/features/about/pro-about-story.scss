@@ -56,6 +56,9 @@
   max-width: 52ch;
   @include mono(11.5px);
   line-height: 1.9;
+  @include phone {
+    line-height: 1.7;
+  }
   color: rgba(255, 255, 255, 0.72);
 }
 
@@ -152,8 +155,10 @@
   text-align: left;
   transition: background 0.25s ease;
 
-  &:hover {
-    background: ac(5%);
+  @media (hover: hover) {
+    &:hover {
+      background: ac(5%);
+    }
   }
 
   &.active {
@@ -239,9 +244,11 @@
     transform 0.35s cubic-bezier(0.2, 0.8, 0.3, 1),
     box-shadow 0.35s;
 
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 34px 70px -38px ac(60%);
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 34px 70px -38px ac(60%);
+    }
   }
 
   @include below($bp-md) {
@@ -288,8 +295,10 @@
   font-size: 19px;
   transition: transform 0.35s ease;
 
-  .act-card:hover & {
-    transform: rotate(-8deg) scale(1.06);
+  @media (hover: hover) {
+    .act-card:hover & {
+      transform: rotate(-8deg) scale(1.06);
+    }
   }
 }
 
@@ -343,10 +352,12 @@
       border-color 0.28s ease,
       background 0.28s ease;
 
-    &:hover {
-      border-color: var(--gs-accent);
-      background: ac(8%);
-      transform: translateY(-2px);
+    @media (hover: hover) {
+      &:hover {
+        border-color: var(--gs-accent);
+        background: ac(8%);
+        transform: translateY(-2px);
+      }
     }
 
     .pulse-dot {

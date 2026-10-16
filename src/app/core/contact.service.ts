@@ -3,7 +3,7 @@ import { DOCUMENT, Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import { PROFILE } from '../content/profile';
+import { profileEmail } from '../content/profile';
 import { type ContactForm, normalizeContactForm } from './contact-validators';
 
 export const HUBSPOT_SUBMIT_URL = 'https://api.hsforms.com/submissions/v3/integration/submit';
@@ -70,7 +70,7 @@ export class ContactService {
 
   mailtoHref(form: ContactForm): string {
     const body = `${form.message}\n\n— ${form.name} (${form.email})`;
-    return `mailto:${PROFILE.email}?subject=${encodeURIComponent(form.title)}&body=${encodeURIComponent(body)}`;
+    return `mailto:${profileEmail()}?subject=${encodeURIComponent(form.title)}&body=${encodeURIComponent(body)}`;
   }
 
   private openMailto(form: ContactForm): void {

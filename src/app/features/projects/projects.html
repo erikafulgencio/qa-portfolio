@@ -21,33 +21,63 @@
       }
     </div>
 
-    <ul class="grid" data-testid="project-grid">
-      @for (c of cards(); track c.id; let i = $index) {
-        <li class="card-item" [style.animation-delay.s]="i * 0.06">
-          <a class="card" [routerLink]="c.link">
-            <span class="card-head">
-              <i class="ph {{ c.icon }}" aria-hidden="true"></i>
-              <span class="card-kicker">{{ c.kicker }}</span>
-            </span>
-            <span class="card-title">{{ c.title }}</span>
-            <span class="card-sub">{{ c.sub }}</span>
-            <span class="bullets">
-              @for (b of c.bullets; track b) {
-                <span class="bullet"
-                  ><i class="ph ph-caret-right" aria-hidden="true"></i><span>{{ b }}</span></span
-                >
-              }
-            </span>
-            <span class="stack">
-              @for (s of c.stack; track s) {
-                <span class="tag">{{ s }}</span>
-              }
-            </span>
-            <span class="cta">{{ c.cta }} →</span>
-          </a>
-        </li>
+    <div data-testid="project-grid">
+      @for (g of groups(); track g.label) {
+        @if (g.label) {
+          <h2 class="group-label" [style.view-transition-name]="'group-' + g.label">
+            <span>{{ g.label }}</span
+            ><span class="group-count">{{ g.cards.length }}</span>
+          </h2>
+        }
+        <ul class="grid" [class.grid--showcase]="g.showcase">
+          @for (c of g.cards; track c.id; let i = $index) {
+            <li
+              class="card-item"
+              [class.card-item--feature]="g.showcase && c.art === 'site'"
+              [style.animation-delay.s]="i * 0.06"
+              [style.view-transition-name]="'project-' + c.id"
+            >
+              <a class="card" [class.card--art]="c.art" [routerLink]="c.link">
+                @if (c.art) {
+                  <app-dev-art
+                    class="card-art"
+                    [art]="c.art"
+                    [screens]="c.screens"
+                    [highlights]="c.highlights"
+                    [icon]="c.icon"
+                    [url]="c.url"
+                    [decorative]="true"
+                    [fill]="g.showcase && c.art === 'site'"
+                  />
+                }
+                <span class="card-body">
+                  <span class="card-head">
+                    <i class="ph {{ c.icon }}" aria-hidden="true"></i>
+                    <span class="card-kicker">{{ c.kicker }}</span>
+                  </span>
+                  <span class="card-title">{{ c.title }}</span>
+                  <span class="card-sub">{{ c.sub }}</span>
+                  <span class="bullets">
+                    @for (b of c.bullets; track b) {
+                      <span class="bullet"
+                        ><i class="ph ph-caret-right" aria-hidden="true"></i
+                        ><span>{{ b }}</span></span
+                      >
+                    }
+                  </span>
+                  <span class="stack">
+                    @for (s of c.stack; track s) {
+                      <span class="tag">{{ s }}</span>
+                    }
+                  </span>
+                  <span class="cta">{{ c.cta }} <span class="cta-arrow">→</span></span>
+                </span>
+              </a>
+            </li>
+          }
+        </ul>
       }
-    </ul>
+    </div>
 
     <h2 class="behind-title">The Work Behind Quality</h2>
     <p class="intro intro--small">
@@ -63,7 +93,7 @@
           <a
             class="artifact-cta"
             routerLink="/contact"
-            [attr.aria-label]="'Request a ' + a.name + ' sample'"
+            [attr.aria-label]="'Request sample: ' + a.name"
             >Request sample →</a
           >
         </li>

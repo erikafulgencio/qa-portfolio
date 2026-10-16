@@ -49,9 +49,11 @@ h2 {
     border-color 0.25s ease,
     transform 0.25s ease;
 
-  &:hover {
-    border-color: var(--gs-accent);
-    transform: translateX(4px);
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--gs-accent);
+      transform: translateX(4px);
+    }
   }
 }
 
@@ -125,8 +127,10 @@ h2 {
   border-radius: 14px;
   transition: background 0.2s ease;
 
-  &:hover {
-    background: ac(8%);
+  @media (hover: hover) {
+    &:hover {
+      background: ac(8%);
+    }
   }
 
   .item-title {
@@ -322,6 +326,9 @@ h2 {
 .quote-sub {
   @include mono(12px);
   line-height: 1.9;
+  @include phone {
+    line-height: 1.7;
+  }
   color: tx(66%);
   text-wrap: pretty;
 }

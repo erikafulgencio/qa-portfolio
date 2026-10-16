@@ -15,22 +15,34 @@
       <ul class="links">
         @for (l of links; track l.label) {
           <li>
-            <a
-              class="link"
-              [href]="l.href"
-              [attr.target]="isExternal(l.href) ? '_blank' : null"
-              [attr.rel]="isExternal(l.href) ? 'noopener noreferrer' : null"
-            >
-              <span class="link-icon"><i class="ph {{ l.icon }}" aria-hidden="true"></i></span>
-              <span class="link-text">
-                <span class="link-label">{{ l.label }}</span>
-                <span class="link-value">{{ l.value }}</span>
-              </span>
-              <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
-              @if (isExternal(l.href)) {
-                <span class="visually-hidden">(opens in a new tab)</span>
-              }
-            </a>
+            @if (reveal.isHidden(l)) {
+              <!-- Protected detail: masked until tapped, so scrapers never see it. -->
+              <button type="button" class="link" (click)="reveal.show(l)">
+                <span class="link-icon"><i class="ph {{ l.icon }}" aria-hidden="true"></i></span>
+                <span class="link-text">
+                  <span class="link-label">Show {{ l.label | lowercase }}</span>
+                  <span class="link-value" aria-hidden="true">{{ l.value }}</span>
+                </span>
+                <i class="ph ph-eye" aria-hidden="true"></i>
+              </button>
+            } @else {
+              <a
+                class="link"
+                [href]="reveal.href(l)"
+                [attr.target]="isExternal(l.href) ? '_blank' : null"
+                [attr.rel]="isExternal(l.href) ? 'noopener noreferrer' : null"
+              >
+                <span class="link-icon"><i class="ph {{ l.icon }}" aria-hidden="true"></i></span>
+                <span class="link-text">
+                  <span class="link-label">{{ l.label }}</span>
+                  <span class="link-value">{{ reveal.value(l) }}</span>
+                </span>
+                <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+                @if (isExternal(l.href)) {
+                  <span class="visually-hidden">(opens in a new tab)</span>
+                }
+              </a>
+            }
           </li>
         }
       </ul>

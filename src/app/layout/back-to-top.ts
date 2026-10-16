@@ -38,14 +38,31 @@ import { ScrollService } from '../core/scroll.service';
         background 0.25s ease,
         transform 0.25s ease;
 
-      &:hover {
-        background: var(--gs-accent);
-        transform: translateY(-3px);
+      @media (hover: hover) {
+        &:hover {
+          background: var(--gs-accent);
+          transform: translateY(-3px);
+        }
       }
 
-      @include below($bp-sm) {
-        right: 16px;
-        bottom: 16px;
+      // Phones: smaller and frosted, so the content underneath stays readable, and clear of the
+      // iPhone home indicator.
+      @include phone {
+        right: 14px;
+        bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+        color: var(--gs-text);
+        background: color-mix(in srgb, var(--surface) 78%, transparent);
+        backdrop-filter: blur(10px) saturate(1.4);
+        -webkit-backdrop-filter: blur(10px) saturate(1.4);
+        border: 1px solid ac(22%);
+        box-shadow: 0 10px 24px -12px rgba(20, 20, 40, 0.45);
+
+        .ring {
+          display: none;
+        }
       }
     }
 

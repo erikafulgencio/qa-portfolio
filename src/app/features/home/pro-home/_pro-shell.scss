@@ -36,6 +36,10 @@
   line-height: 1.9;
   color: tx(66%);
   text-wrap: pretty;
+
+  @include phone {
+    line-height: 1.7;
+  }
 }
 
 @mixin mini-icon($size: 32px, $radius: 10px) {

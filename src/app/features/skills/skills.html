@@ -39,6 +39,15 @@
                 </button>
               }
             </div>
+            <!-- Phones: the tapped skill's note opens right here, under its own group. -->
+            <div class="inline-detail" aria-live="polite">
+              @if (detail().category === g.name) {
+                <p class="inline-note">
+                  <span class="inline-name">{{ detail().name }}</span
+                  >{{ detail().note }}
+                </p>
+              }
+            </div>
           </section>
         }
       </div>
@@ -56,7 +65,7 @@
           <h2 class="detail-name">{{ detail().name }}</h2>
           <p class="detail-note">{{ detail().note }}</p>
           <div class="hint">
-            <i class="ph ph-cursor-click" aria-hidden="true"></i>Hover another node
+            <i class="ph ph-cursor-click" aria-hidden="true"></i>Pick another skill
           </div>
         </div>
 

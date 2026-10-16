@@ -37,9 +37,11 @@ import { RouterLink } from '@angular/router';
         transform 0.25s ease,
         box-shadow 0.25s ease;
 
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 14px 28px -14px ac(75%);
+      @media (hover: hover) {
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 14px 28px -14px ac(75%);
+        }
       }
 
       &--lg {

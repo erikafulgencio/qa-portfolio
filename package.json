@@ -8,7 +8,7 @@
     "start": "ng serve",
     "prebuild": "npm run icons",
     "build": "ng build",
-    "build:pages": "npm run build -- --base-href /qa-portfolio/ && node scripts/spa-fallback.mjs",
+    "build:pages": "npm run build -- --base-href /qa-portfolio/ && node scripts/csp.mjs && node scripts/spa-fallback.mjs",
     "watch": "ng build --watch --configuration development",
     "pretest": "npm run icons",
     "test": "ng test --watch=false",
@@ -16,7 +16,13 @@
     "lint": "ng lint && node scripts/build-icons.mjs --check",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
-    "format": "prettier --write \"src/**/*.{ts,html,scss}\" \"e2e/**/*.ts\" \"scripts/**/*.mjs\""
+    "snapshots": "node scripts/capture-snapshots.mjs",
+    "format": "prettier --write \"src/**/*.{ts,html,scss}\" \"e2e/**/*.ts\" \"scripts/**/*.mjs\"",
+    "serve:dist": "node scripts/serve-dist.mjs",
+    "e2e:prod": "node scripts/e2e-prod.mjs",
+    "audit:deps": "npm audit --audit-level=high",
+    "verify": "npm run lint && npm test && npm run e2e && npm run build:pages && npm run e2e:prod && npm run perf && npm run audit:deps",
+    "perf": "npx -y @lhci/cli@0.15.1 autorun"
   },
   "private": true,
   "packageManager": "npm@10.9.3",
@@ -43,6 +49,7 @@
     "eslint": "^10.12.0",
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
+    "subset-font": "^2.9.0",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.71.2",
     "vitest": "^4.0.8"

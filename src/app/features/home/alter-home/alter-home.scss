@@ -202,6 +202,16 @@ h1 {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+
+  // Phones: two equal full-width buttons, as in Professional mode.
+  @include below($bp-sm) {
+    flex-direction: column;
+    gap: 10px;
+
+    .cta {
+      justify-content: center;
+    }
+  }
 }
 
 .cta {
@@ -224,8 +234,10 @@ h1 {
     background: var(--gs-accent);
     border: 1px solid var(--gs-accent);
 
-    &:hover {
-      background: var(--gs-accent-hi);
+    @media (hover: hover) {
+      &:hover {
+        background: var(--gs-accent-hi);
+      }
     }
   }
 
@@ -233,9 +245,11 @@ h1 {
     color: var(--gs-text);
     border: 1px solid tx(40%);
 
-    &:hover {
-      border-color: var(--gs-hot);
-      color: var(--gs-hot-pale);
+    @media (hover: hover) {
+      &:hover {
+        border-color: var(--gs-hot);
+        color: var(--gs-hot-pale);
+      }
     }
   }
 }
@@ -275,9 +289,11 @@ h1 {
     background 0.2s ease;
   @include chamfer(10px);
 
-  &:hover {
-    border-color: var(--gs-accent);
-    background: ac(8%);
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--gs-accent);
+      background: ac(8%);
+    }
   }
 
   dt {
@@ -336,8 +352,10 @@ h1 {
   width: max-content;
   animation: g-marquee 32s linear infinite;
 
-  &:hover {
-    animation-play-state: paused;
+  @media (hover: hover) {
+    &:hover {
+      animation-play-state: paused;
+    }
   }
 }
 
@@ -444,9 +462,11 @@ h1 {
     background 0.2s ease,
     border-color 0.2s ease;
 
-  &:hover {
-    background: linear-gradient(90deg, hot(14%), transparent 70%);
-    border-left-color: var(--gs-hot);
+  @media (hover: hover) {
+    &:hover {
+      background: linear-gradient(90deg, hot(14%), transparent 70%);
+      border-left-color: var(--gs-hot);
+    }
   }
 
   dt {
@@ -502,14 +522,19 @@ h1 {
 }
 
 .all {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px; // WCAG 2.2 target size
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-decoration: none;
   color: var(--gs-accent);
 
-  &:hover {
-    text-decoration: underline;
+  @media (hover: hover) {
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
@@ -539,11 +564,18 @@ h1 {
     transform 0.2s ease;
   @include chamfer(12px);
 
-  &:hover,
   &:focus-within {
     border-color: var(--gs-accent);
     background: ac(7%);
     transform: translateY(-4px);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--gs-accent);
+      background: ac(7%);
+      transform: translateY(-4px);
+    }
   }
 }
 
@@ -666,7 +698,9 @@ h1 {
   flex: none;
   transition: background 0.2s ease;
 
-  &:hover {
-    background: var(--gs-hot-hi);
+  @media (hover: hover) {
+    &:hover {
+      background: var(--gs-hot-hi);
+    }
   }
 }

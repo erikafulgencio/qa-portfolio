@@ -12,7 +12,11 @@ import { LikesService } from './likes.service';
       class="like"
       [class.like--on]="liked()"
       [attr.aria-pressed]="liked()"
-      [attr.aria-label]="(liked() ? 'Remove appreciation for ' : 'Appreciate ') + title()"
+      [attr.aria-label]="
+        withLabel()
+          ? (liked() ? 'Appreciated' : 'Appreciate this') + ' — ' + title()
+          : 'Appreciate ' + title() + ', ' + (liked() ? 1 : 0)
+      "
       [title]="liked() ? 'Appreciated' : 'Appreciate this project'"
       (click)="toggle($event)"
     >
@@ -48,8 +52,10 @@ import { LikesService } from './likes.service';
       @include mono(10px);
       transition: all 0.25s ease;
 
-      &:hover {
-        transform: translateY(-2px);
+      @media (hover: hover) {
+        &:hover {
+          transform: translateY(-2px);
+        }
       }
 
       &--on {

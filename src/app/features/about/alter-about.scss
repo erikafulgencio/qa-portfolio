@@ -84,10 +84,12 @@
     transform 0.25s ease,
     background 0.25s ease;
 
-  &:hover {
-    border-color: var(--gs-accent);
-    transform: translateX(4px);
-    background: ac(8%);
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--gs-accent);
+      transform: translateX(4px);
+      background: ac(8%);
+    }
   }
 
   > i {
@@ -151,8 +153,10 @@
   border: 1px solid ac(20%);
   transition: border-color 0.25s ease;
 
-  &:hover {
-    border-color: var(--gs-accent);
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--gs-accent);
+    }
   }
 
   img {

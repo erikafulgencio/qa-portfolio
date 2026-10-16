@@ -67,10 +67,16 @@ h2 {
     transform 0.3s cubic-bezier(0.2, 0.8, 0.3, 1),
     box-shadow 0.3s;
 
-  &:hover,
   &:focus-within {
     transform: translateY(-4px);
     box-shadow: 0 26px 52px -32px ac(70%);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 26px 52px -32px ac(70%);
+    }
   }
 
   @include below($bp-md) {
@@ -136,6 +142,9 @@ h3 {
 .sub {
   @include mono(11.5px);
   line-height: 1.8;
+  @include phone {
+    line-height: 1.7;
+  }
   color: tx(68%);
   text-wrap: pretty;
 }
@@ -159,6 +168,9 @@ h3 {
   span {
     @include mono(10.5px);
     line-height: 1.8;
+    @include phone {
+      line-height: 1.7;
+    }
     color: tx(74%);
     text-wrap: pretty;
   }
@@ -170,8 +182,10 @@ h3 {
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 
+  // Phones: one stat per row, the figure beside its caption.
   @include below($bp-sm) {
-    gap: 12px;
+    grid-template-columns: 1fr;
+    gap: 0;
   }
 }
 
@@ -179,6 +193,18 @@ h3 {
   padding-top: 12px;
   padding-right: 6px;
   border-top: 1px solid ac(26%);
+
+  @include below($bp-sm) {
+    display: grid;
+    grid-template-columns: 7.5em minmax(0, 1fr);
+    align-items: baseline;
+    gap: 12px;
+    padding: 10px 0;
+
+    dt {
+      margin-bottom: 0;
+    }
+  }
 
   dt {
     font-family: var(--font-heading);
@@ -192,6 +218,9 @@ h3 {
     margin: 0;
     @include mono(9px);
     line-height: 1.8;
+    @include phone {
+      line-height: 1.7;
+    }
     color: tx(55%);
   }
 }
@@ -389,24 +418,31 @@ h3 {
 
 .dots {
   display: flex;
-  gap: 8px;
+  // The dots' padding is their tap area; pull it back so the row takes its old footprint.
+  margin: -9px -6px;
 }
 
+// Each dot is a thin bar inside a 24px tap target (WCAG 2.2 target size): the padding is the hit
+// area and background-clip keeps the bar itself small.
 .dot {
+  box-sizing: content-box;
   cursor: pointer;
   border: none;
-  padding: 0;
+  padding: 9px 6px;
   height: 6px;
   width: 12px;
   border-radius: 999px;
   background: ac(22%);
+  background-clip: content-box;
   transition:
     width 0.25s ease,
     background 0.25s ease;
 
-  &:hover {
-    width: 22px;
-    background: ac(45%);
+  @media (hover: hover) {
+    &:hover {
+      width: 22px;
+      background: ac(45%);
+    }
   }
 
   &.on {
@@ -442,15 +478,21 @@ h3 {
     transform 0.25s ease,
     background 0.25s ease;
 
-  &:hover {
-    background: ac(8%);
+  @media (hover: hover) {
+    &:hover {
+      background: ac(8%);
+    }
   }
 
-  &--prev:hover {
-    transform: translateX(-2px);
+  @media (hover: hover) {
+    &--prev:hover {
+      transform: translateX(-2px);
+    }
   }
 
-  &--next:hover {
-    transform: translateX(2px);
+  @media (hover: hover) {
+    &--next:hover {
+      transform: translateX(2px);
+    }
   }
 }

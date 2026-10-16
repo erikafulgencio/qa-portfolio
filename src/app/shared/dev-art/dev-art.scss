@@ -1,0 +1,1088 @@
+@use 'sass:list';
+@use 'mixins' as *;
+
+// Everything inside the stage is sized in container units, so the same art reads the same in a
+// small card and on the project page. --art-active (0/1) is set by a hovered parent or the stage.
+
+$ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+$wipe: 11s; // one Professional → Alter Ego → Professional cycle of the `site` art
+$wipe-ease: cubic-bezier(0.75, 0, 0.25, 1);
+
+// The `site` art's palette. Registered so a keyframe can crossfade it between the two modes;
+// the initial values are only fallbacks, `.stage--site` sets the real ones from theme tokens.
+@property --a-surface {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --a-ink {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #221c33;
+}
+@property --a-accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #6d4bd6;
+}
+@property --a-hot {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #c9678f;
+}
+/// 1 = Professional's rounded corners, 0 = Alter Ego's square ones.
+@property --a-round {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 1;
+}
+$code-loop: 12s;
+$term-loop: 15s;
+
+:host {
+  display: block;
+  container-type: inline-size;
+}
+
+.stage {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: inherit;
+
+  // Stretch to the parent's height (never shorter than the usual 16:10).
+  :host(.fill) & {
+    height: 100%;
+    min-height: 62.5cqw;
+    aspect-ratio: auto;
+  }
+
+  background:
+    radial-gradient(60% 75% at 14% 10%, ac(17%), transparent 70%),
+    radial-gradient(55% 65% at 94% 94%, hot(15%), transparent 72%),
+    linear-gradient(160deg, ac(6%), bg(30%));
+
+  @media (hover: hover) {
+    &:hover {
+      --art-active: 1;
+    }
+  }
+
+  @include alter {
+    background:
+      radial-gradient(60% 75% at 14% 10%, ac(14%), transparent 70%),
+      radial-gradient(55% 65% at 94% 94%, hot(16%), transparent 72%), var(--gs-bg);
+  }
+}
+
+// ── Backdrop: drifting grid, sparks, and a large ghost icon ──────────────────────────────────────
+
+.grid {
+  position: absolute;
+  inset: -48px 0 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(ac(10%) 1px, transparent 1px),
+    linear-gradient(90deg, ac(10%) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, #000 25%, transparent 80%);
+  animation: g-grid 7s linear infinite;
+}
+
+.sparks {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.sparks i {
+  position: absolute;
+  z-index: -1;
+  width: 0.7cqw;
+  height: 0.7cqw;
+  min-width: 4px;
+  min-height: 4px;
+  border-radius: 50%;
+  background: var(--gs-accent);
+  box-shadow: 0 0 1.4cqw ac(70%);
+  animation:
+    g-float 5s ease-in-out infinite,
+    g-pulse 3.2s ease-in-out infinite;
+
+  $spots: (8% 72%) (22% 6%) (47% 92%) (88% 9%) (95% 52%) (63% 4%);
+  @for $i from 1 through list.length($spots) {
+    $spot: list.nth($spots, $i);
+    &:nth-child(#{$i}) {
+      left: list.nth($spot, 1);
+      top: list.nth($spot, 2);
+      animation-delay:
+        #{$i * -0.8s},
+        #{$i * -0.5s};
+      @if $i % 2 == 0 {
+        background: var(--gs-hot);
+        box-shadow: 0 0 1.4cqw hot(70%);
+      }
+    }
+  }
+}
+
+.ghost {
+  position: absolute;
+  z-index: -1;
+  right: -3cqw;
+  top: -4cqw;
+  font-size: 30cqw;
+  color: ac(9%);
+  rotate: -12deg;
+  translate: calc(var(--art-active, 0) * -1.5cqw) calc(var(--art-active, 0) * 1.5cqw);
+  transition: translate 0.7s $ease-out;
+  animation: g-float 9s ease-in-out infinite;
+}
+
+// ── Shared window chrome ─────────────────────────────────────────────────────────────────────────
+
+.frame {
+  position: absolute;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid tx(10%);
+  border-radius: 1.5cqw;
+  box-shadow:
+    0 3.4cqw 6cqw -3cqw rgba(34, 22, 80, 0.38),
+    0 0.2cqw 0.6cqw rgba(34, 22, 80, 0.06);
+  transition:
+    translate 0.6s $ease-out,
+    rotate 0.6s $ease-out,
+    box-shadow 0.6s ease;
+  animation: art-in 0.8s $ease-out backwards;
+
+  @include alter {
+    background: var(--gs-bg);
+    border-color: ac(38%);
+    box-shadow: none;
+    @include chamfer(1.4cqw);
+  }
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 1.4cqw;
+  height: 4.2cqw;
+  padding: 0 1.6cqw;
+  border-bottom: 1px solid tx(8%);
+  background: tx(3%);
+  font-family: var(--font-mono);
+  font-size: clamp(6px, 1.25cqw, 11px);
+  letter-spacing: 0.04em;
+  color: tx(55%);
+  white-space: nowrap;
+
+  @include alter {
+    border-color: ac(22%);
+    background: ac(5%);
+  }
+}
+
+.dots {
+  display: flex;
+  gap: 0.6cqw;
+
+  b {
+    width: 1cqw;
+    height: 1cqw;
+    border-radius: 50%;
+    background: var(--gs-hot);
+
+    &:nth-child(2) {
+      background: var(--gs-accent-hi);
+    }
+
+    &:nth-child(3) {
+      background: tx(22%);
+    }
+  }
+}
+
+.caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.1em;
+  vertical-align: -0.2em;
+  background: var(--gs-accent);
+  animation: art-blink 1s steps(1, end) infinite;
+}
+
+// ── Floating glass chips ─────────────────────────────────────────────────────────────────────────
+
+.chip {
+  position: absolute;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8cqw;
+  padding: 1cqw 1.7cqw;
+  font-family: var(--font-mono);
+  font-size: clamp(8.5px, 1.45cqw, 12px);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--gs-accent-soft);
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
+  backdrop-filter: blur(6px);
+  border: 1px solid ac(20%);
+  border-radius: 999px;
+  box-shadow: 0 1.6cqw 3cqw -1.6cqw rgba(34, 22, 80, 0.4);
+  animation:
+    art-in 0.8s $ease-out 0.45s backwards,
+    g-float 6s ease-in-out 1.2s infinite;
+
+  i {
+    font-size: 1.3em;
+    color: var(--gs-accent);
+  }
+
+  &--1 {
+    animation-delay:
+      0.6s,
+      -2.5s;
+  }
+
+  @include alter {
+    background: bg(82%);
+    border-color: ac(45%);
+    border-radius: 0;
+    box-shadow: 0 0 2cqw -0.8cqw ac(60%);
+  }
+}
+
+// ── `site`: a browser wiping between the two captures ───────────────────────────────────────────
+
+.screen {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: tx(6%);
+}
+
+.shot {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+
+  &--b {
+    clip-path: inset(0 0 0 100%);
+    animation: art-wipe $wipe cubic-bezier(0.75, 0, 0.25, 1) infinite;
+  }
+}
+
+.seam {
+  position: absolute;
+  inset: 0;
+  border-left: 2px solid var(--gs-hot);
+  box-shadow: -0.4cqw 0 1.6cqw -0.2cqw hot(65%);
+  pointer-events: none;
+  translate: 100% 0;
+  animation: art-seam $wipe cubic-bezier(0.75, 0, 0.25, 1) infinite;
+}
+
+.knob {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 3.6cqw;
+  height: 3.6cqw;
+  translate: -50% -50%;
+  border-radius: 50%;
+  font-size: 1.8cqw;
+  color: #fff;
+  background: linear-gradient(135deg, var(--gs-accent), var(--gs-hot));
+  box-shadow: 0 0 0 0.5cqw hot(22%);
+}
+
+/// Mixes a palette variable with transparency, e.g. a-mix(--a-ink, 10%).
+@function a-mix($var, $pct) {
+  @return color-mix(in srgb, var(#{$var}) #{$pct}, transparent);
+}
+
+// The `site` art follows its screenshots. As the wipe reveals Alter Ego, an Alter Ego backdrop
+// sweeps across the stage and every piece of chrome crossfades to the Alter Ego palette, then
+// both return to Professional. In Alter Ego mode the palette simply holds the Alter Ego values.
+.stage--site {
+  --a-surface: var(--surface);
+  --a-ink: var(--gs-text);
+  --a-accent: var(--gs-accent);
+  --a-hot: var(--gs-hot);
+  --a-round: 1;
+
+  @include pro {
+    animation: art-theme $wipe $wipe-ease infinite;
+  }
+
+  @include alter {
+    --a-surface: var(--gs-bg);
+    --a-round: 0;
+  }
+
+  .sparks i {
+    background: var(--a-accent);
+    box-shadow: 0 0 1.4cqw a-mix(--a-accent, 70%);
+
+    &:nth-child(even) {
+      background: var(--a-hot);
+      box-shadow: 0 0 1.4cqw a-mix(--a-hot, 70%);
+    }
+  }
+
+  .ghost {
+    color: a-mix(--a-accent, 9%);
+  }
+
+  .frame {
+    background: var(--a-surface);
+    border-color: a-mix(--a-accent, calc(14% + (1 - var(--a-round)) * 26%));
+    border-radius: calc(var(--a-round) * 1.5cqw);
+  }
+
+  .bar {
+    color: a-mix(--a-ink, 62%);
+    background: a-mix(--a-ink, 4%);
+    border-color: a-mix(--a-ink, 9%);
+  }
+
+  .dots b {
+    background: var(--a-hot);
+
+    &:nth-child(2) {
+      background: var(--a-accent);
+    }
+
+    &:nth-child(3) {
+      background: a-mix(--a-ink, 22%);
+    }
+  }
+
+  // Centred in the space above the chip row (the browser is 72cqw × ~49cqw).
+  .browser {
+    left: 14%;
+    top: calc((100% - 49cqw) / 2 - 2cqw);
+    width: 72%;
+    translate: 0 calc(var(--art-active, 0) * -1.2cqw);
+    rotate: calc(var(--art-active, 0) * -0.6deg);
+  }
+
+  .url {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6cqw;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0.5cqw 1.2cqw;
+    border-radius: calc(var(--a-round) * 999px);
+    background: a-mix(--a-ink, 7%);
+    color: a-mix(--a-ink, 82%); // WCAG AA against the bar
+
+    i {
+      flex: none;
+      color: var(--a-accent);
+    }
+  }
+
+  // Mode label crossfades in step with the wipe.
+  .mode {
+    flex: none;
+    display: grid;
+    margin-left: auto;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+
+    > span {
+      grid-area: 1 / 1;
+      text-align: right;
+    }
+  }
+
+  .mode-a {
+    color: var(--a-accent);
+    animation: art-label-a $wipe ease infinite;
+  }
+
+  .mode-b {
+    color: var(--a-hot);
+    opacity: 0;
+    animation: art-label-b $wipe ease infinite;
+  }
+
+  .seam {
+    border-left-color: var(--a-hot);
+    box-shadow: -0.4cqw 0 1.6cqw -0.2cqw a-mix(--a-hot, 65%);
+  }
+
+  .knob {
+    background: linear-gradient(135deg, var(--a-accent), var(--a-hot));
+    box-shadow: 0 0 0 0.5cqw a-mix(--a-hot, 22%);
+  }
+
+  .chip {
+    color: color-mix(in srgb, var(--a-accent) 70%, var(--a-ink));
+    background: a-mix(--a-surface, 86%);
+    border-color: a-mix(--a-accent, 34%);
+    border-radius: calc(var(--a-round) * 999px);
+
+    i {
+      color: var(--a-accent);
+    }
+  }
+
+  .chip--0 {
+    right: 4%;
+    bottom: 4%;
+  }
+
+  .chip--1 {
+    left: 4%;
+    bottom: 4%;
+  }
+}
+
+// The Alter Ego backdrop: night sky, cyan grid, scanlines and a passing scan bar.
+.alter-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 3px),
+    linear-gradient(color-mix(in srgb, var(--ae-accent) 11%, transparent) 1px, transparent 1px) 0
+      0 / 24px 24px,
+    linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--ae-accent) 11%, transparent) 1px,
+        transparent 1px
+      )
+      0 0 / 24px 24px,
+    radial-gradient(
+      60% 75% at 12% 8%,
+      color-mix(in srgb, var(--ae-accent) 20%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      60% 70% at 96% 96%,
+      color-mix(in srgb, var(--ae-hot) 26%, transparent),
+      transparent 72%
+    ),
+    var(--ae-bg);
+  clip-path: inset(0 0 0 100%);
+  animation: art-wipe $wipe $wipe-ease infinite;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 35%;
+    background: linear-gradient(
+      transparent,
+      color-mix(in srgb, var(--ae-accent) 9%, transparent),
+      transparent
+    );
+    animation: g-scan 4.5s linear infinite;
+  }
+
+  @include alter {
+    clip-path: none;
+    animation: none;
+  }
+}
+
+// The leading edge of that sweep: a cyan glow riding the boundary, timed like the screen seams.
+.alter-edge {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-left: 1px solid color-mix(in srgb, var(--ae-accent) 80%, transparent);
+  box-shadow: -1cqw 0 3cqw -0.5cqw color-mix(in srgb, var(--ae-accent) 55%, transparent);
+  pointer-events: none;
+  translate: 100% 0;
+  animation: art-seam $wipe $wipe-ease infinite;
+
+  @include alter {
+    display: none;
+  }
+}
+
+// ── `site`, compact: the browser full width, one chip above it and one below ────────────────────
+
+@container (max-width: 520px) {
+  .stage--site {
+    aspect-ratio: 100 / 93;
+
+    :host(.fill) & {
+      min-height: 93cqw;
+    }
+
+    .browser {
+      left: 5%;
+      top: 14cqw;
+      width: 90%;
+    }
+
+    .bar {
+      gap: 2cqw;
+      height: 6.5cqw;
+      padding: 0 2.2cqw;
+      font-size: clamp(6.5px, 2.2cqw, 11px);
+    }
+
+    .dots {
+      gap: 1cqw;
+
+      b {
+        width: 1.6cqw;
+        height: 1.6cqw;
+      }
+    }
+
+    .url {
+      gap: 1cqw;
+      padding: 0.8cqw 1.8cqw;
+    }
+
+    .knob {
+      width: 6cqw;
+      height: 6cqw;
+      font-size: 3cqw;
+    }
+
+    .chip {
+      gap: 1.4cqw;
+      padding: 1.8cqw 3cqw;
+      font-size: clamp(8.5px, 2.5cqw, 12px);
+    }
+
+    .chip--0 {
+      top: 4cqw;
+      right: auto;
+      bottom: auto;
+      left: 5%;
+    }
+
+    .chip--1 {
+      left: 5%;
+      top: 81cqw;
+      bottom: auto;
+    }
+  }
+}
+
+// ── `editor`: a code pen typing CSS, with a live preview of the motion it describes ─────────────
+
+.window {
+  inset: 10% 7% 11% 6%;
+  display: flex;
+  flex-direction: column;
+  translate: 0 calc(var(--art-active, 0) * -1.2cqw);
+}
+
+.tabs {
+  display: flex;
+  gap: 0.4cqw;
+  margin-left: 1cqw;
+
+  span {
+    padding: 0.5cqw 1.2cqw;
+    border-radius: 0.8cqw;
+  }
+
+  .on {
+    color: var(--gs-accent);
+    background: ac(10%);
+
+    @include alter {
+      border-radius: 0;
+    }
+  }
+}
+
+.run {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5cqw;
+  margin-left: auto;
+  padding: 0.5cqw 1.3cqw;
+  border-radius: 999px;
+  color: var(--gs-on-accent);
+  background: var(--gs-accent);
+  animation: g-glow 2.4s ease-in-out infinite;
+
+  @include alter {
+    border-radius: 0;
+  }
+}
+
+.split {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 58% 42%;
+}
+
+.code {
+  display: grid;
+  align-content: start;
+  padding: 2.2cqw 1.6cqw;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: clamp(6px, 1.75cqw, 16px);
+  line-height: 1.95;
+  white-space: pre;
+  color: tx(80%);
+}
+
+.row {
+  display: flex;
+  gap: 1.6cqw;
+}
+
+.no {
+  flex: none;
+  width: 1.6em;
+  text-align: right;
+  color: tx(28%);
+}
+
+.txt {
+  clip-path: inset(0 100% 0 0);
+}
+
+$code-lines: 7;
+@for $i from 1 through $code-lines {
+  $start: ($i - 1) * 8%;
+  @keyframes art-type-#{$i} {
+    0%,
+    #{$start} {
+      clip-path: inset(0 100% 0 0);
+    }
+    #{$start + 6.5%},
+    100% {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  .row:nth-child(#{$i}) .txt {
+    animation: art-type-#{$i} $code-loop steps(18, end) infinite;
+  }
+}
+
+.t-sel {
+  color: var(--gs-accent);
+}
+
+.t-prop {
+  color: var(--gs-accent-soft);
+}
+
+.t-val {
+  color: var(--gs-hot-soft); // the deeper pink keeps code values at WCAG AA contrast
+}
+
+.t-punc {
+  color: tx(45%);
+}
+
+.preview {
+  position: relative;
+  border-left: 1px solid tx(8%);
+  background-color: ac(4%);
+  background-image: radial-gradient(ac(22%) 0.12cqw, transparent 0.16cqw);
+  background-size: 2.2cqw 2.2cqw;
+
+  @include alter {
+    border-color: ac(22%);
+  }
+}
+
+.preview-label {
+  position: absolute;
+  top: 1.6cqw;
+  left: 1.8cqw;
+  @include kicker(clamp(5.5px, 1.05cqw, 9px), 0.2em);
+  color: tx(45%);
+}
+
+.orbit {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  width: 15cqw;
+  height: 15cqw;
+  margin-left: -7.5cqw;
+  border: 1px dashed ac(40%);
+  border-radius: 50%;
+  animation: g-spin 6s linear infinite;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 32%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, var(--gs-accent-hi), var(--gs-accent));
+    box-shadow: 0 0 2.4cqw ac(55%);
+  }
+}
+
+.planet {
+  position: absolute;
+  top: -1.1cqw;
+  left: 50%;
+  width: 2.2cqw;
+  height: 2.2cqw;
+  margin-left: -1.1cqw;
+  border-radius: 50%;
+  background: var(--gs-hot);
+  box-shadow: 0 0 1.6cqw hot(70%);
+}
+
+.switch {
+  position: absolute;
+  left: 14%;
+  bottom: 15%;
+  width: 7.4cqw;
+  height: 3.8cqw;
+  border-radius: 999px;
+  background: tx(16%);
+  animation: art-switch-track 3.2s ease-in-out infinite;
+
+  @include alter {
+    border-radius: 0;
+  }
+
+  .knob {
+    top: 50%;
+    left: 0.5cqw;
+    width: 2.8cqw;
+    height: 2.8cqw;
+    translate: 0 -50%;
+    background: var(--surface);
+    box-shadow: 0 0.3cqw 0.8cqw rgba(34, 22, 80, 0.3);
+    animation: art-switch-knob 3.2s ease-in-out infinite;
+
+    @include alter {
+      border-radius: 0;
+      background: var(--gs-text);
+    }
+  }
+}
+
+.ball-wrap {
+  position: absolute;
+  right: 16%;
+  bottom: 13%;
+  width: 4cqw;
+  height: 12cqw;
+}
+
+.ball {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 4cqw;
+  height: 4cqw;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--gs-hot-hi), var(--gs-hot));
+  transform-origin: 50% 100%;
+  animation: art-bounce 1.1s infinite;
+}
+
+.floor {
+  position: absolute;
+  left: -0.5cqw;
+  right: -0.5cqw;
+  bottom: -0.9cqw;
+  height: 0.9cqw;
+  border-radius: 50%;
+  background: hot(30%);
+  animation: art-floor 1.1s infinite;
+}
+
+.stage--editor .chip--0 {
+  right: 3%;
+  bottom: 5%;
+}
+
+// ── `terminal`: a seed → reconcile → test → teardown session ────────────────────────────────────
+
+.terminal {
+  --t-fg: #eeebf7;
+  --t-dim: color-mix(in srgb, #eeebf7 62%, transparent);
+  inset: 11% 9% 13% 6%;
+  background: var(--gs-text);
+  border-color: transparent;
+
+  @include alter {
+    --t-fg: var(--gs-text);
+    --t-dim: color-mix(in srgb, var(--gs-text) 62%, transparent);
+    background: color-mix(in srgb, var(--gs-bg) 70%, #000);
+    border-color: ac(38%);
+  }
+
+  .bar {
+    color: var(--t-dim);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .dots b:nth-child(3) {
+    background: rgba(255, 255, 255, 0.25);
+  }
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+  margin-right: 4cqw;
+}
+
+.shell {
+  display: grid;
+  align-content: start;
+  padding: 2cqw 2.4cqw;
+  font-family: var(--font-mono);
+  font-size: clamp(6px, 1.9cqw, 18px);
+  line-height: 1.85;
+  white-space: pre;
+  color: var(--t-fg);
+}
+
+.line {
+  clip-path: inset(0 100% 0 0);
+
+  &.out {
+    color: var(--t-dim);
+  }
+}
+
+.prompt {
+  color: var(--gs-hot-hi);
+}
+
+// [start %, end %] of each line within the loop: commands type, output lands at once.
+$term: (2 11) (13 13.5) (17 25) (27 27.5) (31 35) (37 46) (49 58) (60 60.5) (63 63.5);
+@for $i from 1 through list.length($term) {
+  $span: list.nth($term, $i);
+  @keyframes art-line-#{$i} {
+    0%,
+    #{list.nth($span, 1) * 1%} {
+      clip-path: inset(0 100% 0 0);
+    }
+    #{list.nth($span, 2) * 1%},
+    100% {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  .line:nth-child(#{$i}) {
+    animation: art-line-#{$i} $term-loop steps(22, end) infinite;
+  }
+}
+
+.stage--terminal {
+  .ghost {
+    right: auto;
+    left: -4cqw;
+    top: auto;
+    bottom: -6cqw;
+    rotate: 10deg;
+  }
+
+  .chip--0 {
+    top: 5%;
+    right: 4%;
+
+    i {
+      animation: g-spin 4s linear infinite;
+    }
+  }
+}
+
+// ── Keyframes (scoped to this component) ─────────────────────────────────────────────────────────
+
+@keyframes art-in {
+  0% {
+    opacity: 0;
+    translate: 0 4cqw;
+  }
+}
+
+@keyframes art-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+// Reduced motion collapses every loop to its last frame, so each one ends on a complete picture.
+@keyframes art-wipe {
+  0%,
+  30% {
+    clip-path: inset(0 0 0 100%);
+  }
+  44%,
+  80% {
+    clip-path: inset(0 0 0 0);
+  }
+  94%,
+  100% {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+@keyframes art-seam {
+  0%,
+  28% {
+    translate: 100% 0;
+    opacity: 0;
+  }
+  31% {
+    translate: 100% 0;
+    opacity: 1;
+  }
+  44% {
+    translate: 0 0;
+    opacity: 1;
+  }
+  47%,
+  77% {
+    translate: 0 0;
+    opacity: 0;
+  }
+  80% {
+    translate: 0 0;
+    opacity: 1;
+  }
+  94% {
+    translate: 100% 0;
+    opacity: 1;
+  }
+  97%,
+  100% {
+    translate: 100% 0;
+    opacity: 0;
+  }
+}
+
+// Professional mode only: the `site` palette follows the wipe (same timing as art-wipe).
+@keyframes art-theme {
+  0%,
+  30%,
+  94%,
+  100% {
+    --a-surface: var(--surface);
+    --a-ink: var(--gs-text);
+    --a-accent: var(--gs-accent);
+    --a-hot: var(--gs-hot);
+    --a-round: 1;
+  }
+  44%,
+  80% {
+    --a-surface: var(--ae-bg);
+    --a-ink: var(--ae-text);
+    --a-accent: var(--ae-accent);
+    --a-hot: var(--ae-hot);
+    --a-round: 0;
+  }
+}
+
+@keyframes art-label-a {
+  0%,
+  34% {
+    opacity: 1;
+    translate: 0 0;
+  }
+  38%,
+  86% {
+    opacity: 0;
+    translate: 0 -60%;
+  }
+  90%,
+  100% {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes art-label-b {
+  0%,
+  34% {
+    opacity: 0;
+    translate: 0 60%;
+  }
+  38%,
+  86% {
+    opacity: 1;
+    translate: 0 0;
+  }
+  90%,
+  100% {
+    opacity: 0;
+    translate: 0 60%;
+  }
+}
+
+@keyframes art-switch-track {
+  0%,
+  35%,
+  100% {
+    background: tx(16%);
+  }
+  50%,
+  85% {
+    background: var(--gs-accent);
+  }
+}
+
+@keyframes art-switch-knob {
+  0%,
+  35%,
+  100% {
+    left: 0.5cqw;
+  }
+  50%,
+  85% {
+    left: calc(100% - 3.3cqw);
+  }
+}
+
+@keyframes art-bounce {
+  0%,
+  100% {
+    transform: translateY(0) scale(1.25, 0.75);
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1);
+  }
+  12% {
+    transform: translateY(-1cqw) scale(0.9, 1.1);
+  }
+  50% {
+    transform: translateY(-8cqw) scale(1, 1);
+    animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.3);
+  }
+  90% {
+    transform: translateY(0) scale(0.95, 1.05);
+  }
+}
+
+@keyframes art-floor {
+  0%,
+  100% {
+    transform: scaleX(1.1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scaleX(0.5);
+    opacity: 0.35;
+  }
+}

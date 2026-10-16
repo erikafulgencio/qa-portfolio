@@ -22,17 +22,17 @@ export class AlterAbout {
 
   protected readonly cosplay = [
     {
-      src: 'assets/img/cosplay-townhall.jpg',
+      src: 'assets/img/cosplay-townhall.webp',
       alt: 'Erika cosplaying a fem Kento Nanami at the company townhall',
       position: '50% 50%',
     },
     {
-      src: 'assets/img/cosplay-walk.jpg',
+      src: 'assets/img/cosplay-walk.webp',
       alt: 'Erika walking in her Kento Nanami cosplay, sunglasses on',
       position: '50% 30%',
     },
     {
-      src: 'assets/img/erika-headphones.jpg',
+      src: 'assets/img/erika-headphones.webp',
       alt: 'Erika with headphones on',
       position: '50% 50%',
     },

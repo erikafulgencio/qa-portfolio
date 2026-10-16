@@ -55,13 +55,15 @@
     transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.3s ease;
 
-  &:hover {
-    border-color: var(--gs-accent);
-    transform: translateY(-3px);
-    box-shadow: 0 22px 44px -32px ac(70%);
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--gs-accent);
+      transform: translateY(-3px);
+      box-shadow: 0 22px 44px -32px ac(70%);
 
-    .group-icon {
-      transform: rotate(-8deg) scale(1.08);
+      .group-icon {
+        transform: rotate(-8deg) scale(1.08);
+      }
     }
   }
 }
@@ -153,9 +155,11 @@
     border-radius: 999px;
   }
 
-  &:hover {
-    border-color: var(--gs-accent);
-    transform: translateY(-2px);
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--gs-accent);
+      transform: translateY(-2px);
+    }
   }
 
   &.on {
@@ -181,6 +185,12 @@
   position: relative;
   overflow: hidden;
   padding: 22px;
+
+  // Phones show the note inline under the tapped skill's group instead (.inline-detail).
+  @include below($bp-sm) {
+    display: none;
+  }
+
   min-height: 210px;
   display: flex;
   flex-direction: column;
@@ -374,10 +384,12 @@
     transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.3s ease;
 
-  &:hover {
-    border-color: var(--gs-accent);
-    transform: translateY(-4px);
-    box-shadow: 0 26px 50px -34px ac(80%);
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--gs-accent);
+      transform: translateY(-4px);
+      box-shadow: 0 26px 50px -34px ac(80%);
+    }
   }
 }
 
@@ -448,8 +460,10 @@
     border-radius: 18px;
   }
 
-  &:hover {
-    border-color: var(--gs-hot);
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--gs-hot);
+    }
   }
 
   &.open {
@@ -502,4 +516,37 @@
   flex: none;
   color: tx(45%);
   margin-top: 4px;
+}
+
+// Phones: the selected skill's note, shown under its own group.
+.inline-detail {
+  display: none;
+
+  @include below($bp-sm) {
+    display: block;
+  }
+}
+
+.inline-note {
+  margin: 14px 0 0;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border-left: 3px solid var(--gs-accent);
+  background: ac(7%);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: tx(78%);
+  animation: pr-rise 0.35s ease both;
+
+  @include alter {
+    border-radius: 0;
+  }
+}
+
+.inline-name {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--font-heading);
+  font-size: 16px;
+  color: var(--gs-text);
 }

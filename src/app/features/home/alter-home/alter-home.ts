@@ -42,6 +42,10 @@ export class AlterHome {
     (q): q is Quest => !!q,
   );
   protected readonly questLink = questLink;
+  /** The hero clip is skipped on phones and when the visitor asks to save data. */
+  protected readonly showVideo = !inject(DOCUMENT).defaultView?.matchMedia?.(
+    '(max-width: 860px), (prefers-reduced-data: reduce)',
+  ).matches;
   protected readonly embers = [
     { left: 12, size: 4, color: 'var(--gs-accent)', dur: 9, delay: 0 },
     { left: 26, size: 3, color: 'var(--gs-hot)', dur: 11, delay: 1.4 },

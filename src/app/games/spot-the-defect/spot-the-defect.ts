@@ -116,8 +116,10 @@ export const SPOT_MESSAGES = {
       background: transparent;
       transition: border-color 0.2s ease;
 
-      &:hover {
-        border-color: var(--gs-accent);
+      @media (hover: hover) {
+        &:hover {
+          border-color: var(--gs-accent);
+        }
       }
 
       &.hit {
@@ -172,8 +174,10 @@ export const SPOT_MESSAGES = {
       background: transparent;
       border: 1px solid tx(28%);
 
-      &:hover {
-        border-color: var(--gs-accent);
+      @media (hover: hover) {
+        &:hover {
+          border-color: var(--gs-accent);
+        }
       }
     }
   `,
