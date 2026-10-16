@@ -4,3 +4,7 @@
 10038	IGNORE	(CSP header not set: the policy is delivered by a meta tag from scripts/csp.mjs and asserted by e2e/security.spec.ts.)
 10063	IGNORE	(Permissions-Policy: response header, not settable on GitHub Pages.)
 90004	IGNORE	(Spectre site isolation, COOP/COEP/CORP: response headers, not settable on GitHub Pages.)
+10027	IGNORE	(Information Disclosure - Suspicious Comments: informational; flags words like "user" or "select" in code comments, none of which hold secrets.)
+10049	IGNORE	(Non-Storable Content: informational note about caching headers, which GitHub Pages controls.)
+10055	IGNORE	(CSP directive with no fallback: frame-ancestors cannot be set in a CSP meta tag, and GitHub Pages cannot send headers. Accepted, as for 10020.)
+10109	IGNORE	(Modern Web Application: informational; it only detects that this is a single-page app.)
