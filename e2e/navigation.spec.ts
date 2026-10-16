@@ -115,3 +115,29 @@ test('every case study links to the next one', async ({ page }) => {
     await expect(page.getByRole('heading', { level: 1 })).toContainText(title);
   }
 });
+
+// Regression: after a deploy renames the lazy chunks, an already-open page used to fail its next
+// navigation ("Failed to fetch dynamically imported module") and go nowhere.
+test('recovers when a deploy has replaced the next page chunk @mobile', async ({
+  page,
+  consoleErrors,
+}) => {
+  await visit(page, '/');
+  let blocked = 0;
+  // The first chunk request after load fails, as an old file name does after a release.
+  await page.route(/chunk-[A-Za-z0-9]+\.js/, async (route) => {
+    if (blocked++ === 0) await route.fulfill({ status: 404, body: 'Not Found' });
+    else await route.continue();
+  });
+  await page.getByRole('link', { name: /See my projects/ }).click();
+  await expect(page).toHaveURL(/\/projects$/);
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Features, failures');
+  expect(blocked).toBeGreaterThan(1); // the page was reloaded and fetched the chunk again
+  // The 404 and the failed import are the scenario under test.
+  const unexpected = consoleErrors.filter(
+    (e) =>
+      !/Failed to load resource|dynamically imported module|Importing a module script/.test(e) &&
+      e !== 'ERROR JSHandle@object', // Firefox's rendering of the same failed-import error
+  );
+  consoleErrors.splice(0, consoleErrors.length, ...unexpected);
+});

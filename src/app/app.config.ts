@@ -1,8 +1,14 @@
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { type ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  withInMemoryScrolling,
+  withNavigationErrorHandler,
+} from '@angular/router';
 
 import { routes } from './app.routes';
+import { reloadOnStaleChunk } from './core/stale-chunk';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,6 +18,7 @@ export const appConfig: ApplicationConfig = {
       routes,
       withComponentInputBinding(),
       withInMemoryScrolling({ scrollPositionRestoration: 'top', anchorScrolling: 'enabled' }),
+      withNavigationErrorHandler(reloadOnStaleChunk),
     ),
   ],
 };
