@@ -35,7 +35,7 @@ test('liking a project rains hearts and thanks the visitor', async ({ page }) =>
     .first()
     .click();
   await expect(page.getByText('Thank you so much for appreciating my hard work')).toBeVisible();
-  await expect(page.getByRole('button', { name: /Remove appreciation/ }).first()).toHaveAttribute(
+  await expect(page.getByRole('button', { name: /^Appreciated/ }).first()).toHaveAttribute(
     'aria-pressed',
     'true',
   );

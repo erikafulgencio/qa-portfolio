@@ -1,0 +1,6 @@
+10020	IGNORE	(Anti-clickjacking header: GitHub Pages cannot send response headers, and frame-ancestors is not honoured in a CSP meta tag. Accepted: the site has no authenticated or state-changing actions.)
+10021	IGNORE	(X-Content-Type-Options: response header, not settable on GitHub Pages.)
+10035	IGNORE	(Strict-Transport-Security: the scan runs over local HTTP; github.io serves HSTS itself.)
+10038	IGNORE	(CSP header not set: the policy is delivered by a meta tag from scripts/csp.mjs and asserted by e2e/security.spec.ts.)
+10063	IGNORE	(Permissions-Policy: response header, not settable on GitHub Pages.)
+90004	IGNORE	(Spectre site isolation, COOP/COEP/CORP: response headers, not settable on GitHub Pages.)

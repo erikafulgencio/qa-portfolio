@@ -123,18 +123,26 @@ test.describe('contact form', () => {
   });
 
   test('contact links point somewhere real', async ({ page }) => {
-    await expect(page.getByRole('link', { name: /^Email/ }).first()).toHaveAttribute(
-      'href',
-      /^mailto:/,
-    );
+    // The links float gently; freeze them so the clicks below land on a still target.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await expect(page.getByRole('link', { name: /LinkedIn/ }).first()).toHaveAttribute(
       'href',
       /linkedin\.com\/in\/meafulgencio/,
     );
-    await expect(page.getByRole('link', { name: /Phone/ }).first()).toHaveAttribute(
-      'href',
-      /^tel:/,
-    );
+    // Email and phone are masked until asked for, then become real links.
+    for (const [label, href] of [
+      ['email', /^mailto:\S+@\S+$/],
+      ['phone', /^tel:\+63\d{10}$/],
+      ['viber', /^viber:\/\/chat\?number=%2B63\d{10}$/],
+    ] as const) {
+      await page
+        .getByRole('button', { name: new RegExp(`^Show ${label}`) })
+        .first()
+        .click();
+      await expect(
+        page.getByRole('link', { name: new RegExp(`^${label}`, 'i') }).first(),
+      ).toHaveAttribute('href', href);
+    }
   });
 });
 

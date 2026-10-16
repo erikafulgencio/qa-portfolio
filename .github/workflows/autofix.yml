@@ -1,0 +1,222 @@
+name: Autofix
+
+# When a push to main fails its checks (so nothing deploys), Claude Code diagnoses and fixes it:
+#
+#   failed deploy run ─► Claude fixes on autofix/<run> ─► full gate (npm run verify), up to 3 tries
+#     ─► PR ─► CI re-runs on the PR branch ─► green: squash-merge + deploy │ red: label for a human
+#
+# Claude only edits files and runs the checks. Every git, PR, merge and deploy step below is plain
+# shell, so the agent never holds push or merge rights. Needs CLAUDE_CODE_OAUTH_TOKEN (from
+# `/install-github-app`) or ANTHROPIC_API_KEY; without either it exits with a warning.
+#
+# Security: this runs main's code with write permissions. Only collaborators you trust fully should be
+# able to push to this repository.
+on:
+  workflow_run:
+    workflows: ['Deploy to GitHub Pages']
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write # read failure logs, dispatch CI and the deploy
+  issues: write # PR labels and comments
+  id-token: write # Claude GitHub app authentication
+
+concurrency:
+  group: autofix
+  cancel-in-progress: false
+
+env:
+  GH_TOKEN: ${{ github.token }}
+  RUN_ID: ${{ github.event.workflow_run.id }}
+  HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+  BRANCH: autofix/${{ github.event.workflow_run.id }}
+
+jobs:
+  fix:
+    # Never autofix the merge of an earlier autofix: a second failure there needs a human.
+    if: >-
+      github.event.workflow_run.conclusion == 'failure' &&
+      !startsWith(github.event.workflow_run.head_commit.message, 'fix(autofix)')
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      CLAUDE_ARGS: >-
+        --max-turns 80
+        --allowedTools "Read,Edit,Write,Glob,Grep,Bash(npm run *),Bash(npm test*),Bash(npx playwright test*),Bash(npx ng *),Bash(npx prettier *),Bash(node scripts/*),Bash(git status*),Bash(git diff*),Bash(git log*)"
+      FIX_PROMPT: |
+        The deploy pipeline for this repository failed on main at commit ${{ github.event.workflow_run.head_sha }}, so the
+        site was not deployed. Your job is to make every check pass again.
+
+        - Failed jobs are listed in .autofix/failed-jobs.txt; their logs are in .autofix/failure.log.
+          If .autofix/verify.log exists, it is the output of the previous fix attempt's full gate run.
+        - Read CLAUDE.md first. Find the root cause and fix the product code.
+        - Change a test only if the test itself is demonstrably wrong. Never skip, delete or weaken
+          tests, and never loosen lint rules, the Content-Security-Policy (scripts/csp.mjs), the
+          OWASP ZAP rules (.zap/rules.tsv) or audit thresholds to get a green run.
+        - Do not edit anything under .github/, and do not run git commands that change history.
+        - Re-run the specific failing checks to confirm your fix, then `npm run verify`.
+        - Finally write .autofix/summary.md: the root cause, what you changed, and how you verified it,
+          in a few short paragraphs. It becomes the pull request description.
+    steps:
+      - name: Check for Claude credentials
+        id: creds
+        env:
+          OAUTH: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -n "$OAUTH$KEY" ]; then
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Autofix skipped: run /install-github-app in Claude Code (or add ANTHROPIC_API_KEY) to enable it."
+          fi
+
+      - name: Is the failure fixable in code?
+        id: triage
+        if: steps.creds.outputs.ok
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/jobs?per_page=100" \
+            --jq '.jobs[] | select(.conclusion == "failure") | .name' > failed-jobs.txt
+          echo "Failed jobs:"; cat failed-jobs.txt
+          # Test and build failures are code problems; a failed Pages deploy alone is infrastructure.
+          if grep -qE '^(test / |build$)' failed-jobs.txt; then
+            echo "fixable=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Only the Pages deploy failed — not a code problem, so no autofix."
+          fi
+
+      - uses: actions/checkout@v7
+        if: steps.triage.outputs.fixable
+        with:
+          ref: ${{ env.HEAD_SHA }}
+          fetch-depth: 0
+
+      - name: Collect failure logs for Claude
+        if: steps.triage.outputs.fixable
+        run: |
+          mkdir -p .autofix
+          mv failed-jobs.txt .autofix/
+          gh run view "$RUN_ID" --log-failed > .autofix/full.log || true
+          # Keep the end of the log, where the failures are; enough context without flooding the prompt.
+          tail -c 80000 .autofix/full.log > .autofix/failure.log
+          git checkout -b "$BRANCH"
+          git config user.name "claude[bot]"
+          git config user.email "claude[bot]@users.noreply.github.com"
+
+      - uses: actions/setup-node@v7
+        if: steps.triage.outputs.fixable
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies and browsers
+        if: steps.triage.outputs.fixable
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium firefox webkit
+
+      # ── Attempt 1 ────────────────────────────────────────────────────────────────────────────────
+      - name: Claude fixes the failure (attempt 1)
+        if: steps.triage.outputs.fixable
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: ${{ env.FIX_PROMPT }}
+          claude_args: ${{ env.CLAUDE_ARGS }}
+
+      - name: Full gate (attempt 1)
+        id: verify1
+        if: steps.triage.outputs.fixable
+        continue-on-error: true
+        run: npm run verify 2>&1 | tee .autofix/verify.log; exit "${PIPESTATUS[0]}"
+
+      # ── Attempt 2 ────────────────────────────────────────────────────────────────────────────────
+      - name: Claude fixes the failure (attempt 2)
+        if: steps.triage.outputs.fixable && steps.verify1.outcome == 'failure'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: ${{ env.FIX_PROMPT }}
+          claude_args: ${{ env.CLAUDE_ARGS }}
+
+      - name: Full gate (attempt 2)
+        id: verify2
+        if: steps.triage.outputs.fixable && steps.verify1.outcome == 'failure'
+        continue-on-error: true
+        run: npm run verify 2>&1 | tee .autofix/verify.log; exit "${PIPESTATUS[0]}"
+
+      # ── Attempt 3 ────────────────────────────────────────────────────────────────────────────────
+      - name: Claude fixes the failure (attempt 3)
+        if: steps.triage.outputs.fixable && steps.verify2.outcome == 'failure'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: ${{ env.FIX_PROMPT }}
+          claude_args: ${{ env.CLAUDE_ARGS }}
+
+      - name: Full gate (attempt 3)
+        id: verify3
+        if: steps.triage.outputs.fixable && steps.verify2.outcome == 'failure'
+        continue-on-error: true
+        run: npm run verify 2>&1 | tee .autofix/verify.log; exit "${PIPESTATUS[0]}"
+
+      # ── Open the PR, re-test in CI, merge and deploy ─────────────────────────────────────────────
+      - name: Commit, push and open the pull request
+        id: pr
+        if: steps.triage.outputs.fixable
+        env:
+          PASSED: ${{ steps.verify1.outcome == 'success' || steps.verify2.outcome == 'success' || steps.verify3.outcome == 'success' }}
+        run: |
+          git add -A -- . ':!.autofix'
+          if git diff --cached --quiet; then
+            echo "::error::Claude made no changes; the failure needs a human."
+            exit 1
+          fi
+          git commit -m "fix(autofix): repair failing checks from run $RUN_ID"
+          git push origin "$BRANCH"
+
+          { cat .autofix/summary.md 2>/dev/null || echo "Claude did not leave a summary."
+            echo; echo "---"
+            echo "Automated fix for [failed run $RUN_ID]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$RUN_ID) at \`$HEAD_SHA\`."
+          } > .autofix/body.md
+
+          if [ "$PASSED" = "true" ]; then
+            url=$(gh pr create --base main --head "$BRANCH" \
+              --title "fix(autofix): repair failing checks from run $RUN_ID" --body-file .autofix/body.md)
+          else
+            gh label create autofix-needs-human --color B60205 --description "Autofix could not get CI green" 2>/dev/null || true
+            url=$(gh pr create --base main --head "$BRANCH" --draft --label autofix-needs-human \
+              --title "fix(autofix): attempted repair for run $RUN_ID (needs review)" --body-file .autofix/body.md)
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "passed=$PASSED" >> "$GITHUB_OUTPUT"
+
+      - name: Re-test the fix in CI
+        id: ci
+        if: steps.pr.outputs.passed == 'true'
+        run: |
+          # Pushes made with the workflow token don't trigger workflows, so dispatch CI explicitly.
+          gh workflow run ci.yml --ref "$BRANCH"
+          for i in $(seq 1 30); do
+            id=$(gh run list --workflow ci.yml --branch "$BRANCH" --event workflow_dispatch --limit 1 --json databaseId --jq '.[0].databaseId')
+            [ -n "$id" ] && break; sleep 10
+          done
+          gh run watch "$id" --exit-status --interval 30
+
+      - name: Merge and deploy
+        if: steps.ci.outcome == 'success'
+        run: |
+          gh pr merge "${{ steps.pr.outputs.url }}" --squash --delete-branch
+          gh workflow run deploy.yml --ref main
+
+      - name: Hand over to a human
+        if: failure() && steps.pr.outputs.url
+        run: |
+          gh label create autofix-needs-human --color B60205 --description "Autofix could not get CI green" 2>/dev/null || true
+          gh pr edit "${{ steps.pr.outputs.url }}" --add-label autofix-needs-human
+          gh pr comment "${{ steps.pr.outputs.url }}" --body "CI did not pass on this automated fix, so it was not merged. Please review."

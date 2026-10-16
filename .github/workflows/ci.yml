@@ -1,18 +1,22 @@
 name: CI
 
+# Every check the site must pass before it can deploy. Runs on pull requests, is called by
+# deploy.yml for pushes to main, and is dispatched by autofix.yml to verify its fix branches.
 on:
   pull_request:
   workflow_call:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  test:
+  quality:
+    name: Lint, unit tests, production build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -21,13 +25,123 @@ jobs:
         run: npm run lint
       - name: Unit tests
         run: npm test
-      - name: Install Playwright browser
-        run: npx playwright install --with-deps chromium
+      - name: Production build (Pages, CSP, route pages)
+        run: npm run build:pages
+
+  e2e:
+    # Functional, accessibility (axe), responsive (320–1920px) and security tests per browser.
+    name: E2E (${{ matrix.project }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Desktop: Google Chrome, Firefox, Safari's engine. Phones: Chrome on Android,
+          # Safari on iPhone, Firefox on Android.
+          - { project: desktop, browser: chrome }
+          - { project: firefox, browser: firefox }
+          - { project: webkit, browser: webkit }
+          - { project: mobile, browser: chromium }
+          - { project: iphone, browser: webkit }
+          - { project: firefox-mobile, browser: firefox }
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install ${{ matrix.browser }}
+        run: npx playwright install --with-deps ${{ matrix.browser }}
       - name: End-to-end tests
-        run: npm run e2e
-      - uses: actions/upload-artifact@v4
+        run: npx playwright test --project=${{ matrix.project }}
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.project }}
           path: playwright-report
           retention-days: 7
+
+  security:
+    name: Security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # the secret scan reads the whole history
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Dependency vulnerabilities (npm audit, high and above)
+        run: npm run audit:deps
+
+      - name: Secret scan (gitleaks, full history)
+        uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_COMMENTS: false
+
+      - name: Build and serve the production site
+        run: |
+          npm run build:pages
+          node scripts/serve-dist.mjs &
+          for i in $(seq 1 30); do curl -sf http://localhost:8080/qa-portfolio/ >/dev/null && exit 0; sleep 1; done
+          echo "serve-dist did not start" && exit 1
+
+      - name: Security spec on the production build (CSP, hosts, XSS, tabnabbing, exposure)
+        run: |
+          npx playwright install --with-deps chromium
+          npm run e2e:prod
+
+      - name: OWASP ZAP baseline scan
+        uses: zaproxy/action-baseline@v0.15.0
+        with:
+          target: http://localhost:8080/qa-portfolio/
+          rules_file_name: .zap/rules.tsv
+          fail_action: true
+          allow_issue_writing: false
+          artifact_name: zap-report
+
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: playwright-report-security
+          path: playwright-report
+          retention-days: 7
+
+  performance:
+    # Lighthouse on five key pages, three runs each, with mobile emulation (slow 4G, 4x CPU).
+    # Budgets live in lighthouserc.json; reports stay on GitHub as an artifact.
+    name: Performance (Lighthouse, mobile)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Production build
+        run: npm run build:pages
+      - name: Lighthouse CI
+        run: npm run perf
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/reports
+          retention-days: 14
+
+  dependency-review:
+    # Blocks pull requests that add dependencies with known vulnerabilities.
+    name: Dependency review
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/dependency-review-action@v5
+        with:
+          fail-on-severity: high
