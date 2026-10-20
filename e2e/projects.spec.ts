@@ -55,3 +55,18 @@ test('the in-progress Selenium suite leads the home projects with its badge and 
   // Chips without a brand mark stay text-only.
   await expect(card.locator('.stack li', { hasText: 'TestNG' }).locator('svg')).toHaveCount(0);
 });
+
+for (const mode of ['pro', 'alter'] as const) {
+  test(`stack chips on the projects page lead with brand marks (${mode})`, async ({ page }) => {
+    await visit(page, '/projects', mode);
+    const grid = page.getByTestId('project-grid');
+    for (const name of ['Selenium', 'Playwright', 'Postman']) {
+      await expect(grid.locator('.tag', { hasText: name }).first().locator('svg')).toBeVisible();
+    }
+    // Generic items get a glyph; brands with no mark stay text-only.
+    await expect(
+      grid.locator('.tag', { hasText: /^SQL$/ }).first().locator('i.ph-database'),
+    ).toBeVisible();
+    await expect(grid.locator('.tag', { hasText: 'TestNG' }).locator('svg, i')).toHaveCount(0);
+  });
+}

@@ -1,65 +1,22 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
-interface Logo {
-  viewBox: string;
-  paths: readonly { d: string; fill: string }[];
-}
+import { GLYPHS, LOGOS } from './tech-logos';
 
 /**
- * Brand marks for stack chips, keyed by lower-cased stack name. Phosphor has no product logos,
- * so these are inline SVG (from devicon, MIT). Stack names without an entry render nothing.
+ * Decorative brand mark (or, for generic items, a Phosphor glyph) for a stack chip; the chip's
+ * text stays the accessible label. Stack names with neither render nothing.
  */
-const LOGOS: Readonly<Record<string, Logo>> = {
-  selenium: {
-    viewBox: '0 0 128 128',
-    paths: [
-      {
-        fill: '#43b02a',
-        d: 'M83.1 80.5c-4.7-.1-8.8 3.4-9.3 8.1 0 .2.1.3.3.3h18c.2 0 .3-.1.3-.3-.4-4.8-4.5-8.4-9.3-8.1z',
-      },
-      {
-        fill: '#43b02a',
-        d: 'M121.7 19.9l-38.4 43c-.4.5-1.2.5-1.7.1l-.1-.1-19.4-20.1c-.4-.4-.4-1-.1-1.5l6.5-8.3c.4-.5 1.1-.7 1.6-.3.1.1.2.1.2.2l11 12.1c.4.5 1.2.5 1.7.1l.1-.1 30.7-41.7c.3-.4.2-.9-.2-1.2-.1-.1-.3-.1-.5-.2H5.7c-.5.1-.9.5-.9 1v122.2c0 .5.4.9.9.9h116.6c.5 0 .9-.4.9-.9V20.5c0-.5-.4-.8-.8-.8-.3-.1-.5 0-.7.2zm-83.8 92.5c-7.7.3-15.2-2.3-20.9-7.4-.4-.4-.5-1-.1-1.5l4.5-6.4c.4-.5 1.1-.6 1.6-.3l.1.1c4.2 3.9 9.6 6 15.3 6 6 0 8.9-2.8 8.9-5.7 0-9.1-29.5-2.8-29.5-22.1 0-8.5 7.4-15.6 19.4-15.6 6.9-.2 13.7 2.1 19.1 6.5.4.4.5 1.1.1 1.5l-4.7 6.2c-.4.5-1.1.6-1.6.2-4-3.2-8.9-4.9-14-4.8-4.7 0-7.3 2.1-7.3 5.1 0 8.1 29.4 2.7 29.4 21.8.1 9.3-6.6 16.4-20.3 16.4zm64.3-17.8c0 .6-.5 1-1 1H74.3c-.2 0-.3.1-.3.3.9 5.2 5.6 8.8 10.9 8.5 3.4-.1 6.6-1.1 9.3-3.1.4-.3 1.1-.3 1.4.2l.1.1 3.3 4.8c.3.4.2 1-.2 1.4-4.3 3.2-9.6 4.8-14.9 4.6-11.6 0-20.3-7.8-20.3-20-.3-10.7 8.1-19.6 18.8-19.9h.9c11.3 0 19.1 8.5 19.1 20.9l-.2 1.2z',
-      },
-    ],
-  },
-  java: {
-    viewBox: '0 0 128 128',
-    paths: [
-      {
-        fill: '#0074bd',
-        d: 'M47.617 98.12s-4.767 2.774 3.397 3.71c9.892 1.13 14.947.968 25.845-1.092 0 0 2.871 1.795 6.873 3.351-24.439 10.47-55.308-.607-36.115-5.969zm-2.988-13.665s-5.348 3.959 2.823 4.805c10.567 1.091 18.91 1.18 33.354-1.6 0 0 1.993 2.025 5.132 3.131-29.542 8.64-62.446.68-41.309-6.336z',
-      },
-      {
-        fill: '#ea2d2e',
-        d: 'M69.802 61.271c6.025 6.935-1.58 13.17-1.58 13.17s15.289-7.891 8.269-17.777c-6.559-9.215-11.587-13.792 15.635-29.58 0 .001-42.731 10.67-22.324 34.187z',
-      },
-      {
-        fill: '#0074bd',
-        d: 'M102.123 108.229s3.529 2.91-3.888 5.159c-14.102 4.272-58.706 5.56-71.094.171-4.451-1.938 3.899-4.625 6.526-5.192 2.739-.593 4.303-.485 4.303-.485-4.953-3.487-32.013 6.85-13.743 9.815 49.821 8.076 90.817-3.637 77.896-9.468zM49.912 70.294s-22.686 5.389-8.033 7.348c6.188.828 18.518.638 30.011-.326 9.39-.789 18.813-2.474 18.813-2.474s-3.308 1.419-5.704 3.053c-23.042 6.061-67.544 3.238-54.731-2.958 10.832-5.239 19.644-4.643 19.644-4.643zm40.697 22.747c23.421-12.167 12.591-23.86 5.032-22.285-1.848.385-2.677.72-2.677.72s.688-1.079 2-1.543c14.953-5.255 26.451 15.503-4.823 23.725 0-.002.359-.327.468-.617z',
-      },
-      {
-        fill: '#ea2d2e',
-        d: 'M76.491 1.587S89.459 14.563 64.188 34.51c-20.266 16.006-4.621 25.13-.007 35.559-11.831-10.673-20.509-20.07-14.688-28.815C58.041 28.42 81.722 22.195 76.491 1.587z',
-      },
-      {
-        fill: '#0074bd',
-        d: 'M52.214 126.021c22.476 1.437 57-.8 57.817-11.436 0 0-1.571 4.032-18.577 7.231-19.186 3.612-42.854 3.191-56.887.874 0 .001 2.875 2.381 17.647 3.331z',
-      },
-    ],
-  },
-};
-
-/** Decorative brand mark for a stack chip; the chip's text stays the accessible label. */
 @Component({
   selector: 'app-tech-logo',
   template: `
     @if (logo(); as l) {
       <svg [attr.viewBox]="l.viewBox" aria-hidden="true" focusable="false">
         @for (p of l.paths; track $index) {
-          <path [attr.d]="p.d" [attr.fill]="p.fill" />
+          <path [attr.d]="p.d" [attr.fill]="p.fill" [attr.transform]="p.transform ?? null" />
         }
       </svg>
+    } @else if (glyph(); as g) {
+      <i class="ph {{ g }}" aria-hidden="true"></i>
     }
   `,
   styles: `
@@ -74,10 +31,17 @@ const LOGOS: Readonly<Record<string, Logo>> = {
       width: 1.35em;
       height: 1.35em;
     }
+    i {
+      font-size: 1.25em;
+      line-height: 1;
+      opacity: 0.85;
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TechLogo {
   readonly name = input.required<string>();
-  protected readonly logo = computed(() => LOGOS[this.name().toLowerCase()]);
+  private readonly key = computed(() => this.name().toLowerCase());
+  protected readonly logo = computed(() => LOGOS[this.key()]);
+  protected readonly glyph = computed(() => GLYPHS[this.key()]);
 }
