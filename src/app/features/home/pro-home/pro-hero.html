@@ -24,23 +24,31 @@
           <i class="ph ph-file-text arrow arrow--slow" aria-hidden="true"></i>Résumé
         </a>
       </div>
-      <div class="proof">
-        <div class="badges">
-          <span class="badge badge--accent" title="8 years in QA">8y</span>
-          <span
-            class="badge badge--hot"
-            title="ISTQB® Certified Tester: Advanced Level Test Management and Foundation Level"
-            ><i class="ph ph-seal-check" aria-hidden="true"></i
-          ></span>
-          <span class="badge badge--dark" title="Zero critical defects escaped to production"
-            ><i class="ph ph-shield-check" aria-hidden="true"></i
-          ></span>
-        </div>
-        <div class="proof-text">
-          <div class="proof-title">{{ profile.yearsInQa }} Years of Experience</div>
-          <div class="proof-sub">{{ profile.certification }} Certified</div>
-        </div>
-      </div>
+      <a
+        class="proof"
+        [href]="profile.certifiedTesterProfile"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Verify on the official U.S. List of Certified Software Testers"
+      >
+        <span class="cert-badges">
+          @for (b of certBadges; track b.src) {
+            <img [src]="b.src" [attr.srcset]="b.srcset" alt="" width="42" height="48" />
+          }
+        </span>
+        <span class="proof-text">
+          <span class="proof-title">{{ profile.yearsInQa }} Years of Experience</span>
+          <span class="proof-sub">
+            @for (line of profile.certificationLines; track line) {
+              <span>{{ line }}</span>
+            }
+          </span>
+          <span class="visually-hidden">
+            Verify on the official U.S. List of Certified Software Testers (opens in a new tab)</span
+          >
+        </span>
+        <span class="proof-go" aria-hidden="true"><i class="ph ph-arrow-up-right"></i></span>
+      </a>
     </div>
 
     <div class="iceberg">

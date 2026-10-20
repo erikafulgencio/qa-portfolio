@@ -64,6 +64,14 @@
 .meta {
   @include kicker(9.5px, 0.18em);
   color: tx(55%);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+
+  .status {
+    @include status-badge;
+  }
 }
 
 h1 {
@@ -189,6 +197,7 @@ h1 {
   gap: 6px;
 
   li {
+    @include logo-chip;
     @include mono(10px);
     @include phone {
       font-size: 12px;

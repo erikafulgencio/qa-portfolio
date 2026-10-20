@@ -5,10 +5,10 @@ describe('home logic', () => {
   describe('proProjectBuckets', () => {
     const buckets = proProjectBuckets(QUESTS, DEV_PROJECTS);
 
-    it('lists the 5 automation side quests and 3 development projects', () => {
-      expect(buckets['Automation Projects'].length).toBe(5);
+    it('lists the 6 automation side quests and 3 development projects', () => {
+      expect(buckets['Automation Projects'].length).toBe(6);
       expect(buckets['Development Projects'].length).toBe(3);
-      expect(buckets.All.length).toBe(8);
+      expect(buckets.All.length).toBe(9);
     });
 
     it('never shows boss fights (those are case studies)', () => {
@@ -18,7 +18,7 @@ describe('home logic', () => {
 
     it('keeps automation projects ahead of development projects in "All"', () => {
       expect(buckets.All.map((p) => p.category)).toEqual([
-        ...Array(5).fill('Automation Projects'),
+        ...Array(6).fill('Automation Projects'),
         ...Array(3).fill('Development Projects'),
       ]);
     });

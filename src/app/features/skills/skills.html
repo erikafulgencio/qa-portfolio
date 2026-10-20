@@ -105,18 +105,24 @@
     <ul class="certs">
       @for (c of certs; track c.title) {
         <li class="cert">
-          <div class="cert-img">
-            <app-image-placeholder
-              [label]="c.title"
-              [src]="c.image"
-              icon="ph-certificate"
-              [showLabel]="false"
-            />
+          <div class="cert-img" [class.cert-img--badge]="c.image">
+            @if (c.image) {
+              <!-- Official badges are shown whole, never cropped. -->
+              <img [src]="c.image" [alt]="c.title + ' badge'" loading="lazy" decoding="async" />
+            } @else {
+              <app-image-placeholder [label]="c.title" icon="ph-certificate" [showLabel]="false" />
+            }
           </div>
           <div class="cert-body">
             <div class="badge"><i class="ph {{ c.icon }}" aria-hidden="true"></i>{{ c.badge }}</div>
             <h3 class="cert-title">{{ c.title }}</h3>
             <div class="cert-issuer">{{ c.issuer }}</div>
+            @if (c.verifyUrl) {
+              <a class="cert-verify" [href]="c.verifyUrl" target="_blank" rel="noopener noreferrer"
+                ><i class="ph ph-seal-check" aria-hidden="true"></i>Verify
+                <span class="visually-hidden">{{ c.title }} (opens in a new tab)</span></a
+              >
+            }
           </div>
         </li>
       }

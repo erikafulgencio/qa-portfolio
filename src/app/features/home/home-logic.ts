@@ -16,6 +16,8 @@ export interface ProProject {
   title: string;
   sub: string;
   stack: string[];
+  /** e.g. "In progress" while the project is still being built. */
+  status?: string;
   category: Exclude<ProCategory, 'All'>;
 }
 
@@ -26,13 +28,14 @@ export function proProjectBuckets(
 ): Record<ProCategory, ProProject[]> {
   const auto: ProProject[] = quests
     .filter((q) => q.type === 'Side quest')
-    .map(({ id, icon, kicker, title, sub, stack }) => ({
+    .map(({ id, icon, kicker, title, sub, stack, status }) => ({
       id,
       icon,
       kicker,
       title,
       sub,
       stack,
+      status,
       category: 'Automation Projects',
     }));
   const dev: ProProject[] = devProjects.map(({ id, icon, kicker, title, sub, stack }) => ({

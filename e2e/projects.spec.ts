@@ -20,7 +20,7 @@ test('development projects show their artwork and real snapshots', async ({ page
 test('"All" groups automation and development projects', async ({ page }) => {
   await visit(page, '/projects');
   const labels = page.getByTestId('project-grid').locator('.group-label');
-  await expect(labels).toHaveText([/Automation\s*5/, /Development\s*3/]);
+  await expect(labels).toHaveText([/Automation\s*6/, /Development\s*3/]);
 });
 
 test('a development project gallery opens in a lightbox', async ({ page }) => {
@@ -40,4 +40,18 @@ test('a development project gallery opens in a lightbox', async ({ page }) => {
 
   await page.keyboard.press('Escape');
   await expect(dialog).toBeHidden();
+});
+
+test('the in-progress Selenium suite leads the home projects with its badge and brand logos', async ({
+  page,
+}) => {
+  await visit(page, '/');
+  const card = page.locator('app-projects-card .card').first();
+  await expect(card.locator('.card-title')).toHaveText('Selenium WebDriver Automation Suite');
+  await expect(card.locator('.status')).toHaveText('In progress');
+  for (const name of ['Selenium', 'Java']) {
+    await expect(card.locator('.stack li', { hasText: name }).locator('svg')).toBeVisible();
+  }
+  // Chips without a brand mark stay text-only.
+  await expect(card.locator('.stack li', { hasText: 'TestNG' }).locator('svg')).toHaveCount(0);
 });

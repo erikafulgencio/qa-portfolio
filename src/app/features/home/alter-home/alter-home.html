@@ -58,6 +58,20 @@
       bugs that matter and build the process that keeps them out.
     </p>
     <p class="focus">Test Strategy · QA Leadership · Automation · AI-Driven Testing</p>
+    <a
+      class="certs"
+      [href]="profile.certifiedTesterProfile"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      @for (b of certBadges; track b.src) {
+        <img [src]="b.src" [attr.srcset]="b.srcset" [alt]="b.alt" width="34" height="38" />
+      }
+      <span class="certs-label"
+        >ISTQB® verified<i class="ph ph-arrow-up-right" aria-hidden="true"></i
+      ></span>
+      <span class="visually-hidden">(opens in a new tab)</span>
+    </a>
     <div class="ctas">
       <a class="cta cta--solid" routerLink="/projects"
         ><i class="ph ph-sword" aria-hidden="true"></i>Enter the quest log</a
@@ -138,6 +152,9 @@
         <div class="quest-top">
           <i class="ph {{ q.icon }}" aria-hidden="true"></i>
           <span>{{ q.kicker }}</span>
+          @if (q.status) {
+            <span class="status"><span class="pulse" aria-hidden="true"></span>{{ q.status }}</span>
+          }
         </div>
         <h3 class="quest-title">
           <a [routerLink]="questLink(q)">{{ q.title }}</a>
@@ -145,7 +162,7 @@
         <p class="quest-sub">{{ q.sub }}</p>
         <ul class="quest-stack" aria-label="Stack">
           @for (s of q.stack; track s) {
-            <li>{{ s }}</li>
+            <li><app-tech-logo [name]="s" />{{ s }}</li>
           }
         </ul>
       </li>

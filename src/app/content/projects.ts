@@ -22,6 +22,27 @@ const PORTFOLIO_ALTER = shot(
 
 export const QUESTS: Quest[] = [
   {
+    id: 'webdriver',
+    type: 'Side quest',
+    icon: 'ph-steering-wheel',
+    kicker: 'UI automation',
+    rank: 'RANK A',
+    status: 'In progress',
+    title: 'Selenium WebDriver Automation Suite',
+    sub: 'A Java + Selenium suite that tests this portfolio itself — every route, both modes, real browsers.',
+    bullets: [
+      'Page Object Model: one page class per route, shared components for nav, mode switch and forms',
+      'Every check runs twice — Professional and Alter Ego — because a theme swap is a regression risk',
+      'Contact form validation, honeypot and error states driven from data providers',
+      'Explicit waits only, no sleeps — the boot loader is waited out, never timed out',
+      'Cross-browser runs on Chrome, Firefox and Edge with a screenshot on every failure',
+      'TestNG groups for smoke vs full regression, run headless from GitHub Actions',
+    ],
+    stack: ['Selenium', 'Java', 'TestNG', 'Maven', 'GitHub Actions'],
+    why: 'This site already ships behind a Playwright gate. Rebuilding that coverage in Selenium and Java — on a product anyone can open and check — shows the same risks tested with a different toolchain, and keeps my WebDriver craft sharp.',
+    cta: 'Building now',
+  },
+  {
     id: 'sel',
     type: 'Side quest',
     icon: 'ph-browsers',

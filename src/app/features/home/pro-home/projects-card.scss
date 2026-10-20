@@ -128,7 +128,7 @@ h2 {
     grid-template-columns: 1fr;
   }
 
-  // Phones: a swipeable row instead of eight stacked cards. The next card peeks in to show there
+  // Phones: a swipeable row instead of nine stacked cards. The next card peeks in to show there
   // is more, and the row bleeds to the sheet's edges (its padding is 18px on phones).
   @include below($bp-sm) {
     display: flex;
@@ -197,6 +197,17 @@ h2 {
   font-size: 16px;
 }
 
+.status {
+  @include status-badge;
+}
+
+// Phone cards are too narrow for kicker, badge and like button; the badge says more.
+.card-top:has(.status) .card-kicker {
+  @include phone {
+    display: none;
+  }
+}
+
 .card-kicker {
   @include kicker(9.5px, 0.14em);
   color: tx(55%);
@@ -233,6 +244,7 @@ h2 {
   margin-top: auto;
 
   li {
+    @include logo-chip;
     @include mono(9.5px, 0.06em);
     padding: 5px 9px;
     border-radius: 999px;

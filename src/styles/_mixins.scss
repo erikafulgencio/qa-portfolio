@@ -130,3 +130,35 @@ $bp-sm: 560px;
     }
   }
 }
+
+/// Live "In progress" badge for a project that is still being built. Expects a `.pulse` child.
+/// The text stays in the body colour for contrast; only the dot and outline carry the accent.
+@mixin status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  @include kicker(9px, 0.14em);
+  padding: 3px 9px 3px 7px;
+  border: 1px solid hot(45%);
+  border-radius: 999px;
+  background: hot(8%);
+  color: tx(80%);
+  white-space: nowrap;
+
+  .pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gs-hot);
+    box-shadow: 0 0 0 3px hot(22%);
+    animation: g-pulse 1.6s ease-in-out infinite;
+  }
+}
+
+/// Stack chip that may lead with a brand logo (`<app-tech-logo>`).
+@mixin logo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}

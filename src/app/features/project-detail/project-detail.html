@@ -9,7 +9,14 @@
         <header class="head">
           <span class="icon-tile big"><i class="ph {{ p.icon }}" aria-hidden="true"></i></span>
           <div class="head-text">
-            <div class="meta">{{ p.kicker }} · {{ p.category }}</div>
+            <div class="meta">
+              {{ p.kicker }} · {{ p.category }}
+              @if (p.status) {
+                <span class="status"
+                  ><span class="pulse" aria-hidden="true"></span>{{ p.status }}</span
+                >
+              }
+            </div>
             <h1>{{ p.title }}</h1>
           </div>
           <app-like-button class="like" [projectId]="p.id" [title]="p.title" [withLabel]="true" />
@@ -49,7 +56,7 @@
               <h2 id="stack-label" class="box-label">Stack</h2>
               <ul class="stack">
                 @for (t of p.stack; track t) {
-                  <li>{{ t }}</li>
+                  <li><app-tech-logo [name]="t" />{{ t }}</li>
                 }
               </ul>
             </section>

@@ -52,7 +52,7 @@ Environment notes:
   - Without `window.__efLoader` (tests), the transition runs immediately.
 - **Content is data:** every list and long piece of copy lives in typed files in `src/app/content/` (types in `models.ts`), and components only render it.
   - `QUESTS` are projects. Their `type: 'Boss fight'` entries must have a matching `CASES` id; those render at `/cases/:id`.
-  - Side quests plus `DEV_PROJECTS` are the 8 Professional projects at `/projects/:id`. Development projects only appear in Professional mode.
+  - Side quests plus `DEV_PROJECTS` are the 9 Professional projects at `/projects/:id`. Development projects only appear in Professional mode.
   - Missing imagery (certificates, logos, game screenshots) renders `<app-image-placeholder>` until a `src`/`image` is set.
 - **Routing:** `app.routes.ts` lazy-loads each page's default export from `features/<page>/<page>.ts`. Route params arrive as signal `input()`s (`withComponentInputBinding`).
   - Don't use `href="#anchor"` for in-page jumps. `<base href>` turns them into navigations on Pages. Use `ScrollService.toElement()` instead.

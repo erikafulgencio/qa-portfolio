@@ -16,6 +16,7 @@ export interface ProjectView {
   why: string;
   category: ProjectCategory;
   cta?: string;
+  status?: string;
   art?: DevProject['art'];
   highlights?: DevProject['highlights'];
   screens?: DevProject['screens'];
@@ -32,9 +33,10 @@ export const PRO_PROJECTS: ProjectView[] = [
     sub: q.sub,
     bullets: q.bullets,
     stack: q.stack,
-    why: q.sub,
+    why: q.why ?? q.sub,
     category: 'Automation project',
     cta: q.cta,
+    status: q.status,
   })),
   ...DEV_PROJECTS.map((p): ProjectView => ({ ...p, category: 'Development project' })),
 ];

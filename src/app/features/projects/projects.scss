@@ -257,6 +257,10 @@
   }
 }
 
+.status {
+  @include status-badge;
+}
+
 .card-kicker {
   font-size: 9.5px;
   letter-spacing: 0.18em;
@@ -303,6 +307,7 @@
 }
 
 .tag {
+  @include logo-chip;
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;

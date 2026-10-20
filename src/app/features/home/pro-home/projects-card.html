@@ -51,13 +51,16 @@
         <div class="card-top">
           <span class="card-icon"><i class="ph {{ p.icon }}" aria-hidden="true"></i></span>
           <span class="card-kicker">{{ p.kicker }}</span>
+          @if (p.status) {
+            <span class="status"><span class="pulse" aria-hidden="true"></span>{{ p.status }}</span>
+          }
           <app-like-button class="like" [projectId]="p.id" [title]="p.title" />
         </div>
         <h3 class="card-title">{{ p.title }}</h3>
         <p class="card-sub">{{ p.sub }}</p>
         <ul class="stack" aria-label="Stack">
           @for (t of p.stack; track t) {
-            <li>{{ t }}</li>
+            <li><app-tech-logo [name]="t" />{{ t }}</li>
           }
         </ul>
         <a class="view" [routerLink]="['/projects', p.id]"

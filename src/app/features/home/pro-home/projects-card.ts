@@ -4,11 +4,12 @@ import { RouterLink } from '@angular/router';
 import { PROFILE } from '../../../content/profile';
 import { DEV_PROJECTS, QUESTS } from '../../../content/projects';
 import { LikeButton } from '../../../shared/like-button';
+import { TechLogo } from '../../../shared/tech-logo';
 import { PRO_CATEGORIES, type ProCategory, proProjectBuckets } from '../home-logic';
 
 @Component({
   selector: 'app-projects-card',
-  imports: [RouterLink, LikeButton],
+  imports: [RouterLink, LikeButton, TechLogo],
   templateUrl: './projects-card.html',
   styleUrl: './projects-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

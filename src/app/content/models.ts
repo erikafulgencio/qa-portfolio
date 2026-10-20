@@ -31,6 +31,10 @@ export interface Quest {
   bullets: string[];
   stack: string[];
   cta?: string;
+  /** Side quests: the "Why it exists" copy on the project page (defaults to `sub`). */
+  why?: string;
+  /** Shown as a live badge while a project is still being built, e.g. "In progress". */
+  status?: string;
 }
 
 /** A screenshot under `public/`, e.g. `assets/img/projects/portfolio-pro-desktop.webp`. */
@@ -126,6 +130,8 @@ export interface Certification {
   issuer: string;
   /** Optional certificate image under `public/`. A placeholder renders when absent. */
   image?: string;
+  /** Optional public page where the certification can be verified. */
+  verifyUrl?: string;
 }
 
 export interface Award {

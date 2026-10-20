@@ -13,6 +13,7 @@ import { ModeService } from '../../core/mode.service';
 import type { DevProject, IconName } from '../../content/models';
 import { QUESTS, WORK_ARTIFACTS } from '../../content/projects';
 import { DevArt } from '../../shared/dev-art/dev-art';
+import { TechLogo } from '../../shared/tech-logo';
 import { PRO_PROJECTS, questLink } from '../project-detail/project-lookup';
 
 interface Card {
@@ -24,6 +25,7 @@ interface Card {
   bullets: string[];
   stack: string[];
   cta: string;
+  status?: string;
   link: string[];
   art?: DevProject['art'];
   screens?: DevProject['screens'];
@@ -48,7 +50,7 @@ const ALTER_FILTERS = ['All', 'Boss fight', 'Side quest'] as const;
 
 @Component({
   selector: 'app-projects-page',
-  imports: [RouterLink, DevArt],
+  imports: [RouterLink, DevArt, TechLogo],
   templateUrl: './projects.html',
   styleUrl: './projects.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -130,6 +132,7 @@ export default class ProjectsPage {
       bullets: p.bullets,
       stack: p.stack,
       cta: p.cta ?? 'View project',
+      status: p.status,
       link: ['/projects', p.id],
       art: p.art,
       screens: p.screens,
@@ -149,6 +152,7 @@ export default class ProjectsPage {
       bullets: q.bullets,
       stack: q.stack,
       cta: q.cta ?? 'View quest',
+      status: q.status,
       link: questLink(q),
     }));
   }

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { MINDSET_QUESTIONS } from '../../../content/home';
-import { PROFILE } from '../../../content/profile';
+import { CERT_BADGES, PROFILE } from '../../../content/profile';
 
 /** Professional hero: availability line, headline, CTAs, proof pill and the animated iceberg. */
 @Component({
@@ -14,6 +14,8 @@ import { PROFILE } from '../../../content/profile';
 })
 export class ProHero {
   protected readonly profile = PROFILE;
+  /** Foundation (blue) first, then Advanced Test Management (red). */
+  protected readonly certBadges = [...CERT_BADGES].reverse();
   protected readonly mindset = MINDSET_QUESTIONS;
   protected readonly bubbles = [
     { cx: 296, cy: 392, r: 3.4, hot: false, dur: 6, delay: 0 },

@@ -15,11 +15,12 @@ import { Router, RouterLink } from '@angular/router';
 import type { Snapshot } from '../../content/models';
 import { DevArt } from '../../shared/dev-art/dev-art';
 import { LikeButton } from '../../shared/like-button';
+import { TechLogo } from '../../shared/tech-logo';
 import { findProject, hasCaseStudy, nextProject } from './project-lookup';
 
 @Component({
   selector: 'app-project-detail-page',
-  imports: [RouterLink, LikeButton, DevArt],
+  imports: [RouterLink, LikeButton, DevArt, TechLogo],
   templateUrl: './project-detail.html',
   styleUrl: './project-detail.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

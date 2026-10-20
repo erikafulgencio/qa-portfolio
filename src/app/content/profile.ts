@@ -11,6 +11,11 @@ export const PROFILE = {
   timezone: 'GMT+8',
   yearsInQa: 8,
   certification: 'ISTQB® CTAL-TM and CTFL',
+  /** The certification lines in the Professional hero pill; each one stays on a single line. */
+  certificationLines: ['ISTQB® CTAL-Test Management', 'ISTQB® CTFL Certified'],
+  /** Public verification: the official U.S. List of Certified Software Testers (AT*SQA). */
+  certifiedTesterProfile:
+    'https://atsqa.org/certified-testers/profile/e780bc9c6aed404185615527cab3bf09',
   /** Email address, encoded (see content/protect.ts). Use `profileEmail()` to read it. */
   emailCode: 'bW9jLmxpYW1nQG9pY25lZ2x1Zi5ha2lyZS5t',
   github: 'https://github.com/meafulgencio',
@@ -71,3 +76,17 @@ export const CONTACT_LINKS: ContactLink[] = [
     protect: { kind: 'viber', code: 'MTY5Ni00NTQtMzI5IDM2Kw==' },
   },
 ];
+
+/** Official ISTQB® Certified Tester badges, as issued with the AT*SQA listing. */
+export const CERT_BADGES = [
+  {
+    src: 'assets/img/certs/istqb-ctal-tm.webp',
+    srcset: 'assets/img/certs/istqb-ctal-tm.webp 1x, assets/img/certs/istqb-ctal-tm@2x.webp 2x',
+    alt: 'ISTQB® Certified Tester, Advanced Level Test Management badge',
+  },
+  {
+    src: 'assets/img/certs/istqb-ctfl.webp',
+    srcset: 'assets/img/certs/istqb-ctfl.webp 1x, assets/img/certs/istqb-ctfl@2x.webp 2x',
+    alt: 'ISTQB® Certified Tester, Foundation Level badge',
+  },
+] as const;

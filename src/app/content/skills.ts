@@ -1,5 +1,6 @@
 // Content migrated verbatim from the Claude Design source. Edit freely; components read only from here.
 import type { Award, Certification, SkillGroup, TrainingItem } from './models';
+import { PROFILE } from './profile';
 
 export const SKILL_GROUPS: SkillGroup[] = [
   {
@@ -175,12 +176,16 @@ export const CERTIFICATIONS: Certification[] = [
     badge: 'Certified',
     title: 'ISTQB Certified Tester, Advanced Level — Test Management',
     issuer: 'ISTQB',
+    image: 'assets/img/certs/istqb-ctal-tm@2x.webp',
+    verifyUrl: PROFILE.certifiedTesterProfile,
   },
   {
     icon: 'ph-certificate',
     badge: 'Certified',
     title: 'ISTQB Certified Tester, Foundation Level',
     issuer: 'ISTQB',
+    image: 'assets/img/certs/istqb-ctfl@2x.webp',
+    verifyUrl: PROFILE.certifiedTesterProfile,
   },
   {
     icon: 'ph-plugs-connected',

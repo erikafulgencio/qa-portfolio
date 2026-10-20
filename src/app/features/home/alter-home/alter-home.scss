@@ -595,6 +595,12 @@ h1 {
     text-transform: uppercase;
     color: tx(60%);
   }
+
+  .status {
+    @include status-badge;
+    margin-left: auto;
+    border-radius: 0;
+  }
 }
 
 .quest-title {
@@ -638,6 +644,7 @@ h1 {
   margin-top: auto;
 
   li {
+    @include logo-chip;
     font-size: 10px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -702,5 +709,47 @@ h1 {
     &:hover {
       background: var(--gs-hot-hi);
     }
+  }
+}
+
+// Official ISTQB® badges with a link to the public verification (AT*SQA).
+.certs {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 22px;
+  padding: 6px 14px 6px 8px;
+  text-decoration: none;
+  border: 1px solid ac(28%);
+  background: bg(55%);
+  @include chamfer(8px);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+
+  img {
+    display: block;
+    width: 34px;
+    height: auto;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--gs-accent);
+      background: ac(10%);
+    }
+  }
+}
+
+.certs-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 4px;
+  @include kicker(11px, 0.14em);
+  color: var(--gs-accent-soft);
+
+  i {
+    font-size: 13px;
   }
 }

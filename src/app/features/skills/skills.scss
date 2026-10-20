@@ -400,6 +400,18 @@
   app-image-placeholder {
     height: 100%;
   }
+
+  &--badge {
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at 50% 45%, ac(12%), ac(4%) 70%);
+
+    img {
+      height: 112px;
+      width: auto;
+      filter: drop-shadow(0 6px 10px rgba(20, 20, 40, 0.18));
+    }
+  }
 }
 
 .cert-body {
@@ -549,4 +561,21 @@
   font-family: var(--font-heading);
   font-size: 16px;
   color: var(--gs-text);
+}
+
+.cert-verify {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 24px; // WCAG 2.2 target size
+  margin-top: 8px;
+  @include kicker(10.5px, 0.14em);
+  color: var(--gs-accent);
+  text-decoration: none;
+
+  @media (hover: hover) {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }

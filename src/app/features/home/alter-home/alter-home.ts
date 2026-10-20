@@ -12,11 +12,12 @@ import { RouterLink } from '@angular/router';
 import { CASES } from '../../../content/cases';
 import { CHARACTER_SHEET, HUD_STATS, TICKER } from '../../../content/home';
 import type { Quest } from '../../../content/models';
-import { PROFILE } from '../../../content/profile';
+import { CERT_BADGES, PROFILE } from '../../../content/profile';
 import { QUESTS } from '../../../content/projects';
 import { BugSquashArena } from '../../../games/bug-squash/bug-squash-arena';
+import { TechLogo } from '../../../shared/tech-logo';
 
-const FEATURED_IDS = ['pw', 'breach', 'ai'];
+const FEATURED_IDS = ['webdriver', 'breach', 'ai'];
 
 /** Link target for a quest: boss fights open their case study, everything else its project page. */
 export function questLink(q: Quest): string[] {
@@ -26,7 +27,7 @@ export function questLink(q: Quest): string[] {
 /** Alter Ego home: game-HUD hero with the Glitchbane video, ticker, character sheet and quest board. */
 @Component({
   selector: 'app-alter-home',
-  imports: [RouterLink, BugSquashArena],
+  imports: [RouterLink, BugSquashArena, TechLogo],
   templateUrl: './alter-home.html',
   styleUrl: './alter-home.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,6 +36,7 @@ export class AlterHome {
   private readonly video = viewChild<ElementRef<HTMLVideoElement>>('heroVideo');
 
   protected readonly profile = PROFILE;
+  protected readonly certBadges = CERT_BADGES;
   protected readonly hud = HUD_STATS;
   protected readonly ticker = TICKER;
   protected readonly sheet = CHARACTER_SHEET;

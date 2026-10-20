@@ -8,6 +8,7 @@ export const ROUTES = [
   { path: '/projects', name: 'projects' },
   { path: '/projects/pw', name: 'project detail' },
   { path: '/projects/port', name: 'development project detail' },
+  { path: '/projects/webdriver', name: 'in-progress project detail' },
   { path: '/cases/breach', name: 'case study' },
   { path: '/skills', name: 'skills' },
   { path: '/resume', name: 'résumé' },

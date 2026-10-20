@@ -54,6 +54,11 @@
                   <span class="card-head">
                     <i class="ph {{ c.icon }}" aria-hidden="true"></i>
                     <span class="card-kicker">{{ c.kicker }}</span>
+                    @if (c.status) {
+                      <span class="status"
+                        ><span class="pulse" aria-hidden="true"></span>{{ c.status }}</span
+                      >
+                    }
                   </span>
                   <span class="card-title">{{ c.title }}</span>
                   <span class="card-sub">{{ c.sub }}</span>
@@ -67,7 +72,7 @@
                   </span>
                   <span class="stack">
                     @for (s of c.stack; track s) {
-                      <span class="tag">{{ s }}</span>
+                      <span class="tag"><app-tech-logo [name]="s" />{{ s }}</span>
                     }
                   </span>
                   <span class="cta">{{ c.cta }} <span class="cta-arrow">→</span></span>
